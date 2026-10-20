@@ -2,45 +2,45 @@
 
 Website đặt đồ ăn cho sinh viên VNU
 
-\## Người thực hiện
+## Người thực hiện
 
 
 
-\- Lâm Hải Sơn — MSSV: 23110216.
+- Lâm Hải Sơn — MSSV: 23110216.
 
-\- Hiện tại dự án có một người thực hiện, phụ trách tài liệu,
+- Hiện tại dự án có một người thực hiện, phụ trách tài liệu,
 
-&#x20; giao diện, backend, kiểm thử và triển khai.
-
-
-
-\## Quy trình Git của dự án
+  giao diện, backend, kiểm thử và triển khai.
 
 
 
-\- main: phiên bản ổn định.
-
-\- develop: nhánh tích hợp các thay đổi.
-
-\- feature/\*: nhánh thực hiện từng công việc.
-
-\- Quy trình: tạo nhánh từ develop → sửa và kiểm tra →
-
-&#x20; commit → push → mở Pull Request vào develop → review → merge.
-
-\- Mỗi PR trình bày: thay đổi gì, vì sao, cách kiểm tra
-
-&#x20; và phần có AI hỗ trợ.
-
-\- Do hiện chỉ có một thành viên, việc review chéo cần được
-
-&#x20; giảng viên hướng dẫn cách thay thế. Tự kiểm tra và AI hỗ trợ
-
-&#x20; không được ghi nhận thành review của thành viên khác.
+## Quy trình Git của dự án
 
 
 
-\## Pre-mortem: Vì sao đồ án có thể thất bại?
+- main: phiên bản ổn định.
+
+- develop: nhánh tích hợp các thay đổi.
+
+- feature/*: nhánh thực hiện từng công việc.
+
+- Quy trình: tạo nhánh từ develop → sửa và kiểm tra →
+
+  commit → push → mở Pull Request vào develop → review → merge.
+
+- Mỗi PR trình bày: thay đổi gì, vì sao, cách kiểm tra
+
+  và phần có AI hỗ trợ.
+
+- Do hiện chỉ có một thành viên, việc review chéo cần được
+
+  giảng viên hướng dẫn cách thay thế. Tự kiểm tra và AI hỗ trợ
+
+  không được ghi nhận thành review của thành viên khác.
+
+
+
+## Pre-mortem: Vì sao đồ án có thể thất bại?
 
 
 
@@ -51,48 +51,40 @@ có thể xảy ra và cách phòng ngừa gồm:
 
 
 | STT | Nguy cơ thất bại | Nhóm nguyên nhân CHAOS | Hành động phòng ngừa |
-
 |---|---|---|---|
-
 | 1 | Chưa hiểu sinh viên cần gì khi đặt đồ ăn | Yêu cầu | Hỏi thử sinh viên mục tiêu, ghi lại nhu cầu và tiêu chí chấp nhận trước khi làm tính năng. |
-
 | 2 | Liên tục thêm thanh toán, giao hàng, khuyến mãi khiến phạm vi quá lớn | Yêu cầu | Chốt phạm vi MVP; đưa ý tưởng mới vào danh sách chờ và chỉ thêm khi việc cốt lõi đã chạy. |
-
 | 3 | Làm xong mới cho người dùng xem, phát hiện luồng đặt món khó dùng | Con người/bên liên quan | Cho người dùng thử từng luồng nhỏ và ghi nhận phản hồi sớm. |
-
 | 4 | Một người phải làm mọi phần, bị quá tải khi trùng lịch học | Quản lý/nguồn lực | Chia công việc thành nhiệm vụ nhỏ, ưu tiên chức năng bắt buộc và dành thời gian dự phòng. |
-
 | 5 | Ước lượng thiếu thời gian kiểm thử và triển khai | Quản lý/nguồn lực | Tính cả thời gian sửa lỗi, kiểm thử và deploy; chỉ đánh dấu hoàn thành khi có kết quả kiểm tra. |
-
 | 6 | Hết block VPS hoặc lỗi môi trường sát hạn nộp | Quản lý/nguồn lực | Đặt block sớm, lưu mã trên GitHub, ghi lại lệnh chạy và kiểm tra triển khai trước hạn. |
 
-\- B2: đã tạo và kích hoạt môi trường `.venv`, Python 3.12.3.
+- B2: đã tạo và kích hoạt môi trường `.venv`, Python 3.12.3.
 
-\- Chạy thử bằng `python -m http.server 8126 --bind 127.0.0.1`.
+- Chạy thử bằng `python -m http.server 8126 --bind 127.0.0.1`.
 
-\- Kiểm tra trên VPS: HTTP 200 OK, nội dung đúng tên đồ án
+- Kiểm tra trên VPS: HTTP 200 OK, nội dung đúng tên đồ án
 
-&#x20; VJU HOLA FOOD và MSSV 23110216.
+  VJU HOLA FOOD và MSSV 23110216.
 
-\- Hostname thực tế: `ubuntu`; IP VPS: `192.168.2.211`.
+- Hostname thực tế: `ubuntu`; IP VPS: `192.168.2.211`.
 
-\- Đây là dịch vụ thử trong VPS, không phải URL công khai.
+- Đây là dịch vụ thử trong VPS, không phải URL công khai.
 
-\- Ngày kiểm tra: 20/10/2026.
-
-
-
-\### Minh chứng B2
+- Ngày kiểm tra: 20/10/2026.
 
 
 
-!\[Môi trường Python venv](docs/evidence/b2-venv.png)
+### Minh chứng B2
 
 
 
-!\[Dịch vụ thử đang chạy](docs/evidence/b2-server.png)
+![Môi trường Python venv](docs/evidence/b2-venv.png)
 
 
 
-!\[HTTP 200 và nội dung trang](docs/evidence/b2-http.png)
+![Dịch vụ thử đang chạy](docs/evidence/b2-server.png)
 
+
+
+![HTTP 200 và nội dung trang](docs/evidence/b2-http.png)
