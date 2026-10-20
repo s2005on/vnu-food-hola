@@ -66,7 +66,33 @@ có thể xảy ra và cách phòng ngừa gồm:
 
 | 6 | Hết block VPS hoặc lỗi môi trường sát hạn nộp | Quản lý/nguồn lực | Đặt block sớm, lưu mã trên GitHub, ghi lại lệnh chạy và kiểm tra triển khai trước hạn. |
 
+\- B2: đã tạo và kích hoạt môi trường `.venv`, Python 3.12.3.
+
+\- Chạy thử bằng `python -m http.server 8126 --bind 127.0.0.1`.
+
+\- Kiểm tra trên VPS: HTTP 200 OK, nội dung đúng tên đồ án
+
+&#x20; VJU HOLA FOOD và MSSV 23110216.
+
+\- Hostname thực tế: `ubuntu`; IP VPS: `192.168.2.211`.
+
+\- Đây là dịch vụ thử trong VPS, không phải URL công khai.
+
+\- Ngày kiểm tra: 20/10/2026.
 
 
 
+\### Minh chứng B2
+
+
+
+!\[Môi trường Python venv](docs/evidence/b2-venv.png)
+
+
+
+!\[Dịch vụ thử đang chạy](docs/evidence/b2-server.png)
+
+
+
+!\[HTTP 200 và nội dung trang](docs/evidence/b2-http.png)
 
