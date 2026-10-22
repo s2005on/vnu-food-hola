@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>VJU Food — Demo B4</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;background:#f5f6f8;color:#203029;font:16px/1.6 Arial,sans-serif}
+header{background:#173e31;color:white;padding:32px 24px}
+.wrap{max-width:1100px;margin:auto}
+header p{margin:6px 0;color:#d1e4db}
+h1{margin:0;font-size:32px}
+.tag{display:inline-block;background:#e9b85c;color:#302510;
+padding:4px 12px;border-radius:20px;font-size:13px;font-weight:bold}
+main{display:grid;grid-template-columns:1.2fr 1fr;gap:24px;padding:28px 20px}
+h2{margin-top:0}
+.card{background:white;border:1px solid #dfe5e1;border-radius:16px;padding:22px}
+.dish{display:flex;justify-content:space-between;align-items:center;
+gap:16px;border-bottom:1px solid #eee;padding:18px 0}
+.dish:last-child{border:0}
+.dish h3{margin:0;font-size:18px}
+small,.muted{color:#64736b}
+.price{font-weight:bold;color:#216747}
+button{border:0;border-radius:9px;padding:11px 16px;
+background:#216747;color:white;font:inherit;cursor:pointer}
+button:hover{background:#174c33}
+button:disabled{background:#aab6ae;cursor:not-allowed}
+.qty{padding:4px 12px}
+.cart-row{display:flex;justify-content:space-between;align-items:center;
+gap:12px;border-bottom:1px solid #eee;padding:12px 0}
+.controls{display:flex;gap:10px;align-items:center}
+.total{display:flex;justify-content:space-between;font-size:20px;
+font-weight:bold;margin:18px 0}
+label{display:block;margin:12px 0 4px}
+input,select{width:100%;border:1px solid #cbd6ce;border-radius:8px;
+padding:11px;font:inherit;background:white}
+.submit{width:100%;margin-top:18px}
+#result{background:#e9f5ed;border:1px solid #91b99e;border-radius:12px;
+padding:16px;margin-top:18px}
+footer{text-align:center;padding:20px;color:#64736b;font-size:14px}
+@media(max-width:750px){main{grid-template-columns:1fr}h1{font-size:27px}}
+</style>
+</head>
+<body>
+<header>
+  <div class="wrap">
+    <span class="tag">DEMO Ý TƯỞNG · B4</span>
+    <h1>VJU Food</h1>
+    <p>Chọn món trước — nhận món tại quán.</p>
+    <p>Bản mẫu dùng dữ liệu giả, không gửi đơn hoặc thu tiền thật.</p>
+  </div>
+</header>
+
+<main class="wrap">
+  <section class="card">
+    <h2>Thực đơn hôm nay</h2>
+    <p class="muted">Quán minh họa · Giá và món chưa xác nhận với quán thật.</p>
+    <div id="menu"></div>
+  </section>
+
+  <section class="card">
+    <h2>Giỏ hàng của bạn</h2>
+    <div id="cart" aria-live="polite"></div>
+    <div class="total"><span>Tổng tiền</span><span id="total">0 ₫</span></div>
+
+    <form id="order-form">
+      <label for="name">Tên dùng thử</label>
+      <input id="name" required maxlength="60" placeholder="Ví dụ: Sơn">
+
+      <label for="pickup">Điểm nhận minh họa</label>
+      <select id="pickup">
+        <option>Nhận tại quán mẫu</option>
+      </select>
+
+      <label for="time">Giờ nhận minh họa</label>
+      <select id="time">
+        <option>11:30 – 12:00</option>
+        <option>12:00 – 12:30</option>
+      </select>
+
+      <p class="muted">Thanh toán dự kiến: tiền mặt khi nhận món.</p>
+      <button id="submit" class="submit" type="submit" disabled>
+        Tạo đơn minh họa
+      </button>
+    </form>
+
+    <div id="result" role="status" hidden></div>
+  </section>
+</main>
+
+<footer>
+  Lâm Hải Sơn · 23110216 · CSE3045<br>
+  Dữ liệu chỉ tồn tại trong lần mở trang; tải lại sẽ đặt lại demo.
+</footer>
+
+<script>
+const dishes = [
+  {id: 1, name: "Cơm gà", description: "Cơm, gà và rau theo mùa", price: 30000},
+  {id: 2, name: "Bún thịt nướng", description: "Bún, thịt nướng và rau", price: 35000},
+  {id: 3, name: "Bánh mì trứng", description: "Bữa nhẹ tiện lợi", price: 15000},
+  {id: 4, name: "Trà chanh", description: "Đồ uống dùng kèm", price: 10000}
+];
+
+const quantities = {};
+const money = value => value.toLocaleString("vi-VN") + " ₫";
+const total = () => dishes.reduce(
+  (sum, dish) => sum + dish.price * (quantities[dish.id] || 0), 0
+);
+
+const menu = document.getElementById("menu");
+const cart = document.getElementById("cart");
+const result = document.getElementById("result");
+
+menu.innerHTML = dishes.map(dish => `
+  <div class="dish">
+    <div>
+      <h3>${dish.name}</h3>
+      <small>${dish.description}</small>
+      <div class="price">${money(dish.price)}</div>
+    </div>
+    <button type="button" data-id="${dish.id}"
+      aria-label="Thêm ${dish.name}">+ Thêm</button>
+  </div>
+`).join("");
+
+function renderCart() {
+  const selected = dishes.filter(dish => quantities[dish.id] > 0);
+
+  cart.innerHTML = selected.length ? selected.map(dish => `
+    <div class="cart-row">
+      <div>
+        <strong>${dish.name}</strong><br>
+        <small>${money(dish.price * quantities[dish.id])}</small>
+      </div>
+      <div class="controls">
+        <button class="qty" type="button" data-id="${dish.id}" data-change="-1"
+          aria-label="Giảm số lượng ${dish.name}">−</button>
+        <span>${quantities[dish.id]}</span>
+        <button class="qty" type="button" data-id="${dish.id}" data-change="1"
+          aria-label="Tăng số lượng ${dish.name}">+</button>
+      </div>
+    </div>
+  `).join("") : '<p class="muted">Giỏ hàng trống. Hãy thêm món từ thực đơn.</p>';
+
+  document.getElementById("total").textContent = money(total());
+  document.getElementById("submit").disabled = selected.length === 0;
+}
+
+function changeQuantity(id, change) {
+  quantities[id] = Math.max(0, (quantities[id] || 0) + change);
+  result.hidden = true;
+  renderCart();
+}
+
+menu.addEventListener("click", event => {
+  const button = event.target.closest("button[data-id]");
+  if (button) changeQuantity(Number(button.dataset.id), 1);
+});
+
+cart.addEventListener("click", event => {
+  const button = event.target.closest("button[data-change]");
+  if (button) {
+    changeQuantity(Number(button.dataset.id), Number(button.dataset.change));
+  }
+});
+
+document.getElementById("order-form").addEventListener("submit", event => {
+  event.preventDefault();
+  if (!dishes.some(dish => quantities[dish.id] > 0)) return;
+
+  const nameInput = document.getElementById("name");
+  const name = nameInput.value.trim();
+  if (!name) {
+    nameInput.setCustomValidity("Vui lòng nhập tên dùng thử.");
+    nameInput.reportValidity();
+    return;
+  }
+
+  const amount = total();
+  const code = "DEMO-" + Date.now().toString().slice(-6);
+  const time = document.getElementById("time").value;
+  const pickup = document.getElementById("pickup").value;
+
+  result.textContent =
+    `Đã tạo đơn minh họa ${code} cho ${name}. ` +
+    `Tổng tiền: ${money(amount)}. ${pickup}, ${time}. ` +
+    `Trạng thái giả lập: Chờ xác nhận. Chưa gửi đơn tới quán.`;
+
+  dishes.forEach(dish => { quantities[dish.id] = 0; });
+  renderCart();
+  result.hidden = false;
+});
+
+document.getElementById("name").addEventListener("input", event => {
+  event.target.setCustomValidity("");
+});
+
+renderCart();
+</script>
+</body>
+</html>
