@@ -2,8 +2,8 @@
 
 ## 1. Phạm vi
 Website đặt đồ ăn cho sinh viên VJU, bản đầu phục vụ một quán.
-Chưa tích hợp AI và thanh toán trực tuyến tự động.
-
+Không tích hợp AI trong phạm vi đồ án kỳ này.
+Thanh toán trực tuyến tự động nằm ngoài phạm vi bản đầu.
 ## 2. Kiến trúc 3 tầng
 
 ```mermaid

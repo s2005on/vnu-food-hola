@@ -1,0 +1,19 @@
+[Unit]
+Description=VJU Food Hola single-shop application
+After=network.target
+
+[Service]
+User=student
+WorkingDirectory=/home/student/projects/vju-food-live
+Environment=VJU_DB=/home/student/vju-food-data/food.sqlite3
+Environment=VJU_COOKIE_SECURE=1
+Environment=VJU_BASE_PATH=/b1-23110216/v3/
+ExecStart=/home/student/projects/vju-food-live/.venv-vju/bin/python -m uvicorn server.app:app --host 127.0.0.1 --port 8016 --workers 1 --no-proxy-headers
+Restart=on-failure
+RestartSec=5
+UMask=0077
+NoNewPrivileges=true
+PrivateTmp=true
+
+[Install]
+WantedBy=multi-user.target
