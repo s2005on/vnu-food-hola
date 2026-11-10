@@ -218,3 +218,11 @@ __marimo__/
 
 # Streamlit
 .streamlit/secrets.toml
+
+# Backend runtime and private data
+.venv-vju/
+server/data/
+backups/
+*.sqlite3
+*.sqlite3-wal
+*.sqlite3-shm
