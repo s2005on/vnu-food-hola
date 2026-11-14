@@ -1,6 +1,9 @@
 # Kế hoạch thời gian — Gantt và đường găng
 
 ## 1. Giả định lập kế hoạch
+Đây là lịch dự kiến để lập kế hoạch, không phải báo cáo tiến độ thực tế.
+Hạn nộp chính thức chưa được cập nhật; các mốc ngày sẽ được điều chỉnh
+khi có lịch học phần và thời gian triển khai thực tế.
 - Người thực hiện: Lâm Hải Sơn.
 - Nhân lực: một người.
 - Ngày bắt đầu dự kiến: 05/10/2026.

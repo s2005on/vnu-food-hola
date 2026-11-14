@@ -1,0 +1,117 @@
+/* V6 — Compact customer layout. Load after style.css and polish.css. */
+:root{--page-width:1320px}
+html{scroll-padding-top:94px}
+body{overflow-x:hidden}
+.top{
+  display:grid;grid-template-columns:minmax(215px,1fr) auto minmax(215px,1fr);
+  align-items:center;max-width:var(--page-width);margin:0 auto;
+  padding:15px 28px;gap:20px;
+}
+.top .brand{justify-self:start;white-space:nowrap;font-size:20px}
+.top nav{justify-self:center;gap:30px}
+.header-actions{display:flex;align-items:center;justify-self:end;gap:10px}
+.top .account-link{white-space:nowrap;font-size:12px;padding:10px 16px;border:1px solid var(--line)}
+.top .basket-link{display:inline-flex;align-items:center;gap:9px;white-space:nowrap;font-size:12px;padding:11px 16px;border:0}
+.top .basket-link span{margin:0;display:inline-grid;place-items:center;min-width:19px;height:19px;background:#ffffff26;border-radius:50%}
+.demo-note{font-size:11px;padding:7px 12px}
+.layout{
+  display:block;max-width:var(--page-width);padding:0 28px;
+  margin:22px auto 0;
+}
+.main-column{min-width:0}
+.hero{min-height:290px;border-radius:22px}
+.hero-copy{width:53%;padding:34px 38px 27px}
+.hero-copy h1{font-size:clamp(34px,3.4vw,46px);line-height:1.12;margin:12px 0}
+.hero p{font-size:12px;max-width:385px}
+.hero-tags{margin-top:14px}
+.hero-art{width:47%;border-radius:20px;min-height:290px;background-position:center 54%}
+.hero .food-sticker{bottom:16px;right:18px}
+.review-strip{padding:14px 0 18px;margin-bottom:22px;gap:14px}
+.review-strip p{font-size:12px;margin:5px 0 0}
+.review-strip a{font-size:12px}
+.section-title{margin-bottom:12px}
+.section-title h2{font-size:25px}
+.tools{gap:12px;margin-bottom:12px}
+.categories{margin-bottom:12px;gap:8px}
+#shop-status{margin:10px 0 8px}
+#reload-menu{margin-bottom:16px}
+.menu-grid{grid-template-columns:repeat(4,minmax(0,1fr));gap:17px}
+.dish-art{height:190px;min-height:0}
+.dish-body{padding:16px}
+.dish-desc{min-height:40px}
+.how{margin-top:28px}
+footer{max-width:var(--page-width);padding:22px 28px;margin:25px auto 0}
+/* Keep the original cart markup, form, prices and API logic. Only move its container into a modal. */
+dialog#basket{
+  box-sizing:border-box;position:fixed;inset:0 0 0 auto;
+  margin:0 0 0 auto;width:min(464px,100vw);max-width:100vw;
+  height:100vh;height:100dvh;max-height:100vh;max-height:100dvh;
+  padding:25px 29px 32px;overflow-y:auto;overscroll-behavior:contain;
+  border:0;border-radius:24px 0 0 24px;background:#fff;
+  box-shadow:-15px 0 80px #173b2927;
+}
+dialog#basket[open]{animation:vju-drawer-enter .22s cubic-bezier(.2,.75,.2,1) both}
+@keyframes vju-drawer-enter{from{transform:translateX(100%);opacity:.7}to{transform:translateX(0);opacity:1}}
+dialog#basket::backdrop{background:#172b225d;backdrop-filter:blur(2px)}
+#basket .basket-heading{align-items:center;position:sticky;top:-25px;background:#fff;padding:5px 0 12px;z-index:3}
+#basket .basket-heading h2{font-size:22px;margin:5px 0 0}
+#basket .basket-heading .eyebrow{font-size:9px}
+#basket .basket-heading .icon-button{background:#f3f5ef;border:1px solid var(--line);font-size:15px}
+#basket>.muted{margin:0 0 14px}
+#basket #cart{margin-bottom:8px}
+#basket #order-form input,#basket #order-form select,#basket #order-form textarea{max-width:100%}
+#basket .summary{padding:14px 0}
+#basket .total{margin:15px 0}
+#basket .total strong{font-size:23px}
+@media(max-width:1050px){
+  .top,.layout{padding-left:22px;padding-right:22px}
+  .top{grid-template-columns:minmax(170px,1fr) auto minmax(185px,1fr)}
+  .top nav{gap:14px}
+  .menu-grid{grid-template-columns:repeat(3,minmax(0,1fr))}
+  .hero-copy{padding-left:28px}
+  .dish-art{height:190px}
+}
+@media(max-width:740px){
+  .top{grid-template-columns:minmax(0,1fr) auto;gap:8px 12px;padding:13px 16px}
+  .top .brand{font-size:18px;grid-column:1;grid-row:1}
+  .top nav{grid-row:2;grid-column:1/-1;width:auto;justify-self:center;justify-content:center;gap:24px;padding:4px 0 0;font-size:12px}
+  .header-actions{grid-column:2;grid-row:1;gap:7px}
+  .top .account-link{font-size:11px;padding:8px 10px}
+  .top .basket-link{font-size:11px;padding:9px 11px}
+  .layout{padding:0 16px;margin-top:15px}
+  .hero{min-height:280px}
+  .hero-copy{width:59%;padding:25px 18px 22px 24px}
+  .hero-copy h1{font-size:clamp(30px,5.5vw,40px)}
+  .hero-art{width:41%;min-height:280px}
+  .hero .food-sticker{display:none}
+  .menu-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+  .dish-art{height:175px}
+  .dish-body{padding:13px}
+  .dish-desc{min-height:45px}
+  footer{margin:22px 16px 0;padding:20px 0}
+}
+@media(max-width:480px){
+  .top .brand{font-size:15px;gap:6px}
+  .top .brand-icon{width:28px;height:28px;font-size:20px;border-radius:9px}
+  .top .account-link{font-size:10px;padding:7px 8px}
+  .top .basket-link{font-size:10px;padding:8px 9px;gap:4px}
+  .top .basket-link span{min-width:17px;height:17px}
+  .demo-note{font-size:9px;line-height:1.4}
+  .hero{min-height:308px}
+  .hero-copy{width:100%;padding:25px 22px;position:relative;z-index:2}
+  .hero-copy h1{font-size:36px}
+  .hero p{max-width:235px;font-size:10px}
+  .hero-art{position:absolute;right:-42px;bottom:0;top:auto;width:54%;height:75%;min-height:0;opacity:.92;border-radius:18px}
+  .hero-art:after{content:'';position:absolute;inset:0;background:linear-gradient(90deg,#f4e4cbbb,transparent 55%);pointer-events:none}
+  .hero-button{font-size:11px}
+  .review-strip{padding:13px 0;gap:9px}
+  .review-strip a{font-size:10px}
+  .review-strip .eyebrow{font-size:8px}
+  .review-strip p{font-size:10px}
+  .dish-art{height:145px}
+  .dish-desc{font-size:10px;min-height:48px}
+  .dish h3{font-size:12px}
+  dialog#basket{width:100vw;border-radius:18px 18px 0 0;padding:20px 20px 28px}
+  #basket .basket-heading{top:-20px}
+}
+@media(prefers-reduced-motion:reduce){dialog#basket[open]{animation:none}}
