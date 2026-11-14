@@ -92,3 +92,25 @@ Nếu cần rollback code: quay về commit đã ghi, cài requirements tương 
 Phiên bản v3 hiện không có migration tự động cho thay đổi schema tương lai; không rollback schema một cách mù quáng.
 
 Block hết hạn không bảo đảm web vẫn hoạt động. Code nằm trên GitHub; giữ backup DB riêng và tuân thủ lịch VPS.
+
+## 6. Sửa nhận diện IP sau Nginx (11/11/2026)
+
+Service mới dùng `--proxy-headers --forwarded-allow-ips=127.0.0.1`.
+Chỉ Nginx cục bộ được tin; không dùng `*` và không công khai cổng 8016.
+Giữ `proxy_set_header X-Forwarded-For $remote_addr` trong location.
+Sau khi đối chiếu đúng đường dẫn và quyền VPS, cập nhật service đã cài:
+
+```bash
+sudo install -m 0644 deploy/vju-food.service /etc/systemd/system/vju-food-23110216.service
+sudo systemctl daemon-reload
+sudo systemctl restart vju-food-23110216
+```
+
+Kiểm tra từ hai mạng khách khác nhau. Nếu phía trước Nginx là Cloudflare/gateway,
+$remote_addr có thể vẫn là địa chỉ proxy dùng chung. Khi đó cần quản trị viên
+xác nhận dải proxy tin cậy và cấu hình real_ip; không tự tin tất cả header khách gửi.
+Các kiểm thử trong repo xác minh Nginx loopback được tin và IP trực tiếp không
+được giả mạo forwarded header, không chứng minh cấu hình gateway trường đã đúng.
+
+Lệnh backup hiện từ chối VJU_DB không tồn tại, không ghi đè file đích,
+kiểm tra SQLite integrity và đóng kết nối trước khi kết thúc (kể cả Windows).

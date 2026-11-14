@@ -1,0 +1,101 @@
+/* V7.2 – menu card polish; loaded last to avoid touching ordering logic. */
+:root{--menu-card-border:#dccfbe;--menu-card-surface:#fffefb;--menu-price-bg:#fff0e3;--menu-price-border:#f7d3b7;}
+
+/* Stronger visual separation between the cream page and individual meals. */
+#menu-section .menu-grid{
+  gap:21px 18px;
+  align-items:stretch;
+  padding:4px 1px 6px;
+}
+#menu-section .dish{
+  min-width:0;
+  display:flex;
+  flex-direction:column;
+  background:var(--menu-card-surface);
+  border:1.5px solid var(--menu-card-border);
+  border-radius:19px;
+  box-shadow:0 3px 0 #ede5d9,0 8px 22px rgba(55,54,37,.07);
+  overflow:hidden;
+  transition:border-color .2s ease, box-shadow .2s ease, transform .2s ease;
+}
+#menu-section .dish:hover{
+  transform:translateY(-3px);
+  border-color:#e5a777;
+  box-shadow:0 5px 0 #f0e1d1,0 15px 30px rgba(67,45,25,.12);
+}
+#menu-section .dish:focus-within{border-color:#db8150;box-shadow:0 0 0 3px #f8dbc7;}
+#menu-section .dish-art{border-bottom:1px solid #eee2d4;}
+#menu-section .dish-body{
+  display:flex;
+  flex-direction:column;
+  flex:1;
+  padding:15px 16px 14px;
+  background:linear-gradient(180deg,#fffefd,#fffaf5);
+}
+#menu-section .dish h3{font-size:14px;line-height:1.45;letter-spacing:-.02em;margin:0 0 5px;color:#23352c;font-weight:800;}
+#menu-section .dish-desc{flex:1;min-height:35px;margin:0 0 14px;font-size:11px;line-height:1.55;color:#767669;}
+#menu-section .dish-bottom{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:7px;
+  border-top:1px solid #efe8df;
+  padding-top:12px;
+  min-width:0;
+}
+#menu-section .price-tag{
+  min-width:0;
+  max-width:100%;
+  display:inline-flex;
+  gap:6px;
+  align-items:center;
+  justify-content:center;
+  padding:6px 10px;
+  background:var(--menu-price-bg);
+  border:1px solid var(--menu-price-border);
+  border-radius:999px;
+  white-space:nowrap;
+  color:#cb4b17;
+}
+#menu-section .price-tag svg{flex:0 0 14px;width:14px;height:14px;}
+#menu-section .price-tag strong{font-size:13px;line-height:1.2;font-weight:800;color:#c34816;font-variant-numeric:tabular-nums;}
+#menu-section .dish-bottom .add{
+  display:inline-grid;
+  place-items:center;
+  flex:0 0 37px;
+  width:37px;
+  height:37px;
+  min-width:37px;
+  padding:0;
+  border-radius:11px;
+  background:#ee642e;
+  color:white;
+  font-size:24px;
+  font-weight:500;
+  line-height:1;
+  box-shadow:0 2px 5px #b24b1d22;
+}
+#menu-section .dish-bottom .add:hover{background:#cb4c18;box-shadow:0 5px 12px #ba622e33;}
+#menu-section .dish-bottom .add:focus-visible{outline:3px solid #ef9964;outline-offset:2px;}
+#menu-section .dish-label{font-size:10px;background:#fffbf0f2!important;color:#405b47;border:1px solid #ffffffb0;border-radius:8px;padding:4px 8px;}
+#menu-section .fav{border:1px solid #ffffffc7;box-shadow:0 2px 8px #253e3422;}
+
+@media(max-width:1050px){#menu-section .menu-grid{gap:17px 15px}}
+@media(max-width:740px){#menu-section .menu-grid{gap:14px 12px}#menu-section .dish-body{padding:12px}}
+@media(max-width:540px){
+  #menu-section .dish h3{font-size:12px;}
+  #menu-section .dish-desc{font-size:10px;margin-bottom:10px;min-height:42px;}
+  #menu-section .dish-bottom{padding-top:9px;gap:5px;}
+  #menu-section .price-tag{padding:5px 7px;gap:3px;}
+  #menu-section .price-tag svg{width:12px;height:12px;flex-basis:12px;}
+  #menu-section .price-tag strong{font-size:11px;}
+  #menu-section .dish-bottom .add{width:31px;height:31px;min-width:31px;flex-basis:31px;font-size:21px;border-radius:9px;}
+}
+@media(max-width:380px){
+  #menu-section .dish-bottom{flex-wrap:wrap;}
+  #menu-section .dish-bottom .add{margin-left:auto;}
+}
+@media(prefers-reduced-motion:reduce){#menu-section .dish{transition:none;}}
+
+/* Compact footer and secondary information. */
+#menu-section{padding-top:28px}#shop-status{font-size:13px;color:#607466;margin:12px 0 8px}.site-footer{display:flex;align-items:center;justify-content:space-between;gap:24px;margin-top:36px;padding-top:26px;padding-bottom:26px}.site-footer p{margin:8px 0 4px;font-size:13px}.site-footer small{font-size:11px;color:#7b8378}.site-footer nav{display:flex;gap:22px;flex-wrap:wrap}.site-footer nav a{color:#365b49;font-size:13px;text-decoration:none}.site-footer nav a:hover{text-decoration:underline}@media(max-width:600px){.site-footer{align-items:flex-start;flex-direction:column;gap:18px}.site-footer nav{gap:18px}}

@@ -8,7 +8,8 @@
     "emoji": "🍗",
     "bg": "#f6e8d5",
     "tag": "Gợi ý hôm nay",
-    "available": true
+    "available": true,
+    "image": "assets/food-1.png"
   },
   {
     "id": 2,
@@ -19,7 +20,8 @@
     "emoji": "🍜",
     "bg": "#e8eddb",
     "tag": "Đủ đầy",
-    "available": true
+    "available": true,
+    "image": "assets/food-2.png"
   },
   {
     "id": 3,
@@ -30,7 +32,8 @@
     "emoji": "🥖",
     "bg": "#f4e1ca",
     "tag": "Tiết kiệm",
-    "available": true
+    "available": true,
+    "image": "assets/food-3.png"
   },
   {
     "id": 4,
@@ -41,7 +44,8 @@
     "emoji": "🍋",
     "bg": "#edf0d7",
     "tag": "Mát lành",
-    "available": true
+    "available": true,
+    "image": "assets/food-4.png"
   },
   {
     "id": 5,
@@ -52,7 +56,8 @@
     "emoji": "🍛",
     "bg": "#f2ddd4",
     "tag": "Bữa trưa",
-    "available": true
+    "available": true,
+    "image": "assets/food-5.png"
   },
   {
     "id": 6,
@@ -63,7 +68,8 @@
     "emoji": "🥗",
     "bg": "#e2ece2",
     "tag": "Đổi vị",
-    "available": true
+    "available": true,
+    "image": "assets/food-6.png"
   },
   {
     "id": 7,
@@ -74,7 +80,8 @@
     "emoji": "🍓",
     "bg": "#f3dfe5",
     "tag": "Tráng miệng",
-    "available": true
+    "available": true,
+    "image": "assets/food-7.png"
   },
   {
     "id": 8,
@@ -84,7 +91,104 @@
     "category": "Đồ uống",
     "emoji": "☕",
     "bg": "#e9e1d8",
-    "tag": "Tạm hết",
-    "available": false
+    "tag": "Cà phê Việt",
+    "available": true,
+    "image": "assets/food-8.png"
+  },
+  {
+    "id": 9,
+    "name": "Cơm sườn nướng",
+    "desc": "Sườn nướng thơm, cơm trắng, dưa leo và đồ chua.",
+    "price": 35000,
+    "category": "Cơm",
+    "emoji": "🍖",
+    "bg": "#f6e8d5",
+    "tag": "Món mới",
+    "available": true,
+    "image": "assets/food-9.png"
+  },
+  {
+    "id": 10,
+    "name": "Cơm rang dưa bò",
+    "desc": "Cơm rang tơi, thịt bò và dưa cải chua.",
+    "price": 35000,
+    "category": "Cơm",
+    "emoji": "🍚",
+    "bg": "#f6e8d5",
+    "tag": "Món mới",
+    "available": true,
+    "image": "assets/food-10.png"
+  },
+  {
+    "id": 11,
+    "name": "Phở bò",
+    "desc": "Bánh phở mềm, thịt bò và nước dùng nóng.",
+    "price": 35000,
+    "category": "Bún & mì",
+    "emoji": "🍜",
+    "bg": "#f6e8d5",
+    "tag": "Món mới",
+    "available": true,
+    "image": "assets/food-11.png"
+  },
+  {
+    "id": 12,
+    "name": "Bún chả",
+    "desc": "Chả nướng, bún tươi, rau thơm và nước chấm.",
+    "price": 35000,
+    "category": "Bún & mì",
+    "emoji": "🍜",
+    "bg": "#f6e8d5",
+    "tag": "Món mới",
+    "available": true,
+    "image": "assets/food-12.png"
+  },
+  {
+    "id": 13,
+    "name": "Xôi trứng chả",
+    "desc": "Xôi dẻo, trứng rán và chả lụa.",
+    "price": 25000,
+    "category": "Ăn nhẹ",
+    "emoji": "🍳",
+    "bg": "#f6e8d5",
+    "tag": "Món mới",
+    "available": true,
+    "image": "assets/food-13.png"
+  },
+  {
+    "id": 14,
+    "name": "Khoai tây chiên",
+    "desc": "Khoai chiên vàng giòn, kèm tương cà.",
+    "price": 20000,
+    "category": "Ăn nhẹ",
+    "emoji": "🍟",
+    "bg": "#f6e8d5",
+    "tag": "Món mới",
+    "available": true,
+    "image": "assets/food-14.png"
+  },
+  {
+    "id": 15,
+    "name": "Trà đào cam sả",
+    "desc": "Trà đào mát, cam tươi và hương sả.",
+    "price": 18000,
+    "category": "Đồ uống",
+    "emoji": "🍑",
+    "bg": "#f6e8d5",
+    "tag": "Món mới",
+    "available": true,
+    "image": "assets/food-15.png"
+  },
+  {
+    "id": 16,
+    "name": "Sữa đậu nành",
+    "desc": "Sữa đậu nành thơm dịu, uống mát.",
+    "price": 12000,
+    "category": "Đồ uống",
+    "emoji": "🥛",
+    "bg": "#f6e8d5",
+    "tag": "Món mới",
+    "available": true,
+    "image": "assets/food-16.png"
   }
 ]

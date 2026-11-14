@@ -1,19 +1,27 @@
 name: Backend checks
 on:
   push:
-    paths: ['server/**', 'tests/test_server.py', '.github/workflows/backend-ci.yml']
+    paths: ['server/**', 'tests/**', 'deploy/**', 'RUN-WINDOWS.bat', '.github/workflows/backend-ci.yml']
   pull_request:
-    paths: ['server/**', 'tests/test_server.py', '.github/workflows/backend-ci.yml']
+    paths: ['server/**', 'tests/**', 'deploy/**', 'RUN-WINDOWS.bat', '.github/workflows/backend-ci.yml']
 permissions:
   contents: read
 jobs:
   test:
-    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: ubuntu-latest
+            python: '3.12'
+          - os: windows-latest
+            python: '3.14'
+    runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
         with:
-          python-version: '3.12'
+          python-version: ${{ matrix.python }}
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
@@ -21,3 +29,5 @@ jobs:
       - run: python -m unittest discover -s tests -p test_server.py -v
       - run: node --check server/web/app.js
       - run: node --check server/web/admin.js
+      - run: node --check server/web/account.js
+      - run: node --test tests/customer-refresh.test.cjs

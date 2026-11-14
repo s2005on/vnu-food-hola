@@ -1,4 +1,61 @@
-# vnu-food-hola
+# Bản cập nhật V7.3
+
+Đọc [START-V7.3.md](START-V7.3.md) trước khi chạy hoặc nâng cấp để giữ dữ liệu cũ. Bản này gộp luồng Guest và UI V7.2, có 16 món và mật khẩu quản trị từ 6 ký tự.
+
+> **V5 mới nhất:** xem [V5-REVIEW.md](V5-REVIEW.md). Hướng dẫn V4 bên dưới là lịch sử; V5 tách quyền khách/quán, nhập địa điểm và dùng giờ 10:00–22:00.
+
+> **Bản nâng cấp V4:** xem [V4-REVIEW.md](V4-REVIEW.md) về đăng nhập thử, kiểm thử và cập nhật VPS.
+
+# VJU Food Hola
+
+Website đặt đồ ăn cho sinh viên VJU — Lâm Hải Sơn, MSSV 23110216.
+Bản V3 dùng FastAPI + SQLite; giữ giao diện V2. Một quán, thanh toán khi nhận,
+không tích hợp AI. Đây là bản chạy thử với thực đơn mẫu.
+
+## Chạy trên Windows
+
+Cài Python và Git. Trong thư mục repo, chạy `RUN-WINDOWS.bat`.
+Lần đầu tạo tài khoản quản trị `son`, mật khẩu 12–128 ký tự.
+Giữ cửa sổ chạy mở; không mở trực tiếp HTML bằng file://.
+
+- Khách: http://127.0.0.1:8016/
+- Quản trị: http://127.0.0.1:8016/admin.html
+- Chi tiết: [START-HERE.md](START-HERE.md).
+
+## Mã nguồn và dữ liệu
+
+- `server/`: backend và giao diện đang dùng; `demo/`: bản mẫu lịch sử.
+- `tests/`: kiểm thử API và logic cập nhật đơn phía khách.
+- `deploy/`: cấu hình mẫu VPS; phải đối chiếu máy/cổng/đường dẫn trước khi dùng.
+- `server/data/`: SQLite cục bộ, không đưa lên Git. Không xóa khi cập nhật mã.
+- `docs/03-system-design.md`: mô tả đúng thiết kế V3 hiện tại.
+
+## Kiểm thử
+
+```sh
+python -m pip install -r server/requirements-test.txt
+python -m unittest discover -s tests -p test_server.py -v
+node --test tests/customer-refresh.test.cjs
+node --check server/web/app.js
+node --check server/web/admin.js
+```
+
+CI được cấu hình cho Ubuntu/Python 3.12 và Windows/Python 3.14.
+Xem [VERIFICATION.md](VERIFICATION.md) để phân biệt kết quả đã chạy và phần chưa xác minh.
+
+## Git và triển khai
+
+Quy trình mục tiêu: feature/fix → develop → main sau khi kiểm thử đạt.
+Hiện PR #9 chứa V3 và đang nhắm vào main; các PR cũ còn mở.
+Cần review quan hệ phụ thuộc và thống nhất nhánh tích hợp trước khi merge;
+việc tạo bản sửa này không tự merge hay đóng các PR khác.
+
+Hướng dẫn VPS và sao lưu: [deploy/README.md](deploy/README.md).
+Chưa xác nhận V3 chạy trên VPS. CI kiểm thử không đồng nghĩa CD tự triển khai.
+
+## Hồ sơ thực hành trước V3
+
+### Hồ sơ B2
 
 Website đặt đồ ăn cho sinh viên VNU
 
