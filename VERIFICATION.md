@@ -1,58 +1,53 @@
-# Xác minh bản sửa giữa kỳ - 15/11/2026
+# Kết quả kiểm chứng
 
-## Kết quả bổ sung trên SV27 — 15/11/2026 (bản sau PR #14)
+**Ngày kiểm tra:** 15/11/2026  
+**Môi trường:** VPS học phần SV27 · Ubuntu 24.04  
+**Repository:** `s2005on/vnu-food-hola`
 
-Các mục dưới đây dựa trên kết quả Terminal và ảnh trình duyệt được cung cấp trong buổi thực hành, **khác với kết quả chạy cục bộ của PR #10 ở phần lịch sử bên dưới**.
+## Bản triển khai
 
-- **Commit triển khai trên VPS:** `0eba90e451312ddfc5b57dff268322e4ddb8cf7e` (PR #14 đã merge), repo `s2005on/vnu-food-hola`.
-- **Ubuntu SV27:** `vju-food-23110216.service` có trạng thái `active`, `enabled`; backend `127.0.0.1:8016`, API `/api/health` trả `{"ok":true}`.
-- **Python:** Terminal hiển thị `Ran 46 tests`, `OK`. Các kiểm thử này không thay thế kiểm tra thực tế nhiều trình duyệt.
-- **Database:** có backup SQLite trước nâng cấp, `PRAGMA integrity_check = ok`; **chưa thử khôi phục**.
-- **Hosting HTTPS:** ảnh trình duyệt cho thấy `https://sv27.bcse-vju.com/` hiển thị website, thực đơn 16 món, login khách; chưa có kiểm chứng độc lập từ mạng khác hay sau khi block VPS hết hạn.
-- **Luồng đơn thử 65.000đ:** quản trị nhìn thấy đơn, nhật ký hiển thị `created → confirmed → preparing → ready → paid → completed`, giao diện khách đồng bộ trạng thái Hoàn thành và Đã thanh toán. Việc bấm ghi nhận thanh toán là **thao tác thử nghiệp vụ**, không phải bằng chứng đã nhận tiền thật.
-- **Dữ liệu riêng tư:** không đưa số điện thoại, mật khẩu, mã tra cứu hoặc bản sao database vào repo công khai. Ảnh chat chứa thông tin cần che trước khi lưu minh chứng vào `docs/evidence/`.
+- **URL:** [https://sv27.bcse-vju.com/](https://sv27.bcse-vju.com/)
+- **Commit ứng dụng:** `0eba90e451312ddfc5b57dff268322e4ddb8cf7e` (PR #14).
+- **Dịch vụ:** `vju-food-23110216.service` ở trạng thái `active` và `enabled`.
+- **Backend:** Uvicorn lắng nghe trên `127.0.0.1:8016`; `/api/health` trả HTTP 200 và `{"ok":true}`.
+- **Kiểm thử VPS:** Terminal ghi nhận 46 Python tests, kết quả `OK`.
+- **SQLite:** đã tạo bản sao lưu trước nâng cấp; `PRAGMA integrity_check` trả `ok`. Chưa thử khôi phục bản sao.
 
-**Chưa thực hiện / cần bổ sung:** video khách–quán 2–3 phút, tài khoản khách thứ hai và thiết bị khác, kiểm thử trường hợp sai và quyền truy cập trên hosting, xác minh URL public từ mạng khác, thử phục hồi DB, đánh giá thời hạn block, nghiệm thu của thầy. Xem [docs/MIDTERM.md](docs/MIDTERM.md).
+## Luồng giao diện đã quan sát
 
----
+1. Trang khách truy cập được trên SV27 và hiển thị thực đơn 16 món.
+2. Tài khoản khách xem lịch sử với đơn thử tổng cộng 65.000đ ở trạng thái chờ xác nhận.
+3. Quản trị chuyển đơn qua `confirmed → preparing → ready`.
+4. Nhật ký ghi nhận `paid` và `ready → completed`.
+5. Tài khoản khách hiển thị đơn `Hoàn thành` và `Đã thanh toán`.
 
+Ghi nhận `paid` là thao tác thử trên hệ thống, **không chứng minh đã nhận tiền mặt ngoài thực tế**.
 
-Nguồn: main tại b2fce97027dc61bd73a4ce6fab71488ffbe3f738 (PR #10 đã merge).
-Kết quả dưới đây chạy trên bản sửa cục bộ; không thay thế kết quả CI của commit mới hoặc nghiệm thu VPS.
+## Minh chứng
 
-## Đã chạy trong lần sửa này
+Ảnh được lưu tại [docs/evidence/sv27-2026-11-15/](docs/evidence/sv27-2026-11-15/README.md). Các ảnh đã che tên, số điện thoại, mã đơn và tên đăng nhập quản trị.
 
-- Python 3.12.14/Linux; FastAPI 0.163.1, Pydantic 2.14.3, Uvicorn 0.54.0, HTTPX 0.28.1.
-- `python -m unittest discover -s tests -p test_server.py -v`: **40/40 đạt**.
-- `node --test tests/customer-refresh.test.cjs tests/cart-drawer.test.cjs tests/menu-cards.test.cjs`: **11/11 đạt**, Node 24.22.1.
-- `node --check` cho app.js, admin.js, account.js, cart-drawer.js: đạt.
-- `bash -n deploy/install-v4.sh deploy/verify-public.sh`: đạt.
-- Smoke test HTTP cục bộ với database tạm và VJU_TRIAL_ENABLED=0: health, API menu 16 món và trang ứng dụng đạt.
-- `git diff --check`: đạt.
+- [Trang thực đơn](docs/evidence/sv27-2026-11-15/01-sv27-homepage.jpg)
+- [Lịch sử đơn phía khách](docs/evidence/sv27-2026-11-15/02-customer-order-pending.jpg)
+- [Đơn phía quản trị](docs/evidence/sv27-2026-11-15/03-admin-order-ready.jpg)
+- [Nhật ký xử lý](docs/evidence/sv27-2026-11-15/04-order-audit-log.jpg)
+- [Đơn hoàn thành phía khách](docs/evidence/sv27-2026-11-15/05-customer-order-completed.jpg)
+- [Kiểm thử và health trên VPS](docs/evidence/sv27-2026-11-15/06-vps-tests-health.jpg)
+- [Kiểm tra backup SQLite](docs/evidence/sv27-2026-11-15/07-sqlite-backup-integrity.jpg)
 
-Log backend và JavaScript: docs/evidence/midterm-backend.txt và midterm-javascript.txt.
-Kiểm thử backend bao gồm giá, quyền tra cứu, admin/CSRF, chống trùng, chuyển trạng thái,
-thu tiền, sao lưu, phiên demo/khách và nâng cấp database giữ dữ liệu tùy chỉnh.
+## CI và log kiểm thử
 
-## Cập nhật trạng thái GitHub sau merge — 15/11/2026
+- GitHub Actions của [PR #15](https://github.com/s2005on/vnu-food-hola/pull/15) đạt trên Ubuntu/Python 3.12 và Windows/Python 3.14.
+- `docs/evidence/midterm-backend.txt` và `midterm-javascript.txt` lưu kết quả của một lượt kiểm thử cục bộ trước đó (40 Python tests và 11 JavaScript tests); không gộp các số liệu này với lượt 46 tests trên VPS.
+- CI xanh không thay thế kiểm tra trình duyệt hoặc xác minh VPS.
 
-- [PR #11](https://github.com/s2005on/vnu-food-hola/pull/11) đã merge vào `main` (commit `d3b1f0a`).
-- CI trên HEAD của PR #11 đã đạt ở cả Ubuntu/Python 3.12 và Windows/Python 3.14. Đây là kết quả CI, **không phải** bằng chứng deploy VPS hay kiểm tra giao diện Windows tương tác.
-- Các phát biểu “chưa push/chưa CI” ở những đoạn bên dưới ghi lại tình trạng **khi soạn bản sửa ban đầu**, không phản ánh trạng thái GitHub sau merge.
+## Chưa xác minh
 
-## Thay đổi CI
+- Truy cập độc lập từ mạng ngoài và khả năng hoạt động sau khi hết block SV27.
+- Kiểm thử thủ công bằng tài khoản khách thứ hai và trên thiết bị/trình duyệt thứ hai.
+- Các trường hợp nhập sai, món hết, giờ không hợp lệ và phân quyền API trực tiếp trên hosting.
+- Khôi phục SQLite từ bản backup.
+- Giao diện trên điện thoại và video demo liền mạch.
+- Nghiệm thu cuối cùng của giảng viên.
 
-CI trước chỉ chạy customer-refresh.test.cjs. Bản sửa chạy thêm cart-drawer.test.cjs,
-menu-cards.test.cjs và kiểm tra Bash/cú pháp cart-drawer.js; cho phép chạy thủ công.
-Chưa đẩy bản sửa nên chưa có lượt CI mới. CI xanh trong ảnh trước thuộc bản V7.3 cũ.
-
-## Chưa xác minh hoặc chưa thực hiện
-
-- Windows và trình duyệt tương tác trong lần sửa này; không có kết quả QA trực quan mới.
-- Chưa áp dụng installer/systemd/Nginx trên VPS thật.
-- URL VPS công khai trả 403 từ môi trường kiểm tra; chưa xác định nguyên nhân hay kết luận website ngừng hoạt động với mọi người.
-- Chưa quay demo khách-quán trên HTTPS, điện thoại hoặc thử với quán thật.
-- Chưa merge/đóng PR #2-#8 và chưa push bản sửa giữa kỳ.
-
-Thực hiện bảng kiểm docs/MIDTERM.md, ghi ngày/commit/bằng chứng thực tế trước khi đánh dấu hoàn tất.
-Mã và tài liệu có AI hỗ trợ; người thực hiện cần hiểu và tự trình bày các luồng chính.
+VPS được cấp theo block; không cam kết uptime 24/7. Không đưa database, backup, mật khẩu hoặc mã tra cứu bí mật vào repository.

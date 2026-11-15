@@ -1,37 +1,28 @@
-# Lịch sử thay đổi — VNU Food Hola
+# Changelog
 
-Các mục dưới đây tách biệt **Git tag phát hành** và **mốc phát triển nội bộ**. Quy tắc chi tiết: [docs/VERSIONING.md](docs/VERSIONING.md).
+Các mốc phát triển nội bộ và Git tag phát hành được ghi riêng. Xem [quy ước phiên bản](docs/VERSIONING.md).
 
-## Chưa phát hành (Unreleased) — chuẩn bị v0.2.0
+## Chưa phát hành — dự kiến v0.2.0
 
-- [PR #14](https://github.com/s2005on/vnu-food-hola/pull/14): bổ sung tài khoản khách bằng họ tên/số điện thoại/mật khẩu, phiên đăng nhập và lịch sử đơn theo tài khoản; giữ luồng khách không đăng nhập, demo và quyền quản trị riêng. Đơn cũ có thể liên kết bằng mã tra cứu bí mật.
-- Đây là thay đổi mã nguồn đang chuẩn bị, **không xác nhận đã triển khai SV27**; chưa có OTP/SMS, chức năng đặt lại mật khẩu hoặc nghiệm thu trên hosting.
+- [PR #14](https://github.com/s2005on/vnu-food-hola/pull/14): thêm đăng ký/đăng nhập khách hàng và lịch sử đơn theo tài khoản; giữ luồng khách không đăng nhập và quyền quản trị riêng.
+- **Triển khai thử trên SV27 (15/11/2026):** commit ứng dụng `0eba90e`; kiểm tra giao diện khách, quản trị, nhật ký trạng thái đơn và trạng thái hoàn thành.
+- **Minh chứng:** ảnh trình duyệt và Terminal đã được che thông tin riêng tư tại [docs/evidence/sv27-2026-11-15/](docs/evidence/sv27-2026-11-15/).
+- [PR #15](https://github.com/s2005on/vnu-food-hola/pull/15): chuẩn hóa hồ sơ giữa kỳ, kết quả kiểm chứng và hướng dẫn triển khai; đã merge tại commit `43ea617`.
+- [PR #16](https://github.com/s2005on/vnu-food-hola/pull/16): chuẩn hóa hồ sơ bàn giao, bổ sung báo cáo tổng kết và 7 ảnh minh chứng SV27; loại bỏ hướng dẫn/script xuất bản giữa kỳ lỗi thời.
+- **Chưa có tag `v0.2.0`.** Còn thiếu một số kiểm thử thủ công, thử khôi phục backup và nghiệm thu cuối cùng.
 
-- [PR #11](https://github.com/s2005on/vnu-food-hola/pull/11) đã merge ngày 15/11/2026, commit `d3b1f0a`: cập nhật tài liệu V7.3, bảng kiểm nghiệm thu, hướng dẫn triển khai, CI và quy ước phiên bản.
-- Bổ sung mục lục `docs/`, tách minh chứng B2 khỏi README, hiệu chỉnh định dạng Markdown.
-- CI PR #11: Ubuntu/Python 3.12 và Windows/Python 3.14 đều đạt, chưa thay thế kiểm tra tương tác hoặc VPS công khai.
-- [Bảng kiểm dự kiến v0.2.0](docs/RELEASE-v0.2.0.md) ghi rõ những điều còn thiếu.
-- **Chưa có tag mới** và chưa xác nhận bản MVP được triển khai công khai trên VPS. Không coi kết quả CI là bằng chứng hosting.
+## MVP giữa kỳ — 14/11/2026
 
-## Đã tích hợp vào main nhưng chưa gắn tag phát hành mới
+- [PR #10](https://github.com/s2005on/vnu-food-hola/pull/10): giao diện và luồng đặt món khách/quán, thực đơn 16 món, quản lý đơn và chế độ demo.
+- [PR #9](https://github.com/s2005on/vnu-food-hola/pull/9): backend FastAPI, SQLite và quản trị đơn.
+- V7.3/V3 là tên mốc phát triển, không phải Git tag.
 
-### 14/11/2026 — MVP giữa kỳ (nhãn nội bộ V7.3)
+## v0.1.0 — 31/10/2026
 
-- [PR #10](https://github.com/s2005on/vnu-food-hola/pull/10) đã merge: giao diện và luồng đặt món cho khách/quán, thực đơn 16 món, quản lý đơn và chế độ demo.
-- [PR #9](https://github.com/s2005on/vnu-food-hola/pull/9) đã merge: backend FastAPI, SQLite và quản trị đơn (nhãn lịch sử V3).
-- Đây là các mốc tích hợp mã nguồn, **không phải** tag `v7.3.0`, `v0.7.3` hay `v0.2.0`.
-
-## v0.1.0 — 31/10/2026 (Git tag hiện có)
-
-- Mốc Sprint 1 với tài liệu dự án tích hợp và demo tĩnh.
-- Tại commit được gắn tag, backend và database đặt món **chưa được triển khai**.
+- Mốc Sprint 1 với tài liệu dự án và demo tĩnh.
+- Tại commit gắn tag này, backend đặt món chưa được triển khai.
 - [Xem tag v0.1.0](https://github.com/s2005on/vnu-food-hola/tree/v0.1.0).
 
-## Lịch sử học phần trước đó
+## Hồ sơ học phần
 
-- **B2 (20/10/2026):** quy trình Git, pre-mortem và minh chứng chạy thử tĩnh trên VPS nội bộ — xem [docs/B2-REPORT.md](docs/B2-REPORT.md).
-- **B3–B7:** tài liệu yêu cầu, kế hoạch, Scrum, rủi ro, chất lượng và quản lý cấu hình trong `docs/`. Các tên B2–B7 là mã bài thực hành, không biểu thị thứ tự release.
-
-## Dự kiến lần phát hành tiếp theo
-
-`v0.2.0` là **đề xuất**, chưa có tag. PR #11 đã merge và CI đạt; còn cần xác minh MVP tương tác, triển khai công khai và ghi lại tình trạng thực tế. Chưa tạo tag, chưa coi phần chưa xác minh là đã hoàn thành.
+Các báo cáo B2–B7 được giữ trong `docs/` để lưu lịch sử học phần; chúng không đại diện cho trạng thái phát hành hiện tại.

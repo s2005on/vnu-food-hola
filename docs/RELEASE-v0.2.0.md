@@ -20,11 +20,11 @@ Không đổi tên V7.3 thành `v0.7.3` hay `v7.3.0`. Tag `v0.1.0` hiện có ch
 |---|---|---|---|
 | R01 | PR #11 đã merge, ghi SHA để truy xuất | **Đạt** | PR #11, commit `d3b1f0a` |
 | R02 | CI Ubuntu/Python 3.12 + Windows/Python 3.14 | **Đạt trên HEAD PR #11** | GitHub Actions của PR, link run |
-| R03 | Demo trình duyệt khách → quản trị → khách cập nhật | **Đạt theo ảnh trình duyệt:** hoàn thành luồng đơn, ghi nhận thanh toán thử; còn thiếu video liền mạch | Ảnh 15/11, yêu cầu che dữ liệu trước khi đưa lên repo |
+| R03 | Demo trình duyệt khách → quản trị → khách cập nhật | **Đạt theo ảnh đã che dữ liệu:** đơn đi đến Hoàn thành và khách nhìn thấy Đã thanh toán; còn thiếu video liền mạch | [Bộ ảnh SV27](evidence/sv27-2026-11-15/README.md) |
 | R04 | Đặt lại trang/khởi động lại, đơn SQLite vẫn còn | **Chưa xác minh trên VPS** | Lệnh & ảnh/biên bản, tránh lộ dữ liệu |
 | R05 | Thử dữ liệu không hợp lệ, hết món, giờ quá hạn, quyền quản trị | **Chưa xác minh thủ công trên hosting** | Kết quả checklist [MIDTERM.md](MIDTERM.md) |
-| R06 | HTTPS, API health/menu và trang/ảnh/CSS trên URL công khai | **Một phần:** HTTPS trang 16 món trên Chrome có ảnh; health HTTP 200 được kiểm tra trong VPS, chưa độc lập xác minh HTTPS API từ mạng ngoài | URL `https://sv27.bcse-vju.com/`, commit `0eba90e` |
-| R07 | Sao lưu và kiểm tra khôi phục dữ liệu thử | **Một phần:** backup SQLite `integrity_check=ok`, chưa kiểm tra khôi phục | Terminal backup ngày 15/11 |
+| R06 | HTTPS, API health/menu và trang/ảnh/CSS trên URL công khai | **Một phần:** trang HTTPS 16 món và health HTTP 200 đã được quan sát; chưa kiểm tra độc lập từ mạng ngoài | [Trang chủ](evidence/sv27-2026-11-15/01-sv27-homepage.jpg), [Terminal VPS](evidence/sv27-2026-11-15/06-vps-tests-health.jpg), commit `0eba90e` |
+| R07 | Sao lưu và kiểm tra khôi phục dữ liệu thử | **Một phần:** backup SQLite có `integrity_check=ok`; chưa thử khôi phục | [Kết quả kiểm tra backup](evidence/sv27-2026-11-15/07-sqlite-backup-integrity.jpg) |
 | R08 | Tài liệu/CHANGELOG nhất quán và kiểm tra thay đổi cuối | **Đang chuẩn bị** | Diff và link PR của phần chuẩn bị |
 | R09 | Gắn annotated tag `v0.2.0` đúng commit đã xác minh | **Chưa thực hiện** | Link tag + commit + ghi chú release |
 

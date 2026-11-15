@@ -12,7 +12,7 @@ Không lưu trong repo: mật khẩu, token, file `.env` có bí mật, SQLite c
 
 ## 2. Vai trò và kiểm soát thay đổi
 
-Dự án do một sinh viên thực hiện; tự rà soát/AI hỗ trợ **không được ghi thành review độc lập**. Giảng viên đánh giá qua học phần; một PR được tạo không đồng nghĩa đã được duyệt.
+Dự án do một sinh viên thực hiện; tự rà soát không được ghi thành review độc lập. Giảng viên đánh giá qua học phần; một PR được tạo không đồng nghĩa đã được duyệt.
 
 Quy trình: tạo Issue/đề xuất thay đổi → chọn nhánh phù hợp → triển khai → kiểm thử phần liên quan → mở PR và rà soát diff/CI → merge có kiểm soát → cập nhật tài liệu/tag (nếu thực sự phát hành).
 
@@ -25,7 +25,7 @@ Quy trình: tạo Issue/đề xuất thay đổi → chọn nhánh phù hợp �
 |---|---|---|
 | `v0.1.0` | Đã có annotated Git tag, 31/10/2026 | Sprint 1: tài liệu và demo tĩnh; chưa có backend/database tại commit tag |
 | V2, V3, V4, V5, V7.2, V7.3 | Tên mốc nội bộ lịch sử | Không phải tag phát hành theo SemVer |
-| MVP giữa kỳ / V7.3 | Đã tích hợp PR #10 vào main, 14/11/2026 | Backend, giao diện, 16 món; chưa xác nhận hosting công khai |
+| MVP giữa kỳ / V7.3 | Đã tích hợp PR #10 và tài khoản khách qua PR #14 | Đã kiểm tra trên SV27 ngày 15/11/2026; VPS theo block |
 | `v0.2.0` | **Dự kiến, chưa tạo tag** | Mốc phát hành tiếp theo khi đã review, kiểm thử và chốt commit |
 | `v1.0.0` | Mục tiêu dài hạn, chưa phát hành | Chỉ cân nhắc khi đạt tiêu chí nghiệm thu sản phẩm |
 

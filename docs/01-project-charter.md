@@ -89,7 +89,7 @@ Chờ xác nhận → Đã xác nhận → Đang chuẩn bị → Sẵn sàng nh
 
 * Dự án do một người thực hiện, đang học nền tảng web.
 * Thời gian hoàn thành theo lịch học phần.
-* Cần kiểm tra và hiểu code do công cụ AI hỗ trợ tạo.
+* Người thực hiện phải hiểu, kiểm tra và giải thích được mã nguồn trước khi nghiệm thu.
 * Việc nhận và giao món phụ thuộc thỏa thuận với quán.
 * Thực đơn, giá và tình trạng còn/hết món cần được cập nhật kịp thời.
 * Cần thống nhất cách xử lý đơn hủy và khách không đến nhận.
