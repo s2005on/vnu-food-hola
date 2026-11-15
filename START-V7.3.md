@@ -1,4 +1,6 @@
-# VJU Food Hola V7.3
+# Ghi chú nâng cấp MVP giữa kỳ — mốc nội bộ V7.3
+
+`V7.3` là tên mốc phát triển trước khi chuẩn hóa phiên bản, **không phải** một Git release tag. Giữ tên file này để tương thích với đường dẫn cũ. Xem [lịch sử phát hành và quy ước phiên bản](docs/VERSIONING.md).
 
 ## Chạy
 Dừng bản cũ bằng Ctrl+C. Giải nén toàn bộ ZIP, chạy RUN-WINDOWS.bat, mở http://127.0.0.1:8016/.
