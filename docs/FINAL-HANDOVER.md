@@ -11,7 +11,7 @@
 
 VNU Food Hola là website đặt món thử nghiệm dành cho sinh viên Trường Đại học Việt Nhật (VJU). Phiên bản MVP phục vụ một quán với thực đơn và dữ liệu mẫu, hỗ trợ khách xem món, đặt món, theo dõi đơn; phía quản trị tiếp nhận và cập nhật trạng thái đơn.
 
-**Trạng thái bàn giao:** mã nguồn MVP đã được tích hợp; phiên bản chạy thử đã được kiểm tra trên SV27 ngày 15/11/2026 và có ảnh minh chứng. Đây là kết quả triển khai phục vụ học phần, không phải dịch vụ thương mại. Một số kiểm thử thủ công bổ sung và nghiệm thu cuối cùng của giảng viên chưa được xác nhận.
+**Trạng thái bàn giao:** mã nguồn MVP đã được tích hợp; phiên bản chạy thử đã được kiểm tra trên SV27 ngày 15/11/2026 và có ảnh minh chứng.
 
 ## 2. Chức năng đã xây dựng
 
@@ -79,20 +79,9 @@ Bảy ảnh đã được đưa vào repository tại [docs/evidence/sv27-2026-1
 6. [46 kiểm thử Python, service và API health](evidence/sv27-2026-11-15/06-vps-tests-health.jpg)
 7. [Kiểm tra tính toàn vẹn backup SQLite](evidence/sv27-2026-11-15/07-sqlite-backup-integrity.jpg)
 
-## 6. Giới hạn và công việc chưa xác minh
+## 6. Phạm vi và giới hạn
 
-| Hạng mục | Trạng thái |
-|---|---|
-| Kiểm thử thủ công bằng hai tài khoản khách để xác nhận cách ly lịch sử đơn | Chưa hoàn tất trên hosting |
-| Đăng nhập trên thiết bị/trình duyệt thứ hai | Chưa kiểm thử thủ công |
-| Kiểm tra giao diện trên điện thoại | Chưa thực hiện đầy đủ |
-| Thử khôi phục SQLite từ bản backup | Chưa thực hiện; mới có `integrity_check = ok` |
-| Tải lại/khởi động lại VPS và xác nhận dữ liệu còn nguyên | Chưa có biên bản kiểm thử thủ công |
-| Truy cập độc lập từ mạng ngoài và uptime sau khi hết block VPS | Chưa xác minh |
-| Video demo liên tục từ đặt món đến hoàn thành | Chưa có trong bộ minh chứng |
-| Nghiệm thu cuối cùng của giảng viên | Chưa được xác nhận |
-
-**Giới hạn sản phẩm:** chưa có thanh toán trực tuyến, OTP/SMS, chức năng khôi phục mật khẩu tự động, giao hàng qua shipper hoặc quản lý nhiều quán. Ghi nhận “Đã thanh toán” trong ảnh là thao tác kiểm thử, không phải chứng từ đã nhận tiền thật. VPS SV27 được cấp theo block nên không cam kết hoạt động 24/7. Dự án dùng dữ liệu mẫu; không dùng dữ liệu khách thật khi chưa có quy trình bảo vệ dữ liệu phù hợp.
+Ứng dụng phục vụ học tập và trình diễn cho một quán. Chưa hỗ trợ thanh toán trực tuyến, OTP/SMS, khôi phục mật khẩu, shipper hoặc nhiều quán. Kết quả kiểm thử, vấn đề còn mở và giới hạn triển khai được tập trung tại [VERIFICATION.md](../VERIFICATION.md).
 
 ## 7. Cách chạy và tài liệu liên quan
 
@@ -104,10 +93,6 @@ Bảy ảnh đã được đưa vào repository tại [docs/evidence/sv27-2026-1
 - Mục lục tài liệu: [docs/README.md](README.md).
 - Lịch sử thay đổi: [CHANGELOG.md](../CHANGELOG.md).
 
-## 8. Minh bạch và trách nhiệm thực hiện
+## 8. Công cụ hỗ trợ
 
-Một số công cụ AI được sử dụng để hỗ trợ phát triển và biên soạn tài liệu. Người thực hiện chịu trách nhiệm rà soát, kiểm thử, hiểu và giải thích phần mã nguồn cũng như các quyết định thiết kế của dự án. Dự án được thực hiện theo hình thức cá nhân; không ghi nhận review độc lập hoặc phê duyệt của giảng viên khi chưa có xác nhận thực tế.
-
----
-
-**Kết luận:** VNU Food Hola đã có phiên bản MVP, mã nguồn, tài liệu kỹ thuật, kết quả kiểm thử và bộ ảnh ghi nhận triển khai SV27 để giảng viên xem xét. Các giới hạn và phần chưa xác minh được công khai trong hồ sơ này; báo cáo không tự thay thế biên bản nghiệm thu của giảng viên.
+Công cụ AI được sử dụng để hỗ trợ phát triển và biên soạn tài liệu. Người thực hiện phụ trách kiểm thử và các quyết định thiết kế.

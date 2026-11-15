@@ -10,9 +10,10 @@
 
 ## Phiên bản và lịch sử
 
-- [Quy ước phiên bản, timeline B2–B7/V2–V7.3](VERSIONING.md)
+- [Quy ước phiên bản](VERSIONING.md)
 - [Changelog các bản phát hành và mốc tích hợp](../CHANGELOG.md)
-- [Kế hoạch kiểm chứng trước release v0.2.0](RELEASE-v0.2.0.md) — dự kiến, chưa tạo tag
+- [Academic MVP v0.2.0](RELEASE-v0.2.0.md)
+- [Ghi chú v0.2.1](RELEASE-v0.2.1.md)
 
 ## Sản phẩm và thiết kế
 
@@ -54,4 +55,4 @@
 
 Các báo cáo B2–B7 được giữ trong `docs/` để lưu lịch sử học phần; chúng không đại diện cho trạng thái phát hành hiện tại.
 
-Ảnh và log minh chứng nằm tại [`docs/evidence/`](evidence/). Không dùng minh chứng từ bản tĩnh B2/B4 để kết luận bản MVP đã được triển khai.
+Ảnh và log minh chứng nằm tại [`docs/evidence/`](evidence/).

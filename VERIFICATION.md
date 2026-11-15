@@ -4,7 +4,22 @@
 **Môi trường:** VPS học phần SV27 · Ubuntu 24.04  
 **Repository:** `s2005on/vnu-food-hola`
 
-## Bản triển khai
+## Rà soát mã nguồn — 16/11/2026
+
+Phạm vi: backend/API, quản lý dữ liệu và backup, giao diện khách/quản trị, kiểm thử, cấu hình triển khai và tài liệu phiên bản.
+
+- 46 kiểm thử Python và 15 kiểm thử JavaScript đạt.
+- Bản sửa thanh điều hướng giữ nguyên API và schema; kiểm tra cú pháp JavaScript và Bash đạt.
+- `v0.2.0` đã phát hành tại `f0359f6`; các tài liệu còn ghi “chưa tạo tag” được cập nhật.
+- Kiểm tra trực quan bản sửa header chưa hoàn tất do Chromium không khởi động được trong môi trường kiểm thử.
+
+### Lỗi còn mở: trạng thái tài khoản giữa các tab
+
+Tái hiện bằng TestClient: đăng ký tài khoản → đăng xuất → gửi yêu cầu đặt món với dữ liệu còn giữ ở tab cũ → API trả 201 → đăng nhập lại → lịch sử tài khoản không có đơn đó. Đơn được tạo dưới dạng khách vãng lai vì backend dựa vào cookie hiện tại; frontend chưa ràng buộc danh tính đã dùng khi mở checkout.
+
+Hướng xử lý: xác thực lại danh tính phiên khi gửi đơn và từ chối khi phiên thay đổi. Lỗi này chưa được sửa trong bản cập nhật giao diện. Trong lúc chờ sửa, tải lại trang đặt món sau khi đăng nhập/đăng xuất ở tab khác.
+
+## Bản triển khai đã ghi nhận — 15/11/2026
 
 - **URL:** [https://sv27.bcse-vju.com/](https://sv27.bcse-vju.com/)
 - **Commit ứng dụng:** `0eba90e451312ddfc5b57dff268322e4ddb8cf7e` (PR #14).
