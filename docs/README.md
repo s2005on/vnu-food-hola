@@ -6,6 +6,7 @@
 
 - [Quy ước phiên bản, timeline B2–B7/V2–V7.3](VERSIONING.md)
 - [Changelog các bản phát hành và mốc tích hợp](../CHANGELOG.md)
+- [Kế hoạch kiểm chứng trước release v0.2.0](RELEASE-v0.2.0.md) — dự kiến, chưa tạo tag
 
 ## Sản phẩm và thiết kế
 
