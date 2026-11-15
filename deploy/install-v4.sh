@@ -3,6 +3,7 @@
 set -euo pipefail
 cd "$(dirname "$0")/.."
 SOURCE="$PWD"
+command -v curl >/dev/null || { echo "curl is required."; exit 1; }
 SERVICE=vju-food-23110216.service
 DB_PATH=/home/student/vju-food-data/food.sqlite3
 [[ "$(id -un)" == student ]] || { echo 'Run as student, not sudo/root.'; exit 1; }
@@ -52,9 +53,9 @@ sudo systemctl daemon-reload
 if ! sudo systemctl restart "$SERVICE"; then rollback; exit 1; fi
 OK=0
 for attempt in {1..15}; do
-  if curl -fsS http://127.0.0.1:8016/api/session | "$RELEASE/.venv-vju/bin/python" -c 'import sys,json; x=json.load(sys.stdin); assert x["trial_enabled"] and not x["trial"]' 2>/dev/null; then OK=1; break; fi
+  if curl -fsS http://127.0.0.1:8016/api/health | "$RELEASE/.venv-vju/bin/python" -c 'import sys,json; x=json.load(sys.stdin); assert x.get("ok") is True' 2>/dev/null; then OK=1; break; fi
   sleep 1
 done
 if [[ "$OK" != 1 ]]; then rollback; exit 1; fi
-printf '\nV5 backend is running. Release: %s\nBackup: %s\n' "$RELEASE" "$BACKUP_DIR/food.sqlite3"
-printf 'Open HTTPS /b1-23110216/v3/login.html and complete the trial flow. Nginx was not changed.\n'
+printf '\nV7.3 backend health check passed. Release: %s\nBackup: %s\n' "$RELEASE" "$BACKUP_DIR/food.sqlite3"
+printf 'Open HTTPS /b1-23110216/v3/login.html and verify the guest-to-admin order flow on the public URL. Nginx was not changed.\n'

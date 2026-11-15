@@ -1,0 +1,47 @@
+/tmp/vju-midterm-venv/lib/python3.12/site-packages/fastapi/testclient.py:1: StarletteDeprecationWarning: Using `httpx` with `starlette.testclient` is deprecated; install `httpx2` instead.
+  from starlette.testclient import TestClient as TestClient  # noqa
+test_admin_auth_and_csrf (test_server.ServerTests.test_admin_auth_and_csrf) ... ok
+test_backup_command_preserves_data_and_refuses_overwrite (test_server.ServerTests.test_backup_command_preserves_data_and_refuses_overwrite) ... ok
+test_backup_missing_database_does_not_seed (test_server.ServerTests.test_backup_missing_database_does_not_seed) ... ok
+test_backup_restore_preserves_order (test_server.ServerTests.test_backup_restore_preserves_order) ... ok
+test_cancel_reason_and_terminal_state (test_server.ServerTests.test_cancel_reason_and_terminal_state) ... ok
+test_cash_statistics_use_payment_date_and_idempotent_audit (test_server.ServerTests.test_cash_statistics_use_payment_date_and_idempotent_audit) ... ok
+test_closed_shop (test_server.ServerTests.test_closed_shop) ... ok
+test_complete_flow_and_payment_gate (test_server.ServerTests.test_complete_flow_and_payment_gate) ... ok
+test_concurrent_retries_single_order (test_server.ServerTests.test_concurrent_retries_single_order) ... ok
+test_customer_trial_has_no_admin_privileges (test_server.ServerTests.test_customer_trial_has_no_admin_privileges) ... ok
+test_demo_login_and_all_sample_dishes_available (test_server.ServerTests.test_demo_login_and_all_sample_dishes_available) ... ok
+test_expired_demo_menu_request_directly_recovers (test_server.ServerTests.test_expired_demo_menu_request_directly_recovers) ... ok
+test_expired_demo_menu_still_visible_but_no_unsafe_fallback (test_server.ServerTests.test_expired_demo_menu_still_visible_but_no_unsafe_fallback) ... ok
+test_expired_menu_read_does_not_enable_main_checkout (test_server.ServerTests.test_expired_menu_read_does_not_enable_main_checkout) ... ok
+test_expired_trial_cannot_create_main_order (test_server.ServerTests.test_expired_trial_cannot_create_main_order) ... ok
+test_extra_menu_migration_preserves_custom_ids_and_runs_once (test_server.ServerTests.test_extra_menu_migration_preserves_custom_ids_and_runs_once) ... ok
+test_guest_and_shop_separate_browsers_persist_and_track (test_server.ServerTests.test_guest_and_shop_separate_browsers_persist_and_track) ... ok
+test_guest_tab_cannot_submit_into_another_trial (test_server.ServerTests.test_guest_tab_cannot_submit_into_another_trial) ... ok
+test_key_cannot_be_reused_with_changed_payload (test_server.ServerTests.test_key_cannot_be_reused_with_changed_payload) ... ok
+test_login_rate_limit (test_server.ServerTests.test_login_rate_limit) ... ok
+test_new_dishes_images_and_order_prices (test_server.ServerTests.test_new_dishes_images_and_order_prices) ... ok
+test_no_public_database_and_session_logout (test_server.ServerTests.test_no_public_database_and_session_logout) ... ok
+test_pickup_required_and_stored (test_server.ServerTests.test_pickup_required_and_stored) ... ok
+test_price_and_lookup_secret (test_server.ServerTests.test_price_and_lookup_secret) ... ok
+test_price_snapshot_and_hide_dish (test_server.ServerTests.test_price_snapshot_and_hide_dish) ... ok
+test_proxy_rate_limits_and_spoofed_headers (test_server.ServerTests.test_proxy_rate_limits_and_spoofed_headers) ... ok
+test_public_trial_password_never_opens_real_admin (test_server.ServerTests.test_public_trial_password_never_opens_real_admin) ... ok
+test_reject_changed_price (test_server.ServerTests.test_reject_changed_price) ... ok
+test_reject_quantity_phone_extra_fields (test_server.ServerTests.test_reject_quantity_phone_extra_fields) ... ok
+test_reject_soldout_and_duplicate_items (test_server.ServerTests.test_reject_soldout_and_duplicate_items) ... ok
+test_replay_returns_same_secret_after_restart (test_server.ServerTests.test_replay_returns_same_secret_after_restart) ... ok
+test_seed_reads_utf8_with_legacy_encoding (test_server.ServerTests.test_seed_reads_utf8_with_legacy_encoding) ... ok
+test_settings_and_creation (test_server.ServerTests.test_settings_and_creation) ... ok
+test_slots_time_boundaries (test_server.ServerTests.test_slots_time_boundaries) ... ok
+test_student_hours_and_every_quarter_hour (test_server.ServerTests.test_student_hours_and_every_quarter_hour) ... ok
+test_trial_full_order_flow_and_audit (test_server.ServerTests.test_trial_full_order_flow_and_audit) ... ok
+test_trial_has_future_slots_even_at_night_but_respects_pause (test_server.ServerTests.test_trial_has_future_slots_even_at_night_but_respects_pause) ... ok
+test_trial_isolated_from_main_and_other_visitors (test_server.ServerTests.test_trial_isolated_from_main_and_other_visitors) ... ok
+test_trial_logout_revokes_token_and_recovers_guest (test_server.ServerTests.test_trial_logout_revokes_token_and_recovers_guest) ... ok
+test_upgrade_existing_database_preserves_rows (test_server.ServerTests.test_upgrade_existing_database_preserves_rows) ... ok
+
+----------------------------------------------------------------------
+Ran 40 tests in 4.646s
+
+OK

@@ -5,14 +5,14 @@ Không thực thi nguyên mẫu nếu đang ở VPS khác hoặc đường dẫn
 
 ## 1. Chuẩn bị mã
 
-Đẩy các tệp v3 lên nhánh `feature/backend-v3` của repo trước.
+Dùng mã đã review trên nhánh `main`; ghi lại commit triển khai.
 Trên VPS:
 
 ```bash
 hostname -I
 mkdir -p ~/projects
 cd ~/projects
-git clone --branch feature/backend-v3 https://github.com/s2005on/vnu-food-hola.git vju-food-live
+git clone --branch main https://github.com/s2005on/vnu-food-hola.git vju-food-live
 cd vju-food-live
 python3 -m venv .venv-vju
 .venv-vju/bin/python -m pip install -r server/requirements.txt
@@ -89,7 +89,7 @@ Sao lưu DB, ghi lại `git rev-parse HEAD`. Fetch code, kiểm tra commit và c
 Chỉ khi checkout sạch, cập nhật nhánh bằng `git pull --ff-only`, cài lại requirements nếu thay đổi rồi
 `sudo systemctl restart vju-food-23110216`. Kiểm tra health và luồng đặt/tra cứu.
 Nếu cần rollback code: quay về commit đã ghi, cài requirements tương ứng và restart.
-Phiên bản v3 hiện không có migration tự động cho thay đổi schema tương lai; không rollback schema một cách mù quáng.
+V7.3 có migration dữ liệu mẫu; không rollback schema hoặc ghi đè database một cách mù quáng.
 
 Block hết hạn không bảo đảm web vẫn hoạt động. Code nằm trên GitHub; giữ backup DB riêng và tuân thủ lịch VPS.
 
@@ -114,3 +114,29 @@ Các kiểm thử trong repo xác minh Nginx loopback được tin và IP trực
 
 Lệnh backup hiện từ chối VJU_DB không tồn tại, không ghi đè file đích,
 kiểm tra SQLite integrity và đóng kết nối trước khi kết thúc (kể cả Windows).
+
+## Cập nhật V7.3 từ main khi service đã tồn tại
+
+Không chạy git pull trong thư mục có thay đổi chưa lưu. Tải vào checkout mới riêng:
+
+```bash
+cd ~/projects
+git clone --branch main https://github.com/s2005on/vnu-food-hola.git vju-food-midterm
+cd vju-food-midterm
+git rev-parse HEAD
+bash deploy/install-v4.sh
+bash deploy/verify-public.sh https://sv21.bcse-vju.com/b1-23110216/v3/
+```
+
+Nếu vju-food-midterm đã tồn tại, kiểm tra nó trước; không clone đè.
+Tên install-v4.sh và drop-in 90-v4-release.conf được giữ để tương thích với service cũ,
+nhưng script triển khai mã của checkout hiện tại. Script sao lưu DB và quay lại cấu hình
+service cũ nếu health thất bại. Không tự đổi Nginx; health loopback đạt chưa phải hosting đạt.
+Nếu chưa có service/database, dùng các bước cài mới phía trên.
+
+HTTP 403 công khai: đối chiếu health loopback, Nginx với Host đúng, rồi HTTPS từ mạng ngoài.
+Có thể do quyền gateway hoặc Nginx; không kết luận chỉ từ một yêu cầu 403.
+File backup như shiloskin.save không nên nằm trong sites-enabled nếu nginx.conf include toàn bộ thư mục.
+Đối chiếu cấu hình và chuyển bản backup ra thư mục riêng sau khi xác nhận; không xóa cấu hình nhóm khác.
+
+Lưu commit, thời gian và kết quả vào docs/MIDTERM.md. Không đánh dấu deploy hoàn tất khi chỉ localhost đạt.
