@@ -13,7 +13,10 @@ if(!sessionResponse.ok)throw new Error('Không kiểm tra được phiên. Vui l
 const session=await sessionResponse.json();
 const $=id=>document.getElementById(id),money=n=>new Intl.NumberFormat('vi-VN',{style:'currency',currency:'VND',maximumFractionDigits:0}).format(n);
 const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-const key=session.trial?'vju-food-hola-trial-'+session.trial_id:'vju-food-hola-live-v1';let storageAvailable=true;
+const accountMode=Boolean(session.customer_id&&!session.trial);
+const key=session.trial?'vju-food-hola-trial-'+session.trial_id:accountMode?'vju-food-hola-account-'+session.customer_id+'-v1':'vju-food-hola-live-v1';
+if(accountMode){$('name').value=session.customer_name||'';$('phone').value=session.customer_phone||'';$('phone').readOnly=true;}
+let storageAvailable=true;
 function read(){try{const value=JSON.parse(localStorage.getItem(key)||'{}');return value&&typeof value==='object'?value:{};}catch{storageAvailable=false;return {};}}
 const saved=read();
 let cart={}, favorites=Array.isArray(saved.favorites)?saved.favorites:[],orders=[];
@@ -29,7 +32,7 @@ async function loadMenu(initial=false){
  renderCategories();renderMenu();renderCart();save();
  }catch(e){menuReady=false;$('shop-status').textContent='Không tải được thực đơn. '+e.message;$('submit').disabled=true;}
 }
-function remember(code,token){refs=[{code,token},...refs.filter(x=>x.code!==code)].slice(0,20);save();}
+function remember(code,token){if(accountMode)return;refs=[{code,token},...refs.filter(x=>x.code!==code)].slice(0,20);save();}
 let pending=saved.pending||null;
 let category='Tất cả',query='',sort='default',toastTimer,clearArmed=false,clearTimer;
 function save(){try{localStorage.setItem(key,JSON.stringify({cart,favorites,refs,pending}));}catch{storageAvailable=false;}$('storage-warning').hidden=storageAvailable;}
@@ -43,9 +46,9 @@ const progressSteps=[['confirmed','Xác nhận'],['preparing','Chuẩn bị'],['
 function orderDate(value){const d=new Date(value);return Number.isNaN(d.getTime())?'—':d.toLocaleString('vi-VN',{timeZone:'Asia/Ho_Chi_Minh',day:'2-digit',month:'2-digit',year:'numeric',hour:'2-digit',minute:'2-digit'});}
 function orderPhoto(items){const dish=dishes.find(d=>d.id===items?.[0]?.id);return dish?.image?`<img src="${esc(dish.image)}" alt="${esc(dish.name)}" loading="lazy">`:`<span aria-hidden="true">${esc(dish?.emoji||'🍽️')}</span>`;}
 function renderOrders(){
- $('history-count').textContent=refs.length;
- $('history-clear').hidden=!refs.length;
- $('history-summary').textContent=refs.length?`${refs.length} đơn hàng trên thiết bị này`:'Xem trạng thái đơn hàng của bạn';
+ $('history-count').textContent=accountMode?orders.length:refs.length;
+ $('history-clear').hidden=accountMode||!refs.length;
+ $('history-summary').textContent=accountMode?`${orders.length} đơn hàng trong tài khoản · Xem được trên các thiết bị`:refs.length?`${refs.length} đơn hàng trên thiết bị này`:'Xem trạng thái đơn hàng của bạn';
  if(!orders.length){$('orders').innerHTML='<div class="order-empty"><span aria-hidden="true">🧾</span><h3>Chưa có đơn hàng</h3><p>Đặt món từ thực đơn hoặc tra cứu bằng mã ở bên dưới.</p><a class="secondary" href="#menu-section" id="go-menu">Khám phá thực đơn →</a></div>';return;}
  $('orders').innerHTML=orders.map(o=>{
   const ref=refs.find(x=>x.code===o.code);
@@ -62,7 +65,7 @@ function renderOrders(){
     <div class="order-card-main"><div class="order-thumbnail">${orderPhoto(items)}</div><div class="order-info"><div class="ordered-items">${itemSummary}</div><div class="order-info-line"><span aria-hidden="true">📍</span><span>${esc(o.pickup)}</span></div><div class="order-info-line"><span aria-hidden="true">🕒</span><span>Giờ nhận: ${esc(o.time)}</span></div><div class="order-info-line"><span aria-hidden="true">📅</span><span>Đặt lúc: ${esc(orderDate(o.date))}</span></div></div><div class="order-price"><small>Tổng cộng</small><strong>${money(o.total)}</strong><span class="payment-status ${o.paid?'paid':''}">${o.paid?'✓ Đã thanh toán':'Tiền mặt khi nhận'}</span></div></div>
     ${steps}
     <div class="order-card-footer"><span class="order-support-text">${esc(statusDescriptions[o.status]||'Theo dõi tình trạng đơn bên dưới.')}</span><button type="button" class="order-detail-button" data-details="${esc(o.code)}" aria-expanded="false">Xem chi tiết <span>⌄</span></button></div>
-    <div class="order-extra" id="detail-${esc(o.code)}" hidden><h4>Chi tiết món ăn</h4><ul>${detailItems}</ul>${o.note?`<p><b>Ghi chú:</b> ${esc(o.note)}</p>`:''}${o.cancel_reason?`<p><b>Lý do hủy:</b> ${esc(o.cancel_reason)}</p>`:''}<details class="order-secret"><summary>Mã tra cứu bí mật (giữ riêng)</summary><p>${esc(ref?.token||'Không lưu mã trên thiết bị này')}</p></details><button class="secondary reorder-btn" type="button" data-reorder="${esc(o.code)}">↻ Thêm lại vào giỏ</button></div>
+    <div class="order-extra" id="detail-${esc(o.code)}" hidden><h4>Chi tiết món ăn</h4><ul>${detailItems}</ul>${o.note?`<p><b>Ghi chú:</b> ${esc(o.note)}</p>`:''}${o.cancel_reason?`<p><b>Lý do hủy:</b> ${esc(o.cancel_reason)}</p>`:''}${accountMode?'':`<details class="order-secret"><summary>Mã tra cứu bí mật (giữ riêng)</summary><p>${esc(ref?.token||'Không lưu mã trên thiết bị này')}</p></details>`}<button class="secondary reorder-btn" type="button" data-reorder="${esc(o.code)}">↻ Thêm lại vào giỏ</button></div>
   </article>`;
  }).join('');
 }
@@ -74,6 +77,12 @@ async function refreshOrders(){
  const requested=refs.slice();
  try {
   $('order-message').textContent='Đang cập nhật…';
+  if(accountMode){
+   orders=await api('customer/orders');
+   renderOrders();
+   $('order-message').textContent='Đã đồng bộ đơn từ tài khoản · Tự làm mới mỗi phút';
+   return;
+  }
   const result=await Promise.allSettled(requested.map(x=>api('orders/'+encodeURIComponent(x.code),{headers:{Authorization:'Bearer '+x.token}})));
   // Ignore responses for lookup codes the user has since forgotten/changed.
   if(JSON.stringify(requested)!==JSON.stringify(refs)){refreshAgain=true;return;}
@@ -82,13 +91,15 @@ async function refreshOrders(){
   if(JSON.stringify(updated)!==JSON.stringify(orders)){orders=updated;}renderOrders();
   const failures=result.filter(x=>x.status==='rejected');
   $('order-message').textContent=failures.length?'Giữ thông tin lần trước; một số đơn chưa cập nhật được: '+failures[0].reason.message:refs.length?'Đã cập nhật · Tự làm mới mỗi phút':'Bạn có thể tra cứu đơn bằng mã bên dưới.';
+ } catch(error) {
+  $('order-message').textContent='Chưa cập nhật được đơn từ máy chủ: '+error.message;
  } finally {
   ordersRefreshing=false;
   if(refreshAgain){refreshAgain=false;await refreshOrders();}
  }
 }
 // At most 20 saved orders, once per minute: below the 60/min lookup limit.
-setInterval(()=>{if(!document.hidden&&$('history-dialog').open&&refs.length)refreshOrders();},60000);
+setInterval(()=>{if(!document.hidden&&$('history-dialog').open&&(accountMode||refs.length))refreshOrders();},60000);
 $('menu').addEventListener('click',e=>{const add=e.target.closest('[data-add]'),fav=e.target.closest('[data-fav]');if(add){const id=Number(add.dataset.add);if(cart[id]>=20){toast('Mỗi món tối đa 20 phần trong một đơn.');return;}cart=changeQuantity(cart,id,1);save();renderCart();toast('Đã thêm món vào giỏ');}if(fav){const id=Number(fav.dataset.fav);favorites=favorites.includes(id)?favorites.filter(x=>x!==id):[...favorites,id];save();renderMenu();}});
 $('cart').addEventListener('click',e=>{const qty=e.target.closest('[data-qty]'),remove=e.target.closest('[data-remove]');if(qty)cart=changeQuantity(cart,Number(qty.dataset.qty),Number(qty.dataset.delta));if(remove)delete cart[remove.dataset.remove];if(qty||remove){save();renderCart();}});
 $('categories').addEventListener('click',e=>{const b=e.target.closest('[data-category]');if(b){category=b.dataset.category;renderCategories();renderMenu();}});
@@ -114,7 +125,12 @@ async function sendPending(){
 const retry=document.createElement('button');retry.id='retry-order';retry.type='button';retry.className='secondary';retry.textContent='Kiểm tra lần đặt trước';retry.hidden=!pending;retry.onclick=sendPending;$('order-form').append(retry);
 const reset=document.createElement('button');reset.id='reset-pending';reset.type='button';reset.className='secondary';reset.textContent='Bỏ yêu cầu đang chờ';reset.hidden=!pending;reset.onclick=()=>{if(confirm('Chỉ bỏ khi máy chủ đã từ chối đơn hoặc bạn đã xác nhận đơn chưa được tạo. Nếu mất mạng, hãy kiểm tra lần đặt trước trước.')){pending=null;save();retry.hidden=reset.hidden=true;}};$('order-form').append(reset);
 $('history-open').onclick=()=>{window.VJUCartDrawer?.close();$('history-dialog').showModal();refreshOrders();};
-$('lookup-form').onsubmit=async e=>{e.preventDefault();try{const code=$('lookup-code').value.trim().toUpperCase(),token=$('lookup-token').value.trim();await api('orders/'+encodeURIComponent(code),{headers:{Authorization:'Bearer '+token}});remember(code,token);$('lookup-token').value='';await refreshOrders();}catch(e){$('order-message').textContent=e.message;}};
+$('lookup-form').onsubmit=async e=>{e.preventDefault();try{const code=$('lookup-code').value.trim().toUpperCase(),token=$('lookup-token').value.trim();if(accountMode){
+ await api('customer/orders/claim',{method:'POST',headers:{'X-CSRF-Token':session.customer_csrf},body:JSON.stringify({code,token})});
+}else{
+ await api('orders/'+encodeURIComponent(code),{headers:{Authorization:'Bearer '+token}});
+ remember(code,token);
+}$('lookup-token').value='';await refreshOrders();}catch(e){$('order-message').textContent=e.message;}};
 $('orders').onclick=async e=>{const detail=e.target.closest('[data-details]');if(detail){const box=document.getElementById('detail-'+detail.dataset.details);if(box){box.hidden=!box.hidden;detail.setAttribute('aria-expanded',String(!box.hidden));detail.innerHTML=box.hidden?'Xem chi tiết <span>⌄</span>':'Thu gọn <span>⌃</span>';}return;}const go=e.target.closest('#go-menu');if(go){$('history-dialog').close();return;}const b=e.target.closest('[data-reorder]');if(!b)return;const order=orders.find(x=>x.code===b.dataset.reorder);await loadMenu();if(!menuReady)return;let skipped=false;for(const item of order.items){const d=dishes.find(x=>x.id===item.id&&x.available);if(d)cart=changeQuantity(cart,d.id,item.qty);else skipped=true;}save();renderCart();$('history-dialog').close();window.VJUCartDrawer?.open();toast(skipped?'Đã thêm món còn bán. Một số món không còn khả dụng.':'Đã thêm vào giỏ theo giá hiện tại. Kiểm tra trước khi đặt.');};
 $('reload-menu').onclick=()=>loadMenu();
 $('history-close').onclick=()=>$('history-dialog').close();$('history-dialog').addEventListener('click',e=>{if(e.target===$('history-dialog')){const r=e.target.getBoundingClientRect();if(e.clientX<r.left||e.clientX>r.right||e.clientY<r.top||e.clientY>r.bottom)e.target.close();}});
