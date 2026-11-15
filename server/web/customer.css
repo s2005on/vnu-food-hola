@@ -19,3 +19,6 @@
 .account-demo-section{border-top:1px solid #e4e7de;padding-top:20px}
 .account-warning{color:#ad3a29;background:#fff5ec;padding:12px;border-radius:10px;margin-top:12px}
 @media(max-width:720px){.account-auth{padding:16px;margin:16px 0}}
+
+#customer-logout[hidden]{display:none!important}
+.customer-signout{font:inherit;cursor:pointer;border:1px solid #d4ded5;background:transparent;color:#315744}
