@@ -54,3 +54,7 @@ Không đổi tên V7.3 thành `v0.7.3` hay `v7.3.0`. Tag `v0.1.0` hiện có ch
 5. Đối chiếu bản đang chạy trên VPS với tag; nếu khác, ghi lại rõ ràng, không gán nhầm release cho deployment.
 
 **Chưa thực hiện bước 3–5.** Không dùng tài liệu chuẩn bị này làm bằng chứng ứng dụng đã được phát hành hoặc chạy công khai.
+
+## Kiểm thử bổ sung cho tài khoản khách (nhánh tính năng chưa phát hành)
+
+Trước khi đưa lên VPS công khai: kiểm tra đăng ký/đăng nhập/đăng xuất, số điện thoại trùng, brute-force, cookie Secure, phân quyền khách–quản trị, lịch sử đơn giữa nhiều trình duyệt, thao tác thêm mã đơn cũ và phục hồi từ backup SQLite. **Chưa có xác nhận OTP/SMS hoặc khôi phục mật khẩu.** Không gắn tag v0.2.0 chỉ vì các kiểm thử tự động đạt.
