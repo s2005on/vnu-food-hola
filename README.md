@@ -4,7 +4,7 @@
 
 **Website đặt món thử nghiệm dành cho sinh viên Trường Đại học Việt Nhật (VJU).**
 
-[Demo SV27](https://sv27.bcse-vju.com/) · [Hồ sơ nghiệm thu](docs/MIDTERM.md) · [Kết quả kiểm chứng](VERIFICATION.md)
+[Demo SV27](https://sv27.bcse-vju.com/) · [Báo cáo tổng kết và bàn giao](docs/FINAL-HANDOVER.md) · [Kết quả kiểm chứng](VERIFICATION.md)
 
 > Dự án học phần CSE3045, dùng thực đơn và dữ liệu mẫu cho một quán. Máy chủ SV27 được kiểm tra ngày 15/11/2026; liên kết phụ thuộc thời hạn cấp VPS và gateway của trường, không cam kết hoạt động liên tục.
 
@@ -84,9 +84,10 @@ Cần cài Node.js để chạy kiểm thử JavaScript. CI chạy trên Ubuntu/
 
 ## Tài liệu
 
+- [Báo cáo tổng kết và bàn giao](docs/FINAL-HANDOVER.md)
 - [Mục lục tài liệu](docs/README.md)
 - [Project Charter](docs/01-project-charter.md) · [Yêu cầu hệ thống](docs/02-requirements.md) · [Thiết kế hệ thống](docs/03-system-design.md)
-- [Bàn giao giữa kỳ](docs/MIDTERM.md) · [Kết quả kiểm chứng](VERIFICATION.md)
+- [Hồ sơ giữa kỳ](docs/MIDTERM.md) · [Kết quả kiểm chứng](VERIFICATION.md)
 - [Changelog](CHANGELOG.md) · [Quy ước Git](docs/GIT.md) · [Quy ước phiên bản](docs/VERSIONING.md)
 - [Hướng dẫn triển khai VPS](deploy/README.md) · [Kế hoạch phát hành v0.2.0](docs/RELEASE-v0.2.0.md)
 
