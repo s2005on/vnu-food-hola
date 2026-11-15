@@ -22,3 +22,11 @@
 
 #customer-logout[hidden]{display:none!important}
 .customer-signout{font:inherit;cursor:pointer;border:1px solid #d4ded5;background:transparent;color:#315744}
+
+/* Clip horizontal overflow without creating a scroll container that breaks sticky. */
+body.customer-page{overflow-x:clip}
+.customer-header{position:sticky;top:0;z-index:5;background:var(--cream);box-shadow:0 2px 10px #173c2812}
+html:has(.customer-header){scroll-padding-top:calc(var(--customer-header-height, 76px) + 16px)}
+@media(max-width:760px){
+  html:has(.customer-header){scroll-padding-top:calc(var(--customer-header-height, 210px) + 16px)}
+}
