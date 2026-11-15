@@ -2,6 +2,11 @@
 
 Đây là mục lục tài liệu kỹ thuật, quản lý học phần và minh chứng. Trang giới thiệu và cách chạy nhanh: [README chính](../README.md).
 
+## Phiên bản và lịch sử
+
+- [Quy ước phiên bản, timeline B2–B7/V2–V7.3](VERSIONING.md)
+- [Changelog các bản phát hành và mốc tích hợp](../CHANGELOG.md)
+
 ## Sản phẩm và thiết kế
 
 | Tài liệu | Nội dung |
