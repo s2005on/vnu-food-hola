@@ -17,6 +17,12 @@ Log backend và JavaScript: docs/evidence/midterm-backend.txt và midterm-javasc
 Kiểm thử backend bao gồm giá, quyền tra cứu, admin/CSRF, chống trùng, chuyển trạng thái,
 thu tiền, sao lưu, phiên demo/khách và nâng cấp database giữ dữ liệu tùy chỉnh.
 
+## Cập nhật trạng thái GitHub sau merge — 15/11/2026
+
+- [PR #11](https://github.com/s2005on/vnu-food-hola/pull/11) đã merge vào `main` (commit `d3b1f0a`).
+- CI trên HEAD của PR #11 đã đạt ở cả Ubuntu/Python 3.12 và Windows/Python 3.14. Đây là kết quả CI, **không phải** bằng chứng deploy VPS hay kiểm tra giao diện Windows tương tác.
+- Các phát biểu “chưa push/chưa CI” ở những đoạn bên dưới ghi lại tình trạng **khi soạn bản sửa ban đầu**, không phản ánh trạng thái GitHub sau merge.
+
 ## Thay đổi CI
 
 CI trước chỉ chạy customer-refresh.test.cjs. Bản sửa chạy thêm cart-drawer.test.cjs,

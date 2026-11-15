@@ -7,8 +7,8 @@ Mục tiêu: chứng minh một luồng đặt món hoạt động từ khách �
 | Hạng mục | Trạng thái khi chuẩn bị bản này |
 |---|---|
 | V7.3 vào main | PR #10 đã merge 14/11/2026 |
-| CI bản V7.3 | Ảnh lần chạy trước cho thấy Ubuntu/Windows đạt; lưu link run cụ thể khi nộp |
-| Sửa giữa kỳ | Kiểm thử cục bộ ghi tại VERIFICATION.md; chưa push/CI bản sửa |
+| CI bản V7.3 | PR #11: CI Ubuntu 3.12 và Windows 3.14 đạt; khi nộp cần kèm đường dẫn run/commit chính xác |
+| Sửa giữa kỳ | PR #11 đã merge vào main ngày 15/11/2026, commit `d3b1f0a`; CI Ubuntu 3.12 và Windows 3.14 đạt tại HEAD của PR |
 | PR #2-#8 | Còn mở khi rà soát 15/11; xem PR-REVIEW.md |
 | Hosting V7.3 | Chưa xác minh; yêu cầu kiểm tra URL công khai |
 | Demo khách-quán | Cần quay trên bản hosting bằng hai trình duyệt |
