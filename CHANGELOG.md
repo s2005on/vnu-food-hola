@@ -2,10 +2,12 @@
 
 Các mục dưới đây tách biệt **Git tag phát hành** và **mốc phát triển nội bộ**. Quy tắc chi tiết: [docs/VERSIONING.md](docs/VERSIONING.md).
 
-## Chưa phát hành (Unreleased) — hồ sơ giữa kỳ
+## Chưa phát hành (Unreleased) — chuẩn bị v0.2.0
 
-- [PR #11](https://github.com/s2005on/vnu-food-hola/pull/11) (đang mở tại thời điểm ghi): cập nhật tài liệu V7.3, bảng kiểm nghiệm thu, hướng dẫn triển khai, CI và quy ước phiên bản.
+- [PR #11](https://github.com/s2005on/vnu-food-hola/pull/11) đã merge ngày 15/11/2026, commit `d3b1f0a`: cập nhật tài liệu V7.3, bảng kiểm nghiệm thu, hướng dẫn triển khai, CI và quy ước phiên bản.
 - Bổ sung mục lục `docs/`, tách minh chứng B2 khỏi README, hiệu chỉnh định dạng Markdown.
+- CI PR #11: Ubuntu/Python 3.12 và Windows/Python 3.14 đều đạt, chưa thay thế kiểm tra tương tác hoặc VPS công khai.
+- [Bảng kiểm dự kiến v0.2.0](docs/RELEASE-v0.2.0.md) ghi rõ những điều còn thiếu.
 - **Chưa có tag mới** và chưa xác nhận bản MVP được triển khai công khai trên VPS. Không coi kết quả CI là bằng chứng hosting.
 
 ## Đã tích hợp vào main nhưng chưa gắn tag phát hành mới
@@ -29,4 +31,4 @@ Các mục dưới đây tách biệt **Git tag phát hành** và **mốc phát 
 
 ## Dự kiến lần phát hành tiếp theo
 
-`v0.2.0` là **đề xuất**, chỉ cân nhắc sau khi PR cần thiết đã merge, kiểm thử/CI đạt và ghi lại tình trạng triển khai thực tế. Chưa tạo tag, chưa coi phần chưa xác minh là đã hoàn thành.
+`v0.2.0` là **đề xuất**, chưa có tag. PR #11 đã merge và CI đạt; còn cần xác minh MVP tương tác, triển khai công khai và ghi lại tình trạng thực tế. Chưa tạo tag, chưa coi phần chưa xác minh là đã hoàn thành.
