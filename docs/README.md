@@ -1,19 +1,54 @@
-# SV27 deployment evidence — 15 November 2026
+# Tài liệu dự án VNU Food Hola
 
-Screenshots captured during the SV27 deployment and order-flow verification session.
+Đây là mục lục tài liệu kỹ thuật, quản lý học phần và minh chứng. Trang giới thiệu và cách chạy nhanh: [README chính](../README.md).
 
-| File | Evidence |
+## Phiên bản và lịch sử
+
+- [Quy ước phiên bản, timeline B2–B7/V2–V7.3](VERSIONING.md)
+- [Changelog các bản phát hành và mốc tích hợp](../CHANGELOG.md)
+- [Kế hoạch kiểm chứng trước release v0.2.0](RELEASE-v0.2.0.md) — dự kiến, chưa tạo tag
+
+## Sản phẩm và thiết kế
+
+| Tài liệu | Nội dung |
 |---|---|
-| `01-sv27-homepage.jpg` | Public website, 16-item menu and signed-in customer navigation |
-| `02-customer-order-pending.jpg` | Customer order history with a pending order |
-| `03-admin-order-ready.jpg` | Admin view of the order at “Ready for pickup” |
-| `04-order-audit-log.jpg` | Audit trail: confirmed → preparing → ready → paid → completed |
-| `05-customer-order-completed.jpg` | Customer view showing completed and paid |
-| `06-vps-tests-health.jpg` | VPS terminal: 46 Python tests passed, service active/enabled, health endpoint returned OK |
-| `07-sqlite-backup-integrity.jpg` | SQLite backup integrity check returned `ok` |
+| [01 — Project Charter](01-project-charter.md) | Mục tiêu, phạm vi, tiêu chí nghiệm thu |
+| [02 — Requirements](02-requirements.md) | Yêu cầu và user stories |
+| [03 — System Design](03-system-design.md) | Thiết kế hệ thống, API và dữ liệu |
+| [04 — WBS](04-wbs.md) | Cấu trúc phân rã công việc |
+| [05 — Schedule](05-schedule.md) | Tiến độ và các mốc |
+| [08 — MVP Demo](08-mvp-demo.md) | Minh họa demo tĩnh giai đoạn đầu (không phải V7.3) |
 
-## Privacy and scope
+## Hồ sơ học phần và quản lý dự án
 
-- Customer name, phone number, order identifier and admin login name were redacted before publication.
-- The screenshots are from one test session on 15/11/2026. They do not prove 24/7 availability, an actual cash transaction, a successful restore, independent external-network access, or manual testing on a second device.
-- The SQLite backup file and database contents are not included.
+| Tài liệu | Nội dung |
+|---|---|
+| [B2 — Git, rủi ro và VPS](B2-REPORT.md) | Báo cáo B2, pre-mortem, ảnh minh chứng ngày 20/10/2026 |
+| [06 — Scrum / Team](06-scrum-team.md) | Vai trò và cách làm việc |
+| [07 — Sprint 0 Backlog](07-sprint-0-backlog.md) | Danh sách công việc Sprint 0 |
+| [Git / PR](GIT.md) | Quy tắc nhánh, commit, review và phát hành |
+| [Rủi ro](RISKS.md) | Risk register B5 |
+| [Chất lượng](QUALITY.md) | Kế hoạch bảo đảm chất lượng |
+| [Nhóm và phân công](TEAM.md) | Vai trò, trách nhiệm và giao tiếp |
+| [Báo cáo Sprint 0](SPRINT0-REPORT.md) | Tổng hợp tiến độ ban đầu |
+| [Bên liên quan](STAKEHOLDERS.md) | Xác định stakeholder |
+| [Quản lý cấu hình](CONFIG.md) | Phiên bản, thay đổi và lưu trữ |
+
+## Chạy thử, kiểm thử và bàn giao
+
+| Tài liệu | Nội dung |
+|---|---|
+| [Chạy trên Windows](../START-HERE.md) | Khởi động và kịch bản demo V7.3 |
+| [Nâng cấp V7.3](../START-V7.3.md) | Lưu ý sao lưu và giữ database |
+| [Kết quả kiểm chứng](../VERIFICATION.md) | Kiểm thử đã làm và giới hạn |
+| [Bàn giao giữa kỳ](MIDTERM.md) | Bảng kiểm nghiệm thu, minh chứng cần bổ sung |
+| [Biên bản rà soát PR #2–#8](PR-REVIEW.md) | Đã đóng các PR cũ, lưu kết quả so sánh Git blob SHA và giải thích |
+| [Triển khai VPS](../deploy/README.md) | FastAPI, systemd, Nginx, backup |
+
+## Minh chứng triển khai SV27
+
+- [Bộ ảnh kiểm chứng hosting và luồng đơn ngày 15/11/2026](evidence/sv27-2026-11-15/README.md) — 7 ảnh đã che thông tin cá nhân và dữ liệu nhạy cảm.
+
+Ảnh và log minh chứng nằm tại [`docs/evidence/`](evidence/); không dùng minh chứng từ bản tĩnh B2/B4 để kết luận bản V7.3 đã được triển khai.
+
+**Lưu ý:** các hồ sơ B2–B7 phản ánh từng giai đoạn học phần; với thông tin tính năng và trạng thái hiện tại, ưu tiên README chính, thiết kế được cập nhật và kết quả xác minh có ghi ngày/commit.
