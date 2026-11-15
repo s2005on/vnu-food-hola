@@ -5,7 +5,7 @@
 Dự án học phần **CSE3045** — Lâm Hải Sơn (MSSV: 23110216).  
 **Mã nguồn:** MVP giữa kỳ V7.3 và các tính năng mở rộng (tài khoản khách) · **FastAPI + SQLite + HTML/CSS/JavaScript**. Git tag phát hành gần nhất: `v0.1.0` (demo tĩnh); chưa gắn tag cho MVP.
 
-> Đây là ứng dụng **chạy thử phục vụ học tập**: một quán, thực đơn và giá mẫu. Chưa xác nhận triển khai công khai MVP hoặc vận hành thương mại với quán thật.
+> Đây là ứng dụng **chạy thử phục vụ học tập**: một quán, thực đơn và giá mẫu. Đã có ảnh truy cập phiên demo triển khai trên SV27 qua HTTPS ngày 15/11/2026, **chưa bảo đảm link hoạt động 24/24** sau khi hết block. Không phải dịch vụ đặt món thương mại với quán thật.
 
 ## Chức năng chính
 
@@ -37,7 +37,7 @@ Xem [hướng dẫn chạy và demo](START-HERE.md). **Nếu nâng cấp bản c
 ```bash
 python -m pip install -r server/requirements-test.txt
 python -m unittest discover -s tests -p test_server.py -v
-node --test tests/customer-refresh.test.cjs tests/cart-drawer.test.cjs tests/menu-cards.test.cjs
+node --test tests/customer-refresh.test.cjs tests/cart-drawer.test.cjs tests/menu-cards.test.cjs tests/customer-accounts.test.cjs
 ```
 
 Cần cài Node.js để chạy kiểm thử JavaScript. Xem [kết quả kiểm tra, môi trường và giới hạn xác minh](VERIFICATION.md). CI không đồng nghĩa ứng dụng đã được triển khai thành công lên VPS.
@@ -61,6 +61,6 @@ Cần cài Node.js để chạy kiểm thử JavaScript. Xem [kết quả kiểm
 - [Bảng kiểm bàn giao giữa kỳ](docs/MIDTERM.md) · [Rà soát PR cũ](docs/PR-REVIEW.md)
 - [Hướng dẫn triển khai VPS](deploy/README.md) · [Quy trình Git](docs/GIT.md)
 
-**Trạng thái:** Mốc MVP giữa kỳ (tên nội bộ V7.3) đã được gộp vào `main` tại [PR #10](https://github.com/s2005on/vnu-food-hola/pull/10). Các bổ sung tài liệu/CI đã merge qua [PR #11](https://github.com/s2005on/vnu-food-hola/pull/11) ngày 15/11/2026; **chưa coi là đã triển khai công khai** nếu chưa có kiểm chứng thực tế. URL cục bộ chỉ hoạt động trên máy chạy ứng dụng.
+**Trạng thái:** MVP V7.3 được tích hợp qua [PR #10](https://github.com/s2005on/vnu-food-hola/pull/10); tài khoản khách và lịch sử đơn qua [PR #14](https://github.com/s2005on/vnu-food-hola/pull/14), commit `0eba90e`. Ngày 15/11/2026 đã ghi nhận ảnh truy cập bản này tại [https://sv27.bcse-vju.com/](https://sv27.bcse-vju.com/) và luồng đơn thử đi tới Hoàn thành. Xem [nghiệm thu và phần chưa xác minh](docs/MIDTERM.md). **URL SV27 có thể mất truy cập khi hết block hoặc gateway ngừng hoạt động**; `v0.2.0` chưa được phát hành.
 
 Dự án được thực hiện cá nhân và có AI hỗ trợ. Việc tự kiểm thử/AI hỗ trợ không thay thế review độc lập. Không commit mật khẩu, database chứa dữ liệu khách hoặc mã tra cứu bí mật.
