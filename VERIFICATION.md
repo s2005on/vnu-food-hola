@@ -1,5 +1,22 @@
 # Xác minh bản sửa giữa kỳ - 15/11/2026
 
+## Kết quả bổ sung trên SV27 — 15/11/2026 (bản sau PR #14)
+
+Các mục dưới đây dựa trên kết quả Terminal và ảnh trình duyệt được cung cấp trong buổi thực hành, **khác với kết quả chạy cục bộ của PR #10 ở phần lịch sử bên dưới**.
+
+- **Commit triển khai trên VPS:** `0eba90e451312ddfc5b57dff268322e4ddb8cf7e` (PR #14 đã merge), repo `s2005on/vnu-food-hola`.
+- **Ubuntu SV27:** `vju-food-23110216.service` có trạng thái `active`, `enabled`; backend `127.0.0.1:8016`, API `/api/health` trả `{"ok":true}`.
+- **Python:** Terminal hiển thị `Ran 46 tests`, `OK`. Các kiểm thử này không thay thế kiểm tra thực tế nhiều trình duyệt.
+- **Database:** có backup SQLite trước nâng cấp, `PRAGMA integrity_check = ok`; **chưa thử khôi phục**.
+- **Hosting HTTPS:** ảnh trình duyệt cho thấy `https://sv27.bcse-vju.com/` hiển thị website, thực đơn 16 món, login khách; chưa có kiểm chứng độc lập từ mạng khác hay sau khi block VPS hết hạn.
+- **Luồng đơn thử 65.000đ:** quản trị nhìn thấy đơn, nhật ký hiển thị `created → confirmed → preparing → ready → paid → completed`, giao diện khách đồng bộ trạng thái Hoàn thành và Đã thanh toán. Việc bấm ghi nhận thanh toán là **thao tác thử nghiệp vụ**, không phải bằng chứng đã nhận tiền thật.
+- **Dữ liệu riêng tư:** không đưa số điện thoại, mật khẩu, mã tra cứu hoặc bản sao database vào repo công khai. Ảnh chat chứa thông tin cần che trước khi lưu minh chứng vào `docs/evidence/`.
+
+**Chưa thực hiện / cần bổ sung:** video khách–quán 2–3 phút, tài khoản khách thứ hai và thiết bị khác, kiểm thử trường hợp sai và quyền truy cập trên hosting, xác minh URL public từ mạng khác, thử phục hồi DB, đánh giá thời hạn block, nghiệm thu của thầy. Xem [docs/MIDTERM.md](docs/MIDTERM.md).
+
+---
+
+
 Nguồn: main tại b2fce97027dc61bd73a4ce6fab71488ffbe3f738 (PR #10 đã merge).
 Kết quả dưới đây chạy trên bản sửa cục bộ; không thay thế kết quả CI của commit mới hoặc nghiệm thu VPS.
 
