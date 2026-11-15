@@ -28,7 +28,7 @@ Khi nhắc tới V7.3 trong tài liệu, viết **“MVP giữa kỳ (mốc nộ
 | Thời điểm | Mốc / PR | Cách hiểu đúng |
 |---|---|---|
 | 20/10/2026 | Hồ sơ B2 | Thử dịch vụ tĩnh trên VPS nội bộ, không phải release/hosting MVP |
-| 31/10/2026 | [Tag v0.1.0](https://github.com/s2005on/vnu-food-hola/releases/tag/v0.1.0) | Mốc Sprint 1: tài liệu tích hợp và demo tĩnh; chưa có backend/database ở commit gắn tag |
+| 31/10/2026 | [Tag v0.1.0](https://github.com/s2005on/vnu-food-hola/tree/v0.1.0) | Mốc Sprint 1: tài liệu tích hợp và demo tĩnh; chưa có backend/database ở commit gắn tag |
 | 07/11/2026 | [PR #8](https://github.com/s2005on/vnu-food-hola/pull/8), UI V2 | PR giao diện mẫu lịch sử, còn mở khi đối chiếu; không được coi là release |
 | 14/11/2026 | [PR #9](https://github.com/s2005on/vnu-food-hola/pull/9), backend V3 | Đã merge vào `main`; “V3” là tên giai đoạn backend |
 | 14/11/2026 | [PR #10](https://github.com/s2005on/vnu-food-hola/pull/10), V7.3 | Đã merge vào `main`; MVP giữa kỳ có 16 món, khách/quản trị, SQLite |
