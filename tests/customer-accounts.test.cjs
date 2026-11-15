@@ -76,3 +76,55 @@ test('logged-in customer uses CSRF-protected claim for a guest order',async()=>{
  assert.equal(JSON.parse(request.options.body).token,'secret-token-123456789');
  assert.equal(h.element('lookup-token').value,'');
 });
+
+test('registration form submits name, phone, password and redirects on success',async()=>{
+ const script=fs.readFileSync('server/web/customer-auth.js','utf8');
+ const handlers={};const calls=[];const redirects=[];
+ const submit={disabled:false};
+ const makeForm=(id,fields)=>({
+  id,fields,hidden:false,
+  addEventListener(type,fn){handlers[id+':'+type]=fn;},
+  querySelector(){return submit;}
+ });
+ const login=makeForm('customer-login',{phone:'0900000000',password:'SecurePassword123'});
+ const register=makeForm('customer-register',{
+  name:'Minh Anh',phone:'0900000000',password:'SecurePassword123',confirm:'SecurePassword123'
+ });
+ const tabs=['login','register'].map(tab=>({
+  dataset:{authTab:tab},setAttribute(){},classList:{toggle(){}},
+  addEventListener(type,fn){handlers['tab:'+tab]=fn;}
+ }));
+ const extra=new Map([
+  ['customer-auth-forms',{hidden:false}],['customer-profile',{hidden:true}],
+  ['customer-trial-note',{hidden:true}],['guest-choice',{hidden:false}],
+  ['customer-error',{textContent:''}]
+ ]);
+ const document={
+  querySelectorAll:()=>tabs,
+  getElementById:id=>id==='customer-login'?login:id==='customer-register'?register:extra.get(id)
+ };
+ const context=vm.createContext({
+  document,window:{location:{replace:value=>redirects.push(value)}},
+  FormData:class {constructor(form){this.data=form.fields;}get(key){return this.data[key];}},
+  fetch:async(url,options)=>{
+   calls.push({url,options});
+   if(url==='api/session')return {ok:true,json:async()=>({trial:false,customer_id:null})};
+   if(url==='api/customer/register')return {ok:true,json:async()=>({id:1})};
+   throw Error('unexpected: '+url);
+  }
+ });
+ vm.runInContext(script,context);
+ await tick();
+ handlers['tab:register']();
+ assert.equal(register.hidden,false);
+ assert.equal(login.hidden,true);
+ await handlers['customer-register:submit']({preventDefault(){}});
+ const sent=calls.find(x=>x.url==='api/customer/register');
+ assert.ok(sent);
+ assert.equal(sent.options.headers['X-VJU-Request'],'1');
+ const body=JSON.parse(sent.options.body);
+ assert.equal(body.name,'Minh Anh');
+ assert.equal(body.phone,'0900000000');
+ assert.equal(body.password,'SecurePassword123');
+ assert.deepEqual(redirects,['./']);
+});
