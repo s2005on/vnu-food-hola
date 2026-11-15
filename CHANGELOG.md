@@ -4,6 +4,9 @@ Các mục dưới đây tách biệt **Git tag phát hành** và **mốc phát 
 
 ## Chưa phát hành (Unreleased) — chuẩn bị v0.2.0
 
+- [PR #14](https://github.com/s2005on/vnu-food-hola/pull/14): bổ sung tài khoản khách bằng họ tên/số điện thoại/mật khẩu, phiên đăng nhập và lịch sử đơn theo tài khoản; giữ luồng khách không đăng nhập, demo và quyền quản trị riêng. Đơn cũ có thể liên kết bằng mã tra cứu bí mật.
+- Đây là thay đổi mã nguồn đang chuẩn bị, **không xác nhận đã triển khai SV27**; chưa có OTP/SMS, chức năng đặt lại mật khẩu hoặc nghiệm thu trên hosting.
+
 - [PR #11](https://github.com/s2005on/vnu-food-hola/pull/11) đã merge ngày 15/11/2026, commit `d3b1f0a`: cập nhật tài liệu V7.3, bảng kiểm nghiệm thu, hướng dẫn triển khai, CI và quy ước phiên bản.
 - Bổ sung mục lục `docs/`, tách minh chứng B2 khỏi README, hiệu chỉnh định dạng Markdown.
 - CI PR #11: Ubuntu/Python 3.12 và Windows/Python 3.14 đều đạt, chưa thay thế kiểm tra tương tác hoặc VPS công khai.
