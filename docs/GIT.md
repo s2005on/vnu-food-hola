@@ -18,9 +18,9 @@ Tùy công việc, PR có thể vào `develop` để tích hợp hoặc `main` n
 
 - Tiền tố commit: `feat:`, `fix:`, `docs:`, `test:`, `chore:`.
 - Mỗi commit có một mục đích; không commit database thật, mật khẩu/token, môi trường ảo hoặc bản backup.
-- Mỗi PR nêu: mục đích, thay đổi, cách thử, giới hạn, nhánh đích và phần có AI hỗ trợ.
+- Mỗi PR nêu: mục đích, thay đổi, cách thử, giới hạn và nhánh đích.
 - Trước merge: xem `Files changed`, kết quả CI, kiểm tra phần ảnh hưởng và xử lý xung đột nếu có.
-- Vì dự án một người, tự rà soát và AI hỗ trợ **không được ghi là review của người khác**; không suy ra giảng viên đã phê duyệt.
+- Vì dự án một người, tự rà soát không được ghi là review độc lập; không suy ra giảng viên đã phê duyệt.
 
 ## Phát hành phiên bản
 

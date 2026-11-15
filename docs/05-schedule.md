@@ -20,7 +20,7 @@ và phản hồi của giảng viên/quán hợp tác.
 ## 2. Cách ước lượng
 - Ước lượng theo từng nhóm sản phẩm bàn giao trong WBS.
 - Bao gồm thời gian đọc hiểu code, chạy thử và sửa lỗi thông thường.
-- Dùng AI hỗ trợ nhưng vẫn cần kiểm tra kết quả.
+- Dành thời gian rà soát kết quả và kiểm thử lại trước mỗi mốc bàn giao.
 - Đây là ước lượng sơ bộ, chưa phải cam kết hoàn thành.
 - Sau mỗi tuần, cập nhật phần việc còn lại dựa trên kết quả thực tế.
 

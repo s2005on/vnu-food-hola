@@ -1,66 +1,93 @@
 # VNU Food Hola
 
-**Website đặt món ăn cho sinh viên Trường Đại học Việt Nhật (VJU).**
+[![Backend checks](https://github.com/s2005on/vnu-food-hola/actions/workflows/backend-ci.yml/badge.svg?branch=main)](https://github.com/s2005on/vnu-food-hola/actions/workflows/backend-ci.yml)
 
-Dự án học phần **CSE3045** — Lâm Hải Sơn (MSSV: 23110216).  
-**Mã nguồn:** MVP giữa kỳ V7.3 và các tính năng mở rộng (tài khoản khách) · **FastAPI + SQLite + HTML/CSS/JavaScript**. Git tag phát hành gần nhất: `v0.1.0` (demo tĩnh); chưa gắn tag cho MVP.
+**Website đặt món thử nghiệm dành cho sinh viên Trường Đại học Việt Nhật (VJU).**
 
-> Đây là ứng dụng **chạy thử phục vụ học tập**: một quán, thực đơn và giá mẫu. Đã có ảnh truy cập phiên demo triển khai trên SV27 qua HTTPS ngày 15/11/2026, **chưa bảo đảm link hoạt động 24/24** sau khi hết block. Không phải dịch vụ đặt món thương mại với quán thật.
+[Demo SV27](https://sv27.bcse-vju.com/) · [Hồ sơ nghiệm thu](docs/MIDTERM.md) · [Kết quả kiểm chứng](VERIFICATION.md)
 
-## Chức năng chính
+> Dự án học phần CSE3045, dùng thực đơn và dữ liệu mẫu cho một quán. Máy chủ SV27 được kiểm tra ngày 15/11/2026; liên kết phụ thuộc thời hạn cấp VPS và gateway của trường, không cam kết hoạt động liên tục.
 
-- **Khách hàng:** xem thực đơn 16 món, tìm kiếm/lọc món, thêm vào giỏ và đặt món; nhập địa điểm, chọn giờ nhận.
-- **Theo dõi đơn:** lưu đơn trong SQLite; tra cứu bằng mã đơn và mã bí mật; hạn chế tạo đơn trùng khi gửi lại.
-- **Quản trị quán:** đăng nhập, quản lý món, xác nhận/chuẩn bị/hoàn thành hoặc hủy đơn; ghi nhận thanh toán tiền mặt.
-- **An toàn nghiệp vụ:** giá được tính ở máy chủ; trạng thái thanh toán và xử lý đơn được quản lý tách biệt.
-- **Tài khoản khách:** đăng ký bằng họ tên, số điện thoại, mật khẩu; đăng nhập và xem lịch sử đơn được lưu trên máy chủ, kể cả khi đổi thiết bị.
-- **Khách không đăng nhập:** vẫn đặt món và tra cứu bằng mã đơn + mã bí mật; có thể liên kết một đơn cũ vào tài khoản bằng cả hai mã.
-- **Chế độ demo:** có dữ liệu thử riêng; không thay thế luồng khách và quán trên cơ sở dữ liệu chính.
+## Chức năng
 
-**Giới hạn:** chưa có thanh toán online, giao hàng qua shipper, nhiều quán hoặc xác minh số điện thoại bằng OTP. Không dùng dữ liệu thật trước khi hoàn tất kiểm thử triển khai và chính sách bảo vệ dữ liệu.
+- **Khách:** xem 16 món, tìm kiếm, lọc, thêm giỏ, đặt món và chọn địa điểm/giờ nhận.
+- **Tài khoản khách:** đăng ký bằng họ tên, số điện thoại và mật khẩu; đăng nhập, xem lịch sử đơn.
+- **Theo dõi đơn:** tra cứu bằng mã đơn và mã bí mật; có thể liên kết đơn cũ vào tài khoản.
+- **Quản trị:** quản lý thực đơn, xác nhận/chuẩn bị/sẵn sàng/hoàn thành hoặc hủy đơn; ghi nhận thanh toán tiền mặt riêng với trạng thái xử lý.
+- **Kiểm soát nghiệp vụ:** máy chủ tự tính giá, kiểm tra dữ liệu và hạn chế tạo đơn trùng; dữ liệu demo được tách khỏi dữ liệu quán.
 
-## Chạy nhanh trên Windows
+## Công nghệ
 
-1. Tải hoặc clone **toàn bộ** repository, cài Python và chạy `RUN-WINDOWS.bat`.
-2. Ở lần chạy đầu, tạo mật khẩu cho tài khoản quản trị `son` (6–128 ký tự, **không có mật khẩu mặc định**).
-3. Mở các địa chỉ dưới đây khi cửa sổ máy chủ vẫn đang chạy:
+| Thành phần | Công nghệ |
+|---|---|
+| Backend | Python, FastAPI |
+| Database | SQLite |
+| Frontend | HTML, CSS, JavaScript |
+| Web server | Uvicorn, Nginx |
+| Kiểm thử | unittest, Node.js test runner, GitHub Actions |
 
-| Giao diện | Địa chỉ cục bộ |
+## Giao diện và minh chứng
+
+![Trang thực đơn trên SV27](docs/evidence/sv27-2026-11-15/01-sv27-homepage.jpg)
+
+Bộ ảnh đã che thông tin khách hàng: [Minh chứng triển khai và luồng đơn ngày 15/11/2026](docs/evidence/sv27-2026-11-15/README.md).
+
+## Chạy trên Windows
+
+1. Cài Python 3.11 hoặc 3.12.
+2. Clone hoặc tải toàn bộ repository.
+3. Chạy `RUN-WINDOWS.bat`.
+4. Ở lần đầu, tạo mật khẩu quản trị khi chương trình yêu cầu.
+
+| Giao diện | URL cục bộ |
 |---|---|
 | Khách hàng | http://127.0.0.1:8016/ |
 | Quản trị | http://127.0.0.1:8016/admin.html |
 
-Xem [hướng dẫn chạy và demo](START-HERE.md). **Nếu nâng cấp bản cũ**, đọc [hướng dẫn giữ dữ liệu của mốc V7.3](START-V7.3.md) trước; không xóa `server/data/` tùy tiện. Không mở trực tiếp file HTML bằng `file://`.
+Giữ cửa sổ máy chủ mở trong khi sử dụng. Xem [hướng dẫn chạy và demo](START-HERE.md); trước khi nâng cấp bản cũ, đọc [ghi chú giữ dữ liệu](START-V7.3.md).
 
 ## Kiểm thử
 
+Cài dependencies:
+
 ```bash
 python -m pip install -r server/requirements-test.txt
+```
+
+Chạy kiểm thử backend và frontend:
+
+```bash
 python -m unittest discover -s tests -p test_server.py -v
 node --test tests/customer-refresh.test.cjs tests/cart-drawer.test.cjs tests/menu-cards.test.cjs tests/customer-accounts.test.cjs
 ```
 
-Cần cài Node.js để chạy kiểm thử JavaScript. Xem [kết quả kiểm tra, môi trường và giới hạn xác minh](VERIFICATION.md). CI không đồng nghĩa ứng dụng đã được triển khai thành công lên VPS.
+Cần cài Node.js để chạy kiểm thử JavaScript. CI chạy trên Ubuntu/Python 3.12 và Windows/Python 3.14.
 
-## Cấu trúc dự án
+## Cấu trúc repository
 
-| Thư mục / tệp | Mục đích |
+| Đường dẫn | Nội dung |
 |---|---|
-| `server/` | Backend FastAPI, giao diện hiện hành và dữ liệu mẫu |
+| `server/` | FastAPI, giao diện hiện hành, dữ liệu mẫu |
 | `tests/` | Kiểm thử backend và JavaScript |
-| `deploy/` | Cấu hình, script và hướng dẫn VPS/Nginx |
-| `docs/` | Yêu cầu, thiết kế, hồ sơ môn học và minh chứng |
-| `demo/` | Bản demo giao diện cũ, lưu làm lịch sử |
-| `RUN-WINDOWS.bat` | Khởi chạy ứng dụng cục bộ trên Windows |
+| `deploy/` | Cấu hình và hướng dẫn VPS/Nginx |
+| `docs/` | Yêu cầu, thiết kế, hồ sơ học phần và minh chứng |
+| `demo/` | Bản giao diện tĩnh lịch sử |
+| `RUN-WINDOWS.bat` | Khởi chạy ứng dụng trên Windows |
 
-## Tài liệu và trạng thái bàn giao
+## Trạng thái và giới hạn
 
-- [Lịch sử thay đổi](CHANGELOG.md) · [Quy ước đặt tên phiên bản](docs/VERSIONING.md) · [Bảng kiểm trước phát hành v0.2.0 (dự kiến)](docs/RELEASE-v0.2.0.md)
-- [Mục lục tài liệu dự án và hồ sơ B2–B7](docs/README.md)
-- [Hồ sơ B2 và minh chứng VPS trước V3](docs/B2-REPORT.md)
-- [Bảng kiểm bàn giao giữa kỳ](docs/MIDTERM.md) · [Rà soát PR cũ](docs/PR-REVIEW.md)
-- [Hướng dẫn triển khai VPS](deploy/README.md) · [Quy trình Git](docs/GIT.md)
+- MVP và tài khoản khách đã tích hợp qua [PR #10](https://github.com/s2005on/vnu-food-hola/pull/10) và [PR #14](https://github.com/s2005on/vnu-food-hola/pull/14).
+- Bản triển khai SV27 được kiểm tra theo commit `0eba90e` ngày 15/11/2026.
+- Tag `v0.1.0` là mốc demo tĩnh; **`v0.2.0` chưa phát hành**.
+- Chưa có thanh toán trực tuyến, OTP/SMS, khôi phục mật khẩu tự động, giao hàng qua shipper hoặc hỗ trợ nhiều quán.
+- Chưa xác minh vận hành 24/7, khôi phục backup, kiểm thử thủ công trên thiết bị thứ hai hoặc nghiệm thu cuối cùng của giảng viên.
 
-**Trạng thái:** MVP V7.3 được tích hợp qua [PR #10](https://github.com/s2005on/vnu-food-hola/pull/10); tài khoản khách và lịch sử đơn qua [PR #14](https://github.com/s2005on/vnu-food-hola/pull/14), commit `0eba90e`. Ngày 15/11/2026 đã ghi nhận ảnh truy cập bản này tại [https://sv27.bcse-vju.com/](https://sv27.bcse-vju.com/) và luồng đơn thử đi tới Hoàn thành. Xem [nghiệm thu và phần chưa xác minh](docs/MIDTERM.md). **URL SV27 có thể mất truy cập khi hết block hoặc gateway ngừng hoạt động**; `v0.2.0` chưa được phát hành.
+## Tài liệu
 
-Dự án được thực hiện cá nhân và có AI hỗ trợ. Việc tự kiểm thử/AI hỗ trợ không thay thế review độc lập. Không commit mật khẩu, database chứa dữ liệu khách hoặc mã tra cứu bí mật.
+- [Mục lục tài liệu](docs/README.md)
+- [Project Charter](docs/01-project-charter.md) · [Yêu cầu hệ thống](docs/02-requirements.md) · [Thiết kế hệ thống](docs/03-system-design.md)
+- [Bàn giao giữa kỳ](docs/MIDTERM.md) · [Kết quả kiểm chứng](VERIFICATION.md)
+- [Changelog](CHANGELOG.md) · [Quy ước Git](docs/GIT.md) · [Quy ước phiên bản](docs/VERSIONING.md)
+- [Hướng dẫn triển khai VPS](deploy/README.md) · [Kế hoạch phát hành v0.2.0](docs/RELEASE-v0.2.0.md)
+
+**Minh bạch công cụ:** một số công cụ AI được dùng để hỗ trợ phát triển và biên soạn tài liệu; người thực hiện chịu trách nhiệm kiểm thử và giải thích mã nguồn.
