@@ -42,7 +42,7 @@
 | [Nâng cấp V7.3](../START-V7.3.md) | Lưu ý sao lưu và giữ database |
 | [Kết quả kiểm chứng](../VERIFICATION.md) | Kiểm thử đã làm và giới hạn |
 | [Bàn giao giữa kỳ](MIDTERM.md) | Bảng kiểm nghiệm thu, minh chứng cần bổ sung |
-| [Đối chiếu PR #2–#8](PR-REVIEW.md) | Tránh merge lại các thay đổi lịch sử |
+| [Biên bản rà soát PR #2–#8](PR-REVIEW.md) | Đã đóng các PR cũ, lưu kết quả so sánh Git blob SHA và giải thích |
 | [Triển khai VPS](../deploy/README.md) | FastAPI, systemd, Nginx, backup |
 
 Ảnh và log minh chứng nằm tại [`docs/evidence/`](evidence/); không dùng minh chứng từ bản tĩnh B2/B4 để kết luận bản V7.3 đã được triển khai.
