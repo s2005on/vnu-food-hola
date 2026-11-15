@@ -1,4 +1,6 @@
-# Chạy và demo V7.3
+# Chạy và demo MVP giữa kỳ (mốc nội bộ V7.3)
+
+Tên V7.3 là nhãn của quá trình phát triển, không phải Git tag phát hành. Xem [quy ước phiên bản](docs/VERSIONING.md).
 
 ## Windows
 1. Giải nén toàn bộ ZIP, dừng bản cũ bằng Ctrl+C. Không mở HTML trực tiếp bằng file://.
