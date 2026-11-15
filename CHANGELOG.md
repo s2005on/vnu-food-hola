@@ -8,7 +8,8 @@ Các mốc phát triển nội bộ và Git tag phát hành được ghi riêng.
 - **Triển khai thử trên SV27 (15/11/2026):** commit ứng dụng `0eba90e`; kiểm tra giao diện khách, quản trị, nhật ký trạng thái đơn và trạng thái hoàn thành.
 - **Minh chứng:** ảnh trình duyệt và Terminal đã được che thông tin riêng tư tại [docs/evidence/sv27-2026-11-15/](docs/evidence/sv27-2026-11-15/).
 - [PR #15](https://github.com/s2005on/vnu-food-hola/pull/15): chuẩn hóa hồ sơ giữa kỳ, kết quả kiểm chứng và hướng dẫn triển khai; đã merge tại commit `43ea617`.
-- **Chưa có tag `v0.2.0`.** Còn thiếu kiểm thử thủ công trên thiết bị/mạng thứ hai, thử khôi phục backup và nghiệm thu cuối cùng.
+- [PR #16](https://github.com/s2005on/vnu-food-hola/pull/16): chuẩn hóa hồ sơ bàn giao, bổ sung báo cáo tổng kết và 7 ảnh minh chứng SV27; loại bỏ hướng dẫn/script xuất bản giữa kỳ lỗi thời.
+- **Chưa có tag `v0.2.0`.** Còn thiếu một số kiểm thử thủ công, thử khôi phục backup và nghiệm thu cuối cùng.
 
 ## MVP giữa kỳ — 14/11/2026
 
