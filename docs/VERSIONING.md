@@ -32,10 +32,12 @@ Khi nhắc tới V7.3 trong tài liệu, viết **“MVP giữa kỳ (mốc nộ
 | 07/11/2026 | [PR #8](https://github.com/s2005on/vnu-food-hola/pull/8), UI V2 | PR giao diện mẫu lịch sử, còn mở khi đối chiếu; không được coi là release |
 | 14/11/2026 | [PR #9](https://github.com/s2005on/vnu-food-hola/pull/9), backend V3 | Đã merge vào `main`; “V3” là tên giai đoạn backend |
 | 14/11/2026 | [PR #10](https://github.com/s2005on/vnu-food-hola/pull/10), V7.3 | Đã merge vào `main`; MVP giữa kỳ có 16 món, khách/quản trị, SQLite |
-| 15/11/2026 | [PR #11](https://github.com/s2005on/vnu-food-hola/pull/11) | Sửa tài liệu/kiểm thử, **đang mở** khi lập quy ước này |
+| 15/11/2026 | [PR #11](https://github.com/s2005on/vnu-food-hola/pull/11) | Đã merge vào `main` (commit `d3b1f0a`), chuẩn hóa tài liệu, CI và lịch sử phiên bản |
 | Tương lai | `v0.2.0` (dự kiến) | Chỉ gắn tag khi thống nhất nội dung, merge và xác minh; **chưa tồn tại** |
 
 Lưu ý: thời điểm PR được tạo/merge không chứng minh một tên phiên bản đã trở thành Git tag. Các tên V4/V5/V7.2 chỉ dùng như thông tin lịch sử nếu có tài liệu đi kèm; không tự gán ngày phát hành hoặc mức độ hoàn thành.
+
+Bảng kiểm phát hành dự kiến: [RELEASE-v0.2.0.md](RELEASE-v0.2.0.md). Bản `v0.2.0` chưa được gắn tag.
 
 ## 4. Quy tắc đặt tên cho công việc mới
 
