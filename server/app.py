@@ -51,13 +51,15 @@ def init_db():
         CREATE TABLE IF NOT EXISTS settings(id INTEGER PRIMARY KEY CHECK(id=1), data TEXT NOT NULL, secret TEXT NOT NULL);
         CREATE TABLE IF NOT EXISTS dishes(id INTEGER PRIMARY KEY AUTOINCREMENT, data TEXT NOT NULL);
         CREATE TABLE IF NOT EXISTS admins(username TEXT PRIMARY KEY, salt TEXT NOT NULL, hash TEXT NOT NULL);
+        CREATE TABLE IF NOT EXISTS customers(id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT NOT NULL, phone TEXT UNIQUE NOT NULL, salt TEXT NOT NULL, hash TEXT NOT NULL, created_at TEXT NOT NULL);
+        CREATE TABLE IF NOT EXISTS customer_sessions(token_hash TEXT PRIMARY KEY, customer_id INTEGER NOT NULL REFERENCES customers(id) ON DELETE CASCADE, csrf TEXT NOT NULL, expires REAL NOT NULL);
         CREATE TABLE IF NOT EXISTS sessions(token TEXT PRIMARY KEY, username TEXT NOT NULL REFERENCES admins(username), csrf TEXT NOT NULL, expires REAL NOT NULL);
         CREATE TABLE IF NOT EXISTS orders(code TEXT PRIMARY KEY, lookup_hash TEXT NOT NULL, idem TEXT UNIQUE NOT NULL, fingerprint TEXT NOT NULL, data TEXT NOT NULL, status TEXT NOT NULL, paid INTEGER NOT NULL DEFAULT 0, cancel_reason TEXT NOT NULL DEFAULT '', created_at TEXT NOT NULL);
         ''')
         columns = {r['name'] for r in c.execute('PRAGMA table_info(orders)')}
-        for column in ('updated_at', 'paid_at'):
+        for column in ('updated_at', 'paid_at', 'customer_id'):
             if column not in columns:
-                c.execute(f'ALTER TABLE orders ADD COLUMN {column} TEXT')
+                c.execute(f'ALTER TABLE orders ADD COLUMN {column} {"INTEGER REFERENCES customers(id)" if column == "customer_id" else "TEXT"}')
         if not c.execute('SELECT 1 FROM settings').fetchone():
             c.execute('INSERT INTO settings VALUES(1,?,?)', (json.dumps({'name':'Quán mẫu gần VJU','accepting':True,'opens':'10:00','closes':'22:00'}), secrets.token_hex(32)))
             for item in json.loads((HERE/'seed.json').read_text(encoding='utf-8')):
@@ -121,6 +123,19 @@ class Login(Model):
     model_config = ConfigDict(extra='forbid', str_strip_whitespace=False)
     username: Annotated[str, StringConstraints(strip_whitespace=True, min_length=1, max_length=100)]
     password: str = Field(min_length=1, max_length=128)
+class CustomerRegistration(Model):
+    name: Annotated[str, StringConstraints(min_length=2, max_length=60)]
+    phone: str = Field(pattern=r'^0[0-9]{9}$')
+    password: str = Field(min_length=10, max_length=128)
+
+class CustomerCredentials(Model):
+    phone: str = Field(pattern=r'^0[0-9]{9}$')
+    password: str = Field(min_length=1, max_length=128)
+
+class ClaimOrder(Model):
+    code: str = Field(pattern=r'^VJU-[0-9A-F]{12}$')
+    token: str = Field(min_length=16, max_length=128)
+
 class Dish(Model):
     name: Text
     desc: str = Field(default='', max_length=300)
