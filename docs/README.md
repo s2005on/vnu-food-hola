@@ -2,6 +2,12 @@
 
 Đây là mục lục tài liệu kỹ thuật, quản lý học phần và minh chứng. Trang giới thiệu và cách chạy nhanh: [README chính](../README.md).
 
+## Hồ sơ tổng kết và bàn giao
+
+- [Báo cáo tổng kết và bàn giao dự án](FINAL-HANDOVER.md) — phạm vi MVP, chức năng, công nghệ, kết quả triển khai, minh chứng và giới hạn còn lại.
+- [Kết quả kiểm chứng](../VERIFICATION.md) — môi trường, commit triển khai, kiểm thử và các nội dung chưa xác minh.
+- [Bộ ảnh minh chứng SV27](evidence/sv27-2026-11-15/README.md) — 7 ảnh đã che thông tin riêng tư.
+
 ## Phiên bản và lịch sử
 
 - [Quy ước phiên bản, timeline B2–B7/V2–V7.3](VERSIONING.md)
@@ -34,21 +40,18 @@
 | [Bên liên quan](STAKEHOLDERS.md) | Xác định stakeholder |
 | [Quản lý cấu hình](CONFIG.md) | Phiên bản, thay đổi và lưu trữ |
 
-## Chạy thử, kiểm thử và bàn giao
+## Chạy thử và hồ sơ lịch sử
 
 | Tài liệu | Nội dung |
 |---|---|
-| [Chạy trên Windows](../START-HERE.md) | Khởi động và kịch bản demo V7.3 |
+| [Chạy trên Windows](../START-HERE.md) | Khởi động và kịch bản demo MVP |
 | [Nâng cấp V7.3](../START-V7.3.md) | Lưu ý sao lưu và giữ database |
-| [Kết quả kiểm chứng](../VERIFICATION.md) | Kiểm thử đã làm và giới hạn |
-| [Bàn giao giữa kỳ](MIDTERM.md) | Bảng kiểm nghiệm thu, minh chứng cần bổ sung |
+| [Bàn giao giữa kỳ](MIDTERM.md) | Bảng kiểm và ghi nhận ở mốc giữa kỳ |
 | [Biên bản rà soát PR #2–#8](PR-REVIEW.md) | Đã đóng các PR cũ, lưu kết quả so sánh Git blob SHA và giải thích |
 | [Triển khai VPS](../deploy/README.md) | FastAPI, systemd, Nginx, backup |
 
-## Minh chứng triển khai SV27
+## Hồ sơ bài thực hành
 
-- [Bộ ảnh kiểm chứng hosting và luồng đơn ngày 15/11/2026](evidence/sv27-2026-11-15/README.md) — 7 ảnh đã che thông tin cá nhân và dữ liệu nhạy cảm.
+Các báo cáo B2–B7 được giữ trong `docs/` để lưu lịch sử học phần; chúng không đại diện cho trạng thái phát hành hiện tại.
 
-Ảnh và log minh chứng nằm tại [`docs/evidence/`](evidence/); không dùng minh chứng từ bản tĩnh B2/B4 để kết luận bản V7.3 đã được triển khai.
-
-**Lưu ý:** các hồ sơ B2–B7 phản ánh từng giai đoạn học phần; với thông tin tính năng và trạng thái hiện tại, ưu tiên README chính, thiết kế được cập nhật và kết quả xác minh có ghi ngày/commit.
+Ảnh và log minh chứng nằm tại [`docs/evidence/`](evidence/). Không dùng minh chứng từ bản tĩnh B2/B4 để kết luận bản MVP đã được triển khai.
