@@ -247,6 +247,110 @@ def lookup_token(c, code, key):
 def order_view(row):
     return {**json.loads(row['data']), 'updated_at':row['updated_at'], 'paid_at':row['paid_at'], 'code':row['code'], 'status':row['status'], 'paid':bool(row['paid']), 'cancel_reason':row['cancel_reason'], 'date':row['created_at']}
 
+CUSTOMER_SESSION_AGE = 7 * 24 * 60 * 60
+
+def customer_identity(request: Request):
+    """Resolve a customer using a hashed, unexpired HttpOnly session cookie."""
+    token = request.cookies.get('vju_customer', '')
+    if not token:
+        return None
+    with db() as c:
+        row = c.execute('''
+            SELECT customers.id, customers.name, customers.phone, customer_sessions.csrf
+            FROM customer_sessions JOIN customers ON customers.id = customer_sessions.customer_id
+            WHERE customer_sessions.token_hash=? AND customer_sessions.expires>?
+        ''', (digest(token), time.time())).fetchone()
+    return dict(row) if row else None
+
+def require_customer(request: Request):
+    if TRIAL_ID.get():
+        fail(409, 'Hãy thoát chế độ demo trước khi sử dụng tài khoản khách.')
+    result = customer_identity(request)
+    if not result:
+        fail(401, 'Vui lòng đăng nhập tài khoản khách.')
+    return result
+
+def customer_csrf(request: Request, customer):
+    if not hmac.compare_digest(customer['csrf'], request.headers.get('x-csrf-token', '')):
+        fail(403, 'Phiên không hợp lệ. Vui lòng tải lại trang.')
+
+def customer_login_response(response: Response, record):
+    token, csrf = secrets.token_urlsafe(32), secrets.token_urlsafe(32)
+    with db() as c:
+        c.execute('DELETE FROM customer_sessions WHERE expires<?', (time.time(),))
+        c.execute('INSERT INTO customer_sessions VALUES(?,?,?,?)',
+                  (digest(token), record['id'], csrf, time.time()+CUSTOMER_SESSION_AGE))
+    response.set_cookie('vju_customer', token, max_age=CUSTOMER_SESSION_AGE,
+                        httponly=True, secure=SECURE, samesite='strict', path=COOKIE_PATH)
+    return {'id': record['id'], 'name': record['name'], 'phone': record['phone'], 'csrf': csrf}
+
+@app.post('/api/customer/register', status_code=201)
+def customer_register(data: CustomerRegistration, request: Request, response: Response):
+    if TRIAL_ID.get():
+        fail(409, 'Hãy thoát chế độ demo trước khi đăng ký.')
+    throttle(request, 'customer-register', 5)
+    salt = secrets.token_hex(16)
+    hashed = password_hash(data.password, salt)
+    try:
+        with db() as c:
+            cur = c.execute('INSERT INTO customers(name,phone,salt,hash,created_at) VALUES(?,?,?,?,?)',
+                            (data.name, data.phone, salt, hashed, datetime.now(TZ).isoformat()))
+            record = {'id': cur.lastrowid, 'name': data.name, 'phone': data.phone}
+    except sqlite3.IntegrityError:
+        fail(409, 'Số điện thoại này đã có tài khoản. Hãy đăng nhập.')
+    return customer_login_response(response, record)
+
+@app.post('/api/customer/login')
+def customer_login(data: CustomerCredentials, request: Request, response: Response):
+    if TRIAL_ID.get():
+        fail(409, 'Hãy thoát chế độ demo trước khi đăng nhập.')
+    throttle(request, 'customer-login', 8)
+    with db() as c:
+        row = c.execute('SELECT * FROM customers WHERE phone=?', (data.phone,)).fetchone()
+    salt = row['salt'] if row else '00'*16
+    verified = hmac.compare_digest(password_hash(data.password, salt), row['hash'] if row else '0'*128)
+    if not row or not verified:
+        fail(401, 'Số điện thoại hoặc mật khẩu không chính xác.')
+    return customer_login_response(response, dict(row))
+
+@app.get('/api/customer/me')
+def customer_me(request: Request):
+    customer = require_customer(request)
+    return {k: customer[k] for k in ('id', 'name', 'phone', 'csrf')}
+
+@app.post('/api/customer/logout')
+def customer_logout(request: Request, response: Response):
+    customer = require_customer(request)
+    customer_csrf(request, customer)
+    with db() as c:
+        c.execute('DELETE FROM customer_sessions WHERE token_hash=?',
+                  (digest(request.cookies.get('vju_customer', '')),))
+    response.delete_cookie('vju_customer', path=COOKIE_PATH)
+    return {'ok': True}
+
+@app.get('/api/customer/orders')
+def customer_orders(request: Request):
+    customer = require_customer(request)
+    with db() as c:
+        rows = c.execute('SELECT * FROM orders WHERE customer_id=? ORDER BY created_at DESC LIMIT 100',
+                         (customer['id'],)).fetchall()
+    return [order_view(row) for row in rows]
+
+@app.post('/api/customer/orders/claim')
+def claim_customer_order(data: ClaimOrder, request: Request):
+    customer = require_customer(request)
+    customer_csrf(request, customer)
+    with db() as c:
+        c.execute('BEGIN IMMEDIATE')
+        row = c.execute('SELECT * FROM orders WHERE code=?', (data.code,)).fetchone()
+        if not row or not hmac.compare_digest(row['lookup_hash'], digest(data.token)):
+            fail(404, 'Mã đơn hoặc mã tra cứu không đúng.')
+        if row['customer_id'] is not None and row['customer_id'] != customer['id']:
+            fail(409, 'Đơn này đã thuộc tài khoản khác.')
+        if row['customer_id'] is None:
+            c.execute('UPDATE orders SET customer_id=? WHERE code=?', (customer['id'], data.code))
+        return order_view(c.execute('SELECT * FROM orders WHERE code=?', (data.code,)).fetchone())
+
 @app.post('/api/orders', status_code=201)
 def create_order(order: NewOrder, request: Request):
     throttle(request,'order',15)
