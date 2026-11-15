@@ -3,9 +3,9 @@
 **Website đặt món ăn cho sinh viên Trường Đại học Việt Nhật (VJU).**
 
 Dự án học phần **CSE3045** — Lâm Hải Sơn (MSSV: 23110216).  
-**Phiên bản demo:** V7.3 · **FastAPI + SQLite + HTML/CSS/JavaScript**.
+**Bản đang phát triển:** MVP giữa kỳ (mốc nội bộ V7.3) · **FastAPI + SQLite + HTML/CSS/JavaScript**. Git tag phát hành gần nhất: `v0.1.0` (demo tĩnh); chưa gắn tag cho MVP.
 
-> Đây là ứng dụng **chạy thử phục vụ học tập**: một quán, thực đơn và giá mẫu. Chưa xác nhận triển khai công khai V7.3 hoặc vận hành thương mại với quán thật.
+> Đây là ứng dụng **chạy thử phục vụ học tập**: một quán, thực đơn và giá mẫu. Chưa xác nhận triển khai công khai MVP hoặc vận hành thương mại với quán thật.
 
 ## Chức năng chính
 
@@ -28,7 +28,7 @@ Dự án học phần **CSE3045** — Lâm Hải Sơn (MSSV: 23110216).
 | Khách hàng | http://127.0.0.1:8016/ |
 | Quản trị | http://127.0.0.1:8016/admin.html |
 
-Xem [hướng dẫn chạy và demo](START-HERE.md). **Nếu nâng cấp bản cũ**, đọc [hướng dẫn giữ dữ liệu V7.3](START-V7.3.md) trước; không xóa `server/data/` tùy tiện. Không mở trực tiếp file HTML bằng `file://`.
+Xem [hướng dẫn chạy và demo](START-HERE.md). **Nếu nâng cấp bản cũ**, đọc [hướng dẫn giữ dữ liệu của mốc V7.3](START-V7.3.md) trước; không xóa `server/data/` tùy tiện. Không mở trực tiếp file HTML bằng `file://`.
 
 ## Kiểm thử
 
@@ -53,11 +53,13 @@ Cần cài Node.js để chạy kiểm thử JavaScript. Xem [kết quả kiểm
 
 ## Tài liệu và trạng thái bàn giao
 
+- [Lịch sử thay đổi](CHANGELOG.md) · [Quy ước đặt tên phiên bản](docs/VERSIONING.md)
+
 - [Mục lục tài liệu dự án và hồ sơ B2–B7](docs/README.md)
 - [Hồ sơ B2 và minh chứng VPS trước V3](docs/B2-REPORT.md)
 - [Bảng kiểm bàn giao giữa kỳ](docs/MIDTERM.md) · [Rà soát PR cũ](docs/PR-REVIEW.md)
 - [Hướng dẫn triển khai VPS](deploy/README.md) · [Quy trình Git](docs/GIT.md)
 
-**Trạng thái:** V7.3 đã được gộp vào `main` tại [PR #10](https://github.com/s2005on/vnu-food-hola/pull/10). Các bổ sung giữa kỳ đang được rà soát tại [PR #11](https://github.com/s2005on/vnu-food-hola/pull/11); **chưa coi là đã triển khai công khai** nếu chưa có kiểm chứng thực tế. URL cục bộ chỉ hoạt động trên máy chạy ứng dụng.
+**Trạng thái:** Mốc MVP giữa kỳ (tên nội bộ V7.3) đã được gộp vào `main` tại [PR #10](https://github.com/s2005on/vnu-food-hola/pull/10). Các bổ sung giữa kỳ đang được rà soát tại [PR #11](https://github.com/s2005on/vnu-food-hola/pull/11); **chưa coi là đã triển khai công khai** nếu chưa có kiểm chứng thực tế. URL cục bộ chỉ hoạt động trên máy chạy ứng dụng.
 
 Dự án được thực hiện cá nhân và có AI hỗ trợ. Việc tự kiểm thử/AI hỗ trợ không thay thế review độc lập. Không commit mật khẩu, database chứa dữ liệu khách hoặc mã tra cứu bí mật.
