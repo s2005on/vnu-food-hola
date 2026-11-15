@@ -1,9 +1,10 @@
 name: Backend checks
 on:
+  workflow_dispatch:
   push:
-    paths: ['server/**', 'tests/**', 'deploy/**', 'RUN-WINDOWS.bat', '.github/workflows/backend-ci.yml']
+    paths: ['server/**', 'tests/**', 'deploy/**', 'docs/**', '*.md', 'RUN-WINDOWS.bat', '.github/workflows/backend-ci.yml']
   pull_request:
-    paths: ['server/**', 'tests/**', 'deploy/**', 'RUN-WINDOWS.bat', '.github/workflows/backend-ci.yml']
+    paths: ['server/**', 'tests/**', 'deploy/**', 'docs/**', '*.md', 'RUN-WINDOWS.bat', '.github/workflows/backend-ci.yml']
 permissions:
   contents: read
 jobs:
@@ -30,4 +31,8 @@ jobs:
       - run: node --check server/web/app.js
       - run: node --check server/web/admin.js
       - run: node --check server/web/account.js
-      - run: node --test tests/customer-refresh.test.cjs
+      - run: node --test tests/customer-refresh.test.cjs tests/cart-drawer.test.cjs tests/menu-cards.test.cjs
+      - run: node --check server/web/cart-drawer.js
+      - name: Check deployment scripts
+        if: runner.os == 'Linux'
+        run: bash -n deploy/install-v4.sh deploy/verify-public.sh

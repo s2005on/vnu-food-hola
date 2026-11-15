@@ -1,0 +1,19 @@
+✔ header login and cart stay together, original form remains in modal (1.199078ms)
+✔ cart opens from header and closes with close button (2.276232ms)
+✔ click on the backdrop closes modal; inside clicks do not (1.115202ms)
+✔ does not steal focus from the order history opened after checkout (1.068602ms)
+✔ polls open visible order history and shows updated server status (38.335269ms)
+✔ network failure preserves previous order details and reports stale data (2.12178ms)
+✔ forgetting history during a request does not restore forgotten orders (1.752126ms)
+✔ order card presents pickup details, real status and expandable content (1.933368ms)
+✔ menu renders tagged prices and add buttons without changing API availability (0.931927ms)
+✔ Versioned menu CSS loads after v7 styles and before customer script (0.302964ms)
+✔ all sixteen seeded dishes have valid photos and are available initially (0.311537ms)
+ℹ tests 11
+ℹ suites 0
+ℹ pass 11
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 167.165884
