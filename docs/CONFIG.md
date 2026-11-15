@@ -1,210 +1,52 @@
-\# Kế hoạch quản lý cấu hình
+# Kế hoạch quản lý cấu hình — VNU Food Hola
 
+Hồ sơ quản lý dự án CSE3045. Bản gốc được lập trong giai đoạn B7; nội dung dưới đây được làm rõ theo trạng thái mã nguồn tại 15/11/2026. B2–B7 là **mã bài thực hành**, không phải release.
 
+## 1. Hạng mục được quản lý
 
-\## 1. Quản lý những gì?
+- Mã nguồn backend/frontend, dữ liệu mẫu không nhạy cảm, cấu hình và dependencies.
+- Yêu cầu, thiết kế, WBS, tiến độ, rủi ro, kiểm thử và minh chứng.
+- Commit, nhánh, Pull Request, Git tag, kịch bản triển khai và backup.
 
-\- Mã nguồn, giao diện mẫu và tài nguyên ảnh.
+Không lưu trong repo: mật khẩu, token, file `.env` có bí mật, SQLite chứa dữ liệu khách thật, môi trường ảo hoặc backup nhạy cảm.
 
-\- Tài liệu yêu cầu, thiết kế, WBS, lịch, rủi ro và báo cáo Sprint.
+## 2. Vai trò và kiểm soát thay đổi
 
-\- Kiểm thử, hướng dẫn chạy và bằng chứng kiểm tra.
+Dự án do một sinh viên thực hiện; tự rà soát/AI hỗ trợ **không được ghi thành review độc lập**. Giảng viên đánh giá qua học phần; một PR được tạo không đồng nghĩa đã được duyệt.
 
-\- Danh sách thư viện, tệp khóa phiên bản và cấu hình mẫu khi bổ sung.
+Quy trình: tạo Issue/đề xuất thay đổi → chọn nhánh phù hợp → triển khai → kiểm thử phần liên quan → mở PR và rà soát diff/CI → merge có kiểm soát → cập nhật tài liệu/tag (nếu thực sự phát hành).
 
-\- Script khởi tạo, migration và dữ liệu mẫu khi có cơ sở dữ liệu.
+## 3. Phiên bản và release
 
+**Quy ước chi tiết và timeline:** [VERSIONING.md](VERSIONING.md).  
+**Lịch sử thay đổi:** [CHANGELOG.md](../CHANGELOG.md).
 
-
-Không đưa vào Git: môi trường ảo, tệp tạm, mật khẩu, token,
-
-tệp .env chứa bí mật và dữ liệu khách hàng thực tế.
-
-Cấu hình mẫu chỉ chứa tên biến và giá trị minh họa.
-
-
-
-\## 2. Vai trò và trách nhiệm
-
-\- Lâm Hải Sơn thực hiện thay đổi, kiểm tra, quản lý nhánh,
-
-&#x20; tạo PR, gắn tag và sao lưu.
-
-\- Do dự án cá nhân, Sơn kiêm người thực hiện và tự kiểm tra;
-
-&#x20; đây không phải review độc lập.
-
-\- Giảng viên góp ý, đánh giá theo học phần; không mặc định
-
-&#x20; mọi PR hoặc bản phát hành đã được giảng viên duyệt.
-
-\- Thay đổi nghiệp vụ liên quan quán cần được trao đổi với quán
-
-&#x20; khi xác định được bên hợp tác.
-
-
-
-\## 3. Công cụ
-
-\- Git: lưu lịch sử và so sánh thay đổi.
-
-\- GitHub: lưu repo từ xa, quản lý Issue, PR và tag.
-
-\- PowerShell và trình soạn thảo: thao tác trên máy cá nhân.
-
-\- Công cụ kiểm thử: được ghi trong hướng dẫn của từng phần
-
-&#x20; khi có mã nguồn triển khai.
-
-\- VPS học phần: môi trường triển khai khi cần; không phải
-
-&#x20; nơi lưu duy nhất của mã nguồn hoặc bản sao dữ liệu.
-
-
-
-\## 4. Điểm mốc và phiên bản
-
-
-
-\### Quy tắc SemVer
-
-Phiên bản có dạng MAJOR.MINOR.PATCH; tag Git thêm tiền tố v.
-
-
-
-\- MAJOR: thay đổi không tương thích với giao diện/API đã công bố.
-
-\- MINOR: bổ sung chức năng tương thích.
-
-\- PATCH: sửa lỗi hoặc hiệu chỉnh nhỏ tương thích.
-
-\- Giai đoạn 0.x.y là phát triển ban đầu, chưa cam kết API ổn định.
-
-\- Trong giai đoạn 0.x, thay đổi phá vỡ tương thích tăng MINOR
-
-&#x20; và phải mô tả rõ trong ghi chú phát hành.
-
-\- Chỉ dùng 1.0.0 khi phạm vi bản đầu đạt tiêu chí nghiệm thu;
-
-&#x20; không tăng phiên bản chỉ vì đến buổi học mới.
-
-
-
-\### Mốc dự kiến
-
-| Phiên bản | Nội dung | Điều kiện gắn tag |
-
+| Tên | Trạng thái xác minh | Ý nghĩa |
 |---|---|---|
+| `v0.1.0` | Đã có annotated Git tag, 31/10/2026 | Sprint 1: tài liệu và demo tĩnh; chưa có backend/database tại commit tag |
+| V2, V3, V4, V5, V7.2, V7.3 | Tên mốc nội bộ lịch sử | Không phải tag phát hành theo SemVer |
+| MVP giữa kỳ / V7.3 | Đã tích hợp PR #10 vào main, 14/11/2026 | Backend, giao diện, 16 món; chưa xác nhận hosting công khai |
+| `v0.2.0` | **Dự kiến, chưa tạo tag** | Mốc phát hành tiếp theo khi đã review, kiểm thử và chốt commit |
+| `v1.0.0` | Mục tiêu dài hạn, chưa phát hành | Chỉ cân nhắc khi đạt tiêu chí nghiệm thu sản phẩm |
 
-| v0.1.0 | Mốc hiện tại của Sprint 1: tài liệu đã tích hợp và demo tĩnh | Kiểm tra tài liệu, chạy lại demo và ghi rõ giới hạn |
+Chỉ dùng `vMAJOR.MINOR.PATCH` cho release; không tự đổi mốc nội bộ V7.3 thành v7.3.0 hoặc v0.7.3. Chỉ gắn tag trên commit đã xác minh, ghi rõ tính năng/giới hạn và không ghi đè tag cũ.
 
-| v0.2.0 | Luồng xem thực đơn từ API và DB | Chạy được luồng, có kiểm thử và hướng dẫn |
+## 4. Nhánh, commit và PR
 
-| v1.0.0 | Bản đầu đáp ứng phạm vi nghiệm thu | Đối chiếu tiêu chí, có kết quả kiểm thử và vận hành thử |
+- `main`: nhánh mã nguồn ổn định; `develop`: nhánh tích hợp khi phù hợp.
+- Nhánh mới: `feat/*`, `fix/*`, `docs/*`, `chore/*`; các nhánh `feature/*` cũ giữ nguyên để truy dấu.
+- Commit: `feat:`, `fix:`, `docs:`, `test:`, `chore:` + mô tả ngắn.
+- PR vào nhánh đích đã thống nhất; không merge hàng loạt PR B2–B7 và không force-push `main`.
+- Ghi rõ PR nào đã merge, kiểm thử nào đạt, điều gì chưa được nghiệm thu; không gọi mỗi PR là “release” nếu không có tag.
 
+## 5. Sao lưu, kiểm tra và khôi phục
 
+- Commit/push phần đã kiểm tra, giữ bản sao mã nguồn ở nơi riêng ngoài GitHub.
+- Sao lưu SQLite an toàn trước cập nhật và thử khôi phục trên môi trường tách biệt; không ghi backup vào Git.
+- Check lại đường dẫn, cấu hình VPS, cổng dịch vụ, database và CI trước khi triển khai.
+- Checkout tag chỉ khôi phục **mã nguồn**; muốn khôi phục dữ liệu phải có backup phù hợp.
+- Các kế hoạch này không được đánh dấu “đã hoàn thành” nếu chưa có bằng chứng.
 
-Đây là các mốc dự kiến; trạng thái thực tế được xác định bằng
+## 6. Tham chiếu lịch sử B7
 
-tag và bằng chứng trong repo.
-
-
-
-v0.1.0 không khẳng định Sprint 1 đã hoàn thành.
-
-Bản này chưa có backend/DB đặt món thực tế hoặc quản trị hoàn chỉnh.
-
-
-
-Mỗi mốc phát hành sử dụng annotated tag trỏ tới commit đã kiểm tra.
-
-Ghi chú tag nêu nội dung, giới hạn và kết quả kiểm tra.
-
-Không di chuyển hoặc ghi đè tag đã công bố; tạo phiên bản mới khi sửa.
-
-
-
-\## 5. Quy ước đặt tên
-
-\- Nhánh chức năng: feature/<noi-dung>, ví dụ feature/b7-config-release.
-
-\- Nhánh sửa lỗi: fix/<noi-dung>.
-
-\- Commit: docs:, feat:, fix:, test: hoặc chore: kèm mô tả ngắn.
-
-\- Tài liệu B7: docs/CONFIG.md, docs/STAKEHOLDERS.md, docs/GIT.md.
-
-\- Tệp bằng chứng: tên thể hiện bài hoặc chức năng được kiểm tra.
-
-\- Tag: vMAJOR.MINOR.PATCH, ví dụ v0.1.0.
-
-\- Không dùng tên như final-new-final để thay thế quản lý phiên bản.
-
-
-
-\## 6. Quy ước thay đổi
-
-1\. Ghi vấn đề hoặc mục tiêu trong Issue/PR.
-
-2\. Xem ảnh hưởng tới phạm vi, dữ liệu, giao diện và lịch.
-
-3\. Thực hiện trên nhánh riêng.
-
-4\. Kiểm tra phần bị ảnh hưởng; ghi kết quả thật và giới hạn.
-
-5\. Tạo PR về develop, tự rà soát và xử lý góp ý nếu có.
-
-6\. Tích hợp thay đổi; cập nhật tài liệu liên quan.
-
-7\. Khi đạt mốc, kiểm tra commit đích rồi tạo và push tag.
-
-
-
-Với B7, các nhánh B2–B6 được tích hợp trên feature/b7-config-release.
-
-Tag đầu tiên có thể trỏ tới commit đã kiểm tra trên nhánh này
-
-trong khi PR về develop còn chờ xử lý; phải ghi rõ trạng thái đó.
-
-
-
-Thay đổi phạm vi đã thống nhất với giảng viên cần trao đổi lại.
-
-Không coi việc tạo PR là đã được phê duyệt.
-
-
-
-\## 7. Sao lưu và khôi phục
-
-\- Cuối mỗi buổi làm: commit phần hoàn chỉnh và push nhánh lên GitHub.
-
-\- Sau mỗi mốc phát hành: tạo thêm bản sao repo có lịch sử Git
-
-&#x20; ở thiết bị hoặc nơi lưu riêng, tách khỏi máy làm việc.
-
-\- Kiểm tra bản sao mở được và đọc được tag phát hành.
-
-\- GitHub lưu mã nguồn, không thay thế bản sao dữ liệu vận hành.
-
-\- Khi có DB thực tế: sao lưu ít nhất hằng ngày và trước migration;
-
-&#x20; dùng cách sao lưu nhất quán của DB, lưu riêng ngoài repo công khai.
-
-\- Trước vận hành thật: thử khôi phục DB và ghi kết quả.
-
-\- Bí mật cấu hình được lưu riêng, có kiểm soát truy cập.
-
-
-
-Khôi phục mã nguồn bằng cách clone repo và checkout tag cần dùng.
-
-Khôi phục DB cần bản sao tương thích với phiên bản mã nguồn.
-
-Không coi checkout tag là tự động khôi phục dữ liệu.
-
-
-
-Các quy tắc sao lưu là kế hoạch áp dụng; chưa khẳng định
-
-đã hoàn thành kiểm thử khôi phục hệ thống thực tế.
-
+B7 ban đầu đề xuất `v0.1.0` cho tài liệu + demo tĩnh, và tag này hiện thực sự tồn tại. Các kế hoạch tăng phiên bản trong bản B7 cũ không tự tạo tag và không phải xác nhận backend/DB đã có ở thời điểm tag. Xem [Git/PR](GIT.md), [VERSIONING.md](VERSIONING.md) để phân biệt tiến độ học phần với tiến độ phần mềm.

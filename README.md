@@ -1,147 +1,65 @@
-# Bản cập nhật V7.3
+# VNU Food Hola
 
-Đọc [START-V7.3.md](START-V7.3.md) trước khi chạy hoặc nâng cấp để giữ dữ liệu cũ. Bản này gộp luồng Guest và UI V7.2, có 16 món và mật khẩu quản trị từ 6 ký tự.
+**Website đặt món ăn cho sinh viên Trường Đại học Việt Nhật (VJU).**
 
-> **V5 mới nhất:** xem [V5-REVIEW.md](V5-REVIEW.md). Hướng dẫn V4 bên dưới là lịch sử; V5 tách quyền khách/quán, nhập địa điểm và dùng giờ 10:00–22:00.
+Dự án học phần **CSE3045** — Lâm Hải Sơn (MSSV: 23110216).  
+**Bản đang phát triển:** MVP giữa kỳ (mốc nội bộ V7.3) · **FastAPI + SQLite + HTML/CSS/JavaScript**. Git tag phát hành gần nhất: `v0.1.0` (demo tĩnh); chưa gắn tag cho MVP.
 
-> **Bản nâng cấp V4:** xem [V4-REVIEW.md](V4-REVIEW.md) về đăng nhập thử, kiểm thử và cập nhật VPS.
+> Đây là ứng dụng **chạy thử phục vụ học tập**: một quán, thực đơn và giá mẫu. Chưa xác nhận triển khai công khai MVP hoặc vận hành thương mại với quán thật.
 
-# VJU Food Hola
+## Chức năng chính
 
-Website đặt đồ ăn cho sinh viên VJU — Lâm Hải Sơn, MSSV 23110216.
-Bản V3 dùng FastAPI + SQLite; giữ giao diện V2. Một quán, thanh toán khi nhận,
-không tích hợp AI. Đây là bản chạy thử với thực đơn mẫu.
+- **Khách hàng:** xem thực đơn 16 món, tìm kiếm/lọc món, thêm vào giỏ và đặt món; nhập địa điểm, chọn giờ nhận.
+- **Theo dõi đơn:** lưu đơn trong SQLite; tra cứu bằng mã đơn và mã bí mật; hạn chế tạo đơn trùng khi gửi lại.
+- **Quản trị quán:** đăng nhập, quản lý món, xác nhận/chuẩn bị/hoàn thành hoặc hủy đơn; ghi nhận thanh toán tiền mặt.
+- **An toàn nghiệp vụ:** giá được tính ở máy chủ; trạng thái thanh toán và xử lý đơn được quản lý tách biệt.
+- **Chế độ demo:** có dữ liệu thử riêng; không thay thế luồng khách và quán trên cơ sở dữ liệu chính.
 
-## Chạy trên Windows
+**Giới hạn:** chưa có thanh toán online, giao hàng qua shipper, nhiều quán hoặc tài khoản khách đăng ký độc lập.
 
-Cài Python và Git. Trong thư mục repo, chạy `RUN-WINDOWS.bat`.
-Lần đầu tạo tài khoản quản trị `son`, mật khẩu 12–128 ký tự.
-Giữ cửa sổ chạy mở; không mở trực tiếp HTML bằng file://.
+## Chạy nhanh trên Windows
 
-- Khách: http://127.0.0.1:8016/
-- Quản trị: http://127.0.0.1:8016/admin.html
-- Chi tiết: [START-HERE.md](START-HERE.md).
+1. Tải hoặc clone **toàn bộ** repository, cài Python và chạy `RUN-WINDOWS.bat`.
+2. Ở lần chạy đầu, tạo mật khẩu cho tài khoản quản trị `son` (6–128 ký tự, **không có mật khẩu mặc định**).
+3. Mở các địa chỉ dưới đây khi cửa sổ máy chủ vẫn đang chạy:
 
-## Mã nguồn và dữ liệu
+| Giao diện | Địa chỉ cục bộ |
+|---|---|
+| Khách hàng | http://127.0.0.1:8016/ |
+| Quản trị | http://127.0.0.1:8016/admin.html |
 
-- `server/`: backend và giao diện đang dùng; `demo/`: bản mẫu lịch sử.
-- `tests/`: kiểm thử API và logic cập nhật đơn phía khách.
-- `deploy/`: cấu hình mẫu VPS; phải đối chiếu máy/cổng/đường dẫn trước khi dùng.
-- `server/data/`: SQLite cục bộ, không đưa lên Git. Không xóa khi cập nhật mã.
-- `docs/03-system-design.md`: mô tả đúng thiết kế V3 hiện tại.
+Xem [hướng dẫn chạy và demo](START-HERE.md). **Nếu nâng cấp bản cũ**, đọc [hướng dẫn giữ dữ liệu của mốc V7.3](START-V7.3.md) trước; không xóa `server/data/` tùy tiện. Không mở trực tiếp file HTML bằng `file://`.
 
 ## Kiểm thử
 
-```sh
+```bash
 python -m pip install -r server/requirements-test.txt
 python -m unittest discover -s tests -p test_server.py -v
-node --test tests/customer-refresh.test.cjs
-node --check server/web/app.js
-node --check server/web/admin.js
+node --test tests/customer-refresh.test.cjs tests/cart-drawer.test.cjs tests/menu-cards.test.cjs
 ```
 
-CI được cấu hình cho Ubuntu/Python 3.12 và Windows/Python 3.14.
-Xem [VERIFICATION.md](VERIFICATION.md) để phân biệt kết quả đã chạy và phần chưa xác minh.
+Cần cài Node.js để chạy kiểm thử JavaScript. Xem [kết quả kiểm tra, môi trường và giới hạn xác minh](VERIFICATION.md). CI không đồng nghĩa ứng dụng đã được triển khai thành công lên VPS.
 
-## Git và triển khai
+## Cấu trúc dự án
 
-Quy trình mục tiêu: feature/fix → develop → main sau khi kiểm thử đạt.
-Hiện PR #9 chứa V3 và đang nhắm vào main; các PR cũ còn mở.
-Cần review quan hệ phụ thuộc và thống nhất nhánh tích hợp trước khi merge;
-việc tạo bản sửa này không tự merge hay đóng các PR khác.
+| Thư mục / tệp | Mục đích |
+|---|---|
+| `server/` | Backend FastAPI, giao diện hiện hành và dữ liệu mẫu |
+| `tests/` | Kiểm thử backend và JavaScript |
+| `deploy/` | Cấu hình, script và hướng dẫn VPS/Nginx |
+| `docs/` | Yêu cầu, thiết kế, hồ sơ môn học và minh chứng |
+| `demo/` | Bản demo giao diện cũ, lưu làm lịch sử |
+| `RUN-WINDOWS.bat` | Khởi chạy ứng dụng cục bộ trên Windows |
 
-Hướng dẫn VPS và sao lưu: [deploy/README.md](deploy/README.md).
-Chưa xác nhận V3 chạy trên VPS. CI kiểm thử không đồng nghĩa CD tự triển khai.
+## Tài liệu và trạng thái bàn giao
 
-## Hồ sơ thực hành trước V3
+- [Lịch sử thay đổi](CHANGELOG.md) · [Quy ước đặt tên phiên bản](docs/VERSIONING.md)
 
-### Hồ sơ B2
+- [Mục lục tài liệu dự án và hồ sơ B2–B7](docs/README.md)
+- [Hồ sơ B2 và minh chứng VPS trước V3](docs/B2-REPORT.md)
+- [Bảng kiểm bàn giao giữa kỳ](docs/MIDTERM.md) · [Rà soát PR cũ](docs/PR-REVIEW.md)
+- [Hướng dẫn triển khai VPS](deploy/README.md) · [Quy trình Git](docs/GIT.md)
 
-Website đặt đồ ăn cho sinh viên VNU
+**Trạng thái:** Mốc MVP giữa kỳ (tên nội bộ V7.3) đã được gộp vào `main` tại [PR #10](https://github.com/s2005on/vnu-food-hola/pull/10). Các bổ sung giữa kỳ đang được rà soát tại [PR #11](https://github.com/s2005on/vnu-food-hola/pull/11); **chưa coi là đã triển khai công khai** nếu chưa có kiểm chứng thực tế. URL cục bộ chỉ hoạt động trên máy chạy ứng dụng.
 
-## Người thực hiện
-
-
-
-- Lâm Hải Sơn — MSSV: 23110216.
-
-- Hiện tại dự án có một người thực hiện, phụ trách tài liệu,
-
-  giao diện, backend, kiểm thử và triển khai.
-
-
-
-## Quy trình Git của dự án
-
-
-
-- main: phiên bản ổn định.
-
-- develop: nhánh tích hợp các thay đổi.
-
-- feature/*: nhánh thực hiện từng công việc.
-
-- Quy trình: tạo nhánh từ develop → sửa và kiểm tra →
-
-  commit → push → mở Pull Request vào develop → review → merge.
-
-- Mỗi PR trình bày: thay đổi gì, vì sao, cách kiểm tra
-
-  và phần có AI hỗ trợ.
-
-- Do hiện chỉ có một thành viên, việc review chéo cần được
-
-  giảng viên hướng dẫn cách thay thế. Tự kiểm tra và AI hỗ trợ
-
-  không được ghi nhận thành review của thành viên khác.
-
-
-
-## Pre-mortem: Vì sao đồ án có thể thất bại?
-
-
-
-Giả định cuối kỳ sản phẩm không đạt yêu cầu, các nguyên nhân
-
-có thể xảy ra và cách phòng ngừa gồm:
-
-
-
-| STT | Nguy cơ thất bại | Nhóm nguyên nhân CHAOS | Hành động phòng ngừa |
-|---|---|---|---|
-| 1 | Chưa hiểu sinh viên cần gì khi đặt đồ ăn | Yêu cầu | Hỏi thử sinh viên mục tiêu, ghi lại nhu cầu và tiêu chí chấp nhận trước khi làm tính năng. |
-| 2 | Liên tục thêm thanh toán, giao hàng, khuyến mãi khiến phạm vi quá lớn | Yêu cầu | Chốt phạm vi MVP; đưa ý tưởng mới vào danh sách chờ và chỉ thêm khi việc cốt lõi đã chạy. |
-| 3 | Làm xong mới cho người dùng xem, phát hiện luồng đặt món khó dùng | Con người/bên liên quan | Cho người dùng thử từng luồng nhỏ và ghi nhận phản hồi sớm. |
-| 4 | Một người phải làm mọi phần, bị quá tải khi trùng lịch học | Quản lý/nguồn lực | Chia công việc thành nhiệm vụ nhỏ, ưu tiên chức năng bắt buộc và dành thời gian dự phòng. |
-| 5 | Ước lượng thiếu thời gian kiểm thử và triển khai | Quản lý/nguồn lực | Tính cả thời gian sửa lỗi, kiểm thử và deploy; chỉ đánh dấu hoàn thành khi có kết quả kiểm tra. |
-| 6 | Hết block VPS hoặc lỗi môi trường sát hạn nộp | Quản lý/nguồn lực | Đặt block sớm, lưu mã trên GitHub, ghi lại lệnh chạy và kiểm tra triển khai trước hạn. |
-
-- B2: đã tạo và kích hoạt môi trường `.venv`, Python 3.12.3.
-
-- Chạy thử bằng `python -m http.server 8126 --bind 127.0.0.1`.
-
-- Kiểm tra trên VPS: HTTP 200 OK, nội dung đúng tên đồ án
-
-  VJU HOLA FOOD và MSSV 23110216.
-
-- Hostname thực tế: `ubuntu`; IP VPS: `192.168.2.211`.
-
-- Đây là dịch vụ thử trong VPS, không phải URL công khai.
-
-- Ngày kiểm tra: 20/10/2026.
-
-
-
-### Minh chứng B2
-
-
-
-![Môi trường Python venv](docs/evidence/b2-venv.png)
-
-
-
-![Dịch vụ thử đang chạy](docs/evidence/b2-server.png)
-
-
-
-![HTTP 200 và nội dung trang](docs/evidence/b2-http.png)
+Dự án được thực hiện cá nhân và có AI hỗ trợ. Việc tự kiểm thử/AI hỗ trợ không thay thế review độc lập. Không commit mật khẩu, database chứa dữ liệu khách hoặc mã tra cứu bí mật.
