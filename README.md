@@ -53,13 +53,12 @@ Cần cài Node.js để chạy kiểm thử JavaScript. Xem [kết quả kiểm
 
 ## Tài liệu và trạng thái bàn giao
 
-- [Lịch sử thay đổi](CHANGELOG.md) · [Quy ước đặt tên phiên bản](docs/VERSIONING.md)
-
+- [Lịch sử thay đổi](CHANGELOG.md) · [Quy ước đặt tên phiên bản](docs/VERSIONING.md) · [Bảng kiểm trước phát hành v0.2.0 (dự kiến)](docs/RELEASE-v0.2.0.md)
 - [Mục lục tài liệu dự án và hồ sơ B2–B7](docs/README.md)
 - [Hồ sơ B2 và minh chứng VPS trước V3](docs/B2-REPORT.md)
 - [Bảng kiểm bàn giao giữa kỳ](docs/MIDTERM.md) · [Rà soát PR cũ](docs/PR-REVIEW.md)
 - [Hướng dẫn triển khai VPS](deploy/README.md) · [Quy trình Git](docs/GIT.md)
 
-**Trạng thái:** Mốc MVP giữa kỳ (tên nội bộ V7.3) đã được gộp vào `main` tại [PR #10](https://github.com/s2005on/vnu-food-hola/pull/10). Các bổ sung giữa kỳ đang được rà soát tại [PR #11](https://github.com/s2005on/vnu-food-hola/pull/11); **chưa coi là đã triển khai công khai** nếu chưa có kiểm chứng thực tế. URL cục bộ chỉ hoạt động trên máy chạy ứng dụng.
+**Trạng thái:** Mốc MVP giữa kỳ (tên nội bộ V7.3) đã được gộp vào `main` tại [PR #10](https://github.com/s2005on/vnu-food-hola/pull/10). Các bổ sung tài liệu/CI đã merge qua [PR #11](https://github.com/s2005on/vnu-food-hola/pull/11) ngày 15/11/2026; **chưa coi là đã triển khai công khai** nếu chưa có kiểm chứng thực tế. URL cục bộ chỉ hoạt động trên máy chạy ứng dụng.
 
 Dự án được thực hiện cá nhân và có AI hỗ trợ. Việc tự kiểm thử/AI hỗ trợ không thay thế review độc lập. Không commit mật khẩu, database chứa dữ liệu khách hoặc mã tra cứu bí mật.
