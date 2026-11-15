@@ -354,12 +354,17 @@ def claim_customer_order(data: ClaimOrder, request: Request):
 @app.post('/api/orders', status_code=201)
 def create_order(order: NewOrder, request: Request):
     throttle(request,'order',15)
+    customer = customer_identity(request) if not TRIAL_ID.get() else None
+    if customer and order.phone != customer['phone']:
+        fail(422, 'Số điện thoại đặt hàng phải trùng số đã đăng ký.')
     payload=order.model_dump()
     fingerprint=digest(json.dumps(payload,sort_keys=True,ensure_ascii=False))
     with db() as c:
         c.execute('BEGIN IMMEDIATE')
         old=c.execute('SELECT * FROM orders WHERE idem=?',(order.key,)).fetchone()
         if old:
+            if (old['customer_id'] is not None and (not customer or old['customer_id'] != customer['id'])) or (customer and old['customer_id'] is None):
+                fail(409, 'Đơn cũ thuộc phiên khách khác. Hãy kiểm tra trước khi đặt lại.')
             if old['fingerprint']!=fingerprint: fail(409,'Khóa đặt đơn đã dùng cho nội dung khác.')
             return {**order_view(old),'token':lookup_token(c,old['code'],order.key)}
         s=settings(c)
@@ -376,7 +381,7 @@ def create_order(order: NewOrder, request: Request):
         data={'name':order.name,'phone':order.phone,'note':order.note,'pickup':order.pickup,'time':slot['label'],'items':items,'total':sum(i['price']*i['qty'] for i in items)}
         code='VJU-'+secrets.token_hex(6).upper()
         token=lookup_token(c,code,order.key)
-        c.execute('INSERT INTO orders(code,lookup_hash,idem,fingerprint,data,status,created_at) VALUES(?,?,?,?,?,?,?)',(code,digest(token),order.key,fingerprint,json.dumps(data,ensure_ascii=False),'pending',datetime.now(TZ).isoformat()))
+        c.execute('INSERT INTO orders(code,lookup_hash,idem,fingerprint,data,status,created_at,customer_id) VALUES(?,?,?,?,?,?,?,?)',(code,digest(token),order.key,fingerprint,json.dumps(data,ensure_ascii=False),'pending',datetime.now(TZ).isoformat(),customer['id'] if customer else None))
         c.execute('INSERT INTO order_events(code,actor,action,created_at) VALUES(?,?,?,?)', (code,'customer','created',datetime.now(TZ).isoformat()))
         row=c.execute('SELECT * FROM orders WHERE code=?',(code,)).fetchone()
         return {**order_view(row),'token':token}
@@ -487,7 +492,14 @@ def stats(user=Depends(admin)):
 
 @app.get('/api/session')
 def session_info(request: Request):
-    return {'trial':bool(TRIAL_ID.get()),'trial_id':TRIAL_ID.get(),'trial_enabled':TRIAL_ENABLED,'customer': 'demo' if TRIAL_ID.get() else None, 'expired': bool(getattr(request.state, 'trial_expired', False))}
+    customer = customer_identity(request) if not TRIAL_ID.get() else None
+    return {'trial':bool(TRIAL_ID.get()), 'trial_id':TRIAL_ID.get(),
+            'trial_enabled':TRIAL_ENABLED, 'customer': 'demo' if TRIAL_ID.get() else None,
+            'customer_id': customer['id'] if customer else None,
+            'customer_name': customer['name'] if customer else None,
+            'customer_phone': customer['phone'] if customer else None,
+            'customer_csrf': customer['csrf'] if customer else None,
+            'expired': bool(getattr(request.state, 'trial_expired', False))}
 
 @app.get('/api/admin/orders/{code}/events')
 def order_events(code: str, user=Depends(admin)):
