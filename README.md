@@ -3,7 +3,7 @@
 **Website đặt món ăn cho sinh viên Trường Đại học Việt Nhật (VJU).**
 
 Dự án học phần **CSE3045** — Lâm Hải Sơn (MSSV: 23110216).  
-**Bản đang phát triển:** MVP giữa kỳ (mốc nội bộ V7.3) · **FastAPI + SQLite + HTML/CSS/JavaScript**. Git tag phát hành gần nhất: `v0.1.0` (demo tĩnh); chưa gắn tag cho MVP.
+**Mã nguồn:** MVP giữa kỳ V7.3 và các tính năng mở rộng (tài khoản khách) · **FastAPI + SQLite + HTML/CSS/JavaScript**. Git tag phát hành gần nhất: `v0.1.0` (demo tĩnh); chưa gắn tag cho MVP.
 
 > Đây là ứng dụng **chạy thử phục vụ học tập**: một quán, thực đơn và giá mẫu. Chưa xác nhận triển khai công khai MVP hoặc vận hành thương mại với quán thật.
 
@@ -13,9 +13,11 @@ Dự án học phần **CSE3045** — Lâm Hải Sơn (MSSV: 23110216).
 - **Theo dõi đơn:** lưu đơn trong SQLite; tra cứu bằng mã đơn và mã bí mật; hạn chế tạo đơn trùng khi gửi lại.
 - **Quản trị quán:** đăng nhập, quản lý món, xác nhận/chuẩn bị/hoàn thành hoặc hủy đơn; ghi nhận thanh toán tiền mặt.
 - **An toàn nghiệp vụ:** giá được tính ở máy chủ; trạng thái thanh toán và xử lý đơn được quản lý tách biệt.
+- **Tài khoản khách:** đăng ký bằng họ tên, số điện thoại, mật khẩu; đăng nhập và xem lịch sử đơn được lưu trên máy chủ, kể cả khi đổi thiết bị.
+- **Khách không đăng nhập:** vẫn đặt món và tra cứu bằng mã đơn + mã bí mật; có thể liên kết một đơn cũ vào tài khoản bằng cả hai mã.
 - **Chế độ demo:** có dữ liệu thử riêng; không thay thế luồng khách và quán trên cơ sở dữ liệu chính.
 
-**Giới hạn:** chưa có thanh toán online, giao hàng qua shipper, nhiều quán hoặc tài khoản khách đăng ký độc lập.
+**Giới hạn:** chưa có thanh toán online, giao hàng qua shipper, nhiều quán hoặc xác minh số điện thoại bằng OTP. Không dùng dữ liệu thật trước khi hoàn tất kiểm thử triển khai và chính sách bảo vệ dữ liệu.
 
 ## Chạy nhanh trên Windows
 

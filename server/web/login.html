@@ -1,5 +1,94 @@
-<!doctype html><html lang="vi"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Tài khoản demo · VJU Food Hola</title><link rel="stylesheet" href="style.css?v=7.3"><link rel="stylesheet" href="polish.css?v=7.3"><link rel="stylesheet" href="v7.css?v=7.3"><script src="account.js?v=7.3" defer></script></head><body>
-<header class="top"><a class="brand" href="./"><span class="brand-icon">V</span>VJU <b>food hola</b></a><nav><a href="./">← Về thực đơn</a><a href="review.html">Hướng dẫn sử dụng</a></nav></header><div id="trial-banner" class="trial-banner" hidden></div>
-<main class="login-layout"><section class="login-story"><span class="eyebrow">MỘT VÒNG TRẢI NGHIỆM</span><h1>Đặt món dễ dàng.<br><em>Trải nghiệm ngay.</em></h1><p>Khám phá thực đơn, đặt món và theo dõi từng bước xử lý trong một phiên demo riêng.</p><ol class="journey"><li><b>01 · Chọn món</b><span>Chọn món và thêm vào giỏ hàng.</span></li><li><b>02 · Xử lý tại quán</b><span>Xác nhận, chuẩn bị, ghi nhận thu tiền.</span></li><li><b>03 · Theo dõi đơn</b><span>Tra cứu đơn, tải lại trang và kiểm tra dữ liệu.</span></li></ol><div class="sample-plate" aria-hidden="true">🍲 <span>một bữa ngon<br>một trải nghiệm trọn vẹn</span></div></section>
-<section class="login-card"><span class="eyebrow">CHÀO BẠN 👋</span><h2>Chọn cách sử dụng</h2><button id="guest-start" type="button" class="primary">Tiếp tục với vai trò khách →</button><p>Không cần tài khoản. Đơn được lưu vào dữ liệu chung của quán; quản trị quán đăng nhập bằng tài khoản riêng để xử lý.</p><div class="login-separator"></div><h3>Hoặc thử trong phiên demo</h3><p class="muted">Mỗi lần đăng nhập có một không gian demo riêng. Đơn không gửi tới quán thật.</p><div class="credential-box"><div><small>TÀI KHOẢN DEMO</small><b>demo</b><code>VjuTest2026!</code></div><button id="fill-credentials" type="button" class="secondary">Điền nhanh</button></div>
-<form id="trial-login"><label for="test-user">Tên đăng nhập</label><input id="test-user" name="username" autocomplete="username" required placeholder="demo"><label for="test-password">Mật khẩu demo</label><input id="test-password" name="password" type="password" autocomplete="current-password" required placeholder="Mật khẩu công khai ở trên"><p id="trial-error" role="status"></p><button class="primary" type="submit">Vào chế độ demo <span>↗</span></button></form><p class="form-hint">Phiên demo kéo dài 2 giờ. Chỉ sử dụng thông tin giả lập.</p><div class="login-separator"></div><a href="admin.html">Đăng nhập quản trị quán →</a><p class="muted">Quản trị demo: shoptest / QuanTest2026! (đăng nhập demo trước).</p></section></main></body></html>
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#f16b32">
+  <title>Tài khoản khách hàng · VNU Food Hola</title>
+  <link rel="stylesheet" href="style.css?v=7.3">
+  <link rel="stylesheet" href="polish.css?v=7.3">
+  <link rel="stylesheet" href="v7.css?v=7.3">
+  <link rel="stylesheet" href="customer.css?v=account-1">
+  <script src="account.js?v=account-1" defer></script>
+  <script src="customer-auth.js?v=account-1" defer></script>
+</head>
+<body>
+<header class="top"><a class="brand" href="./"><span class="brand-icon">V</span>VJU <b>food hola</b></a>
+<nav><a href="./">← Về thực đơn</a><a href="review.html">Hướng dẫn sử dụng</a></nav></header>
+<div id="trial-banner" class="trial-banner" hidden></div>
+<main class="login-layout">
+<section class="login-story">
+  <span class="eyebrow">ĐẶT MÓN CÙNG VJU FOOD HOLA</span>
+  <h1>Ăn ngon hôm nay.<br><em>Tiện lợi mỗi ngày.</em></h1>
+  <p>Tạo tài khoản để lưu đơn vào lịch sử cá nhân và theo dõi đơn ngay cả khi bạn chuyển thiết bị.</p>
+  <ol class="journey">
+    <li><b>01 · Tạo tài khoản</b><span>Dùng họ tên, số điện thoại và mật khẩu riêng.</span></li>
+    <li><b>02 · Chọn món</b><span>Giỏ hàng, đặt món và thanh toán tiền mặt khi nhận.</span></li>
+    <li><b>03 · Theo dõi đơn</b><span>Xem lịch sử trên máy chủ khi đăng nhập lại.</span></li>
+  </ol>
+  <div class="sample-plate" aria-hidden="true">🍲 <span>Một bữa ngon<br>một ngày trọn vẹn</span></div>
+</section>
+<section class="login-card">
+  <span class="eyebrow">CHÀO BẠN 👋</span>
+  <h2>Tài khoản của bạn</h2>
+  <div id="customer-profile" class="account-profile" hidden>
+    <span class="eyebrow">ĐÃ ĐĂNG NHẬP</span>
+    <h3 id="profile-name"></h3>
+    <p class="profile-phone" id="profile-phone"></p>
+    <a class="primary" href="./">Đến thực đơn và xem đơn của tôi →</a>
+    <p id="profile-message" class="account-error" role="status"></p>
+    <button id="customer-signout" type="button" class="secondary">Đăng xuất tài khoản khách</button>
+  </div>
+  <p id="customer-trial-note" class="account-warning" hidden></p>
+  <div id="customer-auth-forms" class="account-auth">
+    <div class="account-switch" role="tablist" aria-label="Đăng nhập hoặc đăng ký">
+      <button type="button" id="tab-login" role="tab" aria-selected="true" data-auth-tab="login">Đăng nhập</button>
+      <button type="button" id="tab-register" role="tab" aria-selected="false" data-auth-tab="register">Đăng ký</button>
+    </div>
+    <form id="customer-login" autocomplete="on">
+      <label for="login-phone">Số điện thoại</label>
+      <input id="login-phone" name="phone" type="tel" inputmode="numeric" pattern="0[0-9]{9}" maxlength="10" autocomplete="username" placeholder="0xxxxxxxxx" required>
+      <label for="login-pass">Mật khẩu</label>
+      <input id="login-pass" name="password" type="password" minlength="1" maxlength="128" autocomplete="current-password" required>
+      <button class="primary" type="submit">Đăng nhập và đặt món →</button>
+    </form>
+    <form id="customer-register" autocomplete="on" hidden>
+      <label for="register-name">Họ và tên</label>
+      <input id="register-name" name="name" minlength="2" maxlength="60" autocomplete="name" placeholder="Tên của bạn" required>
+      <label for="register-phone">Số điện thoại</label>
+      <input id="register-phone" name="phone" type="tel" inputmode="numeric" pattern="0[0-9]{9}" maxlength="10" autocomplete="tel" placeholder="0xxxxxxxxx" required>
+      <label for="register-pass">Mật khẩu (ít nhất 10 ký tự)</label>
+      <input id="register-pass" name="password" type="password" minlength="10" maxlength="128" autocomplete="new-password" required>
+      <label for="register-confirm">Nhập lại mật khẩu</label>
+      <input id="register-confirm" name="confirm" type="password" minlength="10" maxlength="128" autocomplete="new-password" required>
+      <button class="primary" type="submit">Tạo tài khoản →</button>
+    </form>
+    <p id="customer-error" class="account-error" role="status" aria-live="polite"></p>
+    <p class="account-benefits">Tài khoản khách tách biệt với tài khoản quản trị và chế độ demo. Số điện thoại chưa được xác minh bằng SMS; hãy dùng số của bạn và bảo mật mật khẩu.</p>
+  </div>
+  <div id="guest-choice">
+    <div class="login-separator"></div>
+    <h3>Không muốn đăng ký?</h3>
+    <button id="guest-start" type="button" class="secondary">Tiếp tục với vai trò khách →</button>
+    <p class="muted">Khách không đăng nhập vẫn đặt món được; nhớ giữ mã đơn và mã tra cứu bí mật.</p>
+  </div>
+  <div class="login-separator"></div>
+  <section class="account-demo-section" aria-label="Chế độ demo">
+    <h3>Trải nghiệm phiên demo riêng</h3>
+    <p class="muted">Đơn demo không gửi vào danh sách đơn của quán và không gắn với tài khoản khách.</p>
+    <div class="credential-box"><div><small>TÀI KHOẢN DEMO</small><b>demo</b><code>VjuTest2026!</code></div><button id="fill-credentials" type="button" class="secondary">Điền nhanh</button></div>
+    <form id="trial-login">
+      <label for="test-user">Tên đăng nhập</label>
+      <input id="test-user" name="username" autocomplete="username" required placeholder="demo">
+      <label for="test-password">Mật khẩu demo</label>
+      <input id="test-password" name="password" type="password" autocomplete="current-password" required>
+      <p id="trial-error" role="status"></p>
+      <button class="primary" type="submit">Vào chế độ demo ↗</button>
+    </form>
+    <p class="form-hint">Phiên demo kéo dài 2 giờ, chỉ dùng dữ liệu giả lập.</p>
+  </section>
+  <div class="login-separator"></div>
+  <a href="admin.html">Đăng nhập quản trị quán →</a>
+  <p class="muted">Quản trị thử trong phiên demo: shoptest / QuanTest2026! (không phải tài khoản quản trị thật).</p>
+</section>
+</main>
+</body></html>

@@ -51,13 +51,15 @@ def init_db():
         CREATE TABLE IF NOT EXISTS settings(id INTEGER PRIMARY KEY CHECK(id=1), data TEXT NOT NULL, secret TEXT NOT NULL);
         CREATE TABLE IF NOT EXISTS dishes(id INTEGER PRIMARY KEY AUTOINCREMENT, data TEXT NOT NULL);
         CREATE TABLE IF NOT EXISTS admins(username TEXT PRIMARY KEY, salt TEXT NOT NULL, hash TEXT NOT NULL);
+        CREATE TABLE IF NOT EXISTS customers(id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT NOT NULL, phone TEXT UNIQUE NOT NULL, salt TEXT NOT NULL, hash TEXT NOT NULL, created_at TEXT NOT NULL);
+        CREATE TABLE IF NOT EXISTS customer_sessions(token_hash TEXT PRIMARY KEY, customer_id INTEGER NOT NULL REFERENCES customers(id) ON DELETE CASCADE, csrf TEXT NOT NULL, expires REAL NOT NULL);
         CREATE TABLE IF NOT EXISTS sessions(token TEXT PRIMARY KEY, username TEXT NOT NULL REFERENCES admins(username), csrf TEXT NOT NULL, expires REAL NOT NULL);
         CREATE TABLE IF NOT EXISTS orders(code TEXT PRIMARY KEY, lookup_hash TEXT NOT NULL, idem TEXT UNIQUE NOT NULL, fingerprint TEXT NOT NULL, data TEXT NOT NULL, status TEXT NOT NULL, paid INTEGER NOT NULL DEFAULT 0, cancel_reason TEXT NOT NULL DEFAULT '', created_at TEXT NOT NULL);
         ''')
         columns = {r['name'] for r in c.execute('PRAGMA table_info(orders)')}
-        for column in ('updated_at', 'paid_at'):
+        for column in ('updated_at', 'paid_at', 'customer_id'):
             if column not in columns:
-                c.execute(f'ALTER TABLE orders ADD COLUMN {column} TEXT')
+                c.execute(f'ALTER TABLE orders ADD COLUMN {column} {"INTEGER REFERENCES customers(id)" if column == "customer_id" else "TEXT"}')
         if not c.execute('SELECT 1 FROM settings').fetchone():
             c.execute('INSERT INTO settings VALUES(1,?,?)', (json.dumps({'name':'Quán mẫu gần VJU','accepting':True,'opens':'10:00','closes':'22:00'}), secrets.token_hex(32)))
             for item in json.loads((HERE/'seed.json').read_text(encoding='utf-8')):
@@ -121,6 +123,19 @@ class Login(Model):
     model_config = ConfigDict(extra='forbid', str_strip_whitespace=False)
     username: Annotated[str, StringConstraints(strip_whitespace=True, min_length=1, max_length=100)]
     password: str = Field(min_length=1, max_length=128)
+class CustomerRegistration(Model):
+    name: Annotated[str, StringConstraints(min_length=2, max_length=60)]
+    phone: str = Field(pattern=r'^0[0-9]{9}$')
+    password: str = Field(min_length=10, max_length=128)
+
+class CustomerCredentials(Model):
+    phone: str = Field(pattern=r'^0[0-9]{9}$')
+    password: str = Field(min_length=1, max_length=128)
+
+class ClaimOrder(Model):
+    code: str = Field(pattern=r'^VJU-[0-9A-F]{12}$')
+    token: str = Field(min_length=16, max_length=128)
+
 class Dish(Model):
     name: Text
     desc: str = Field(default='', max_length=300)
@@ -232,15 +247,124 @@ def lookup_token(c, code, key):
 def order_view(row):
     return {**json.loads(row['data']), 'updated_at':row['updated_at'], 'paid_at':row['paid_at'], 'code':row['code'], 'status':row['status'], 'paid':bool(row['paid']), 'cancel_reason':row['cancel_reason'], 'date':row['created_at']}
 
+CUSTOMER_SESSION_AGE = 7 * 24 * 60 * 60
+
+def customer_identity(request: Request):
+    """Resolve a customer using a hashed, unexpired HttpOnly session cookie."""
+    token = request.cookies.get('vju_customer', '')
+    if not token:
+        return None
+    with db() as c:
+        row = c.execute('''
+            SELECT customers.id, customers.name, customers.phone, customer_sessions.csrf
+            FROM customer_sessions JOIN customers ON customers.id = customer_sessions.customer_id
+            WHERE customer_sessions.token_hash=? AND customer_sessions.expires>?
+        ''', (digest(token), time.time())).fetchone()
+    return dict(row) if row else None
+
+def require_customer(request: Request):
+    if TRIAL_ID.get():
+        fail(409, 'Hãy thoát chế độ demo trước khi sử dụng tài khoản khách.')
+    result = customer_identity(request)
+    if not result:
+        fail(401, 'Vui lòng đăng nhập tài khoản khách.')
+    return result
+
+def customer_csrf(request: Request, customer):
+    if not hmac.compare_digest(customer['csrf'], request.headers.get('x-csrf-token', '')):
+        fail(403, 'Phiên không hợp lệ. Vui lòng tải lại trang.')
+
+def customer_login_response(response: Response, record):
+    token, csrf = secrets.token_urlsafe(32), secrets.token_urlsafe(32)
+    with db() as c:
+        c.execute('DELETE FROM customer_sessions WHERE expires<?', (time.time(),))
+        c.execute('INSERT INTO customer_sessions VALUES(?,?,?,?)',
+                  (digest(token), record['id'], csrf, time.time()+CUSTOMER_SESSION_AGE))
+    response.set_cookie('vju_customer', token, max_age=CUSTOMER_SESSION_AGE,
+                        httponly=True, secure=SECURE, samesite='strict', path=COOKIE_PATH)
+    return {'id': record['id'], 'name': record['name'], 'phone': record['phone'], 'csrf': csrf}
+
+@app.post('/api/customer/register', status_code=201)
+def customer_register(data: CustomerRegistration, request: Request, response: Response):
+    if TRIAL_ID.get():
+        fail(409, 'Hãy thoát chế độ demo trước khi đăng ký.')
+    throttle(request, 'customer-register', 5)
+    salt = secrets.token_hex(16)
+    hashed = password_hash(data.password, salt)
+    try:
+        with db() as c:
+            cur = c.execute('INSERT INTO customers(name,phone,salt,hash,created_at) VALUES(?,?,?,?,?)',
+                            (data.name, data.phone, salt, hashed, datetime.now(TZ).isoformat()))
+            record = {'id': cur.lastrowid, 'name': data.name, 'phone': data.phone}
+    except sqlite3.IntegrityError:
+        fail(409, 'Số điện thoại này đã có tài khoản. Hãy đăng nhập.')
+    return customer_login_response(response, record)
+
+@app.post('/api/customer/login')
+def customer_login(data: CustomerCredentials, request: Request, response: Response):
+    if TRIAL_ID.get():
+        fail(409, 'Hãy thoát chế độ demo trước khi đăng nhập.')
+    throttle(request, 'customer-login', 8)
+    with db() as c:
+        row = c.execute('SELECT * FROM customers WHERE phone=?', (data.phone,)).fetchone()
+    salt = row['salt'] if row else '00'*16
+    verified = hmac.compare_digest(password_hash(data.password, salt), row['hash'] if row else '0'*128)
+    if not row or not verified:
+        fail(401, 'Số điện thoại hoặc mật khẩu không chính xác.')
+    return customer_login_response(response, dict(row))
+
+@app.get('/api/customer/me')
+def customer_me(request: Request):
+    customer = require_customer(request)
+    return {k: customer[k] for k in ('id', 'name', 'phone', 'csrf')}
+
+@app.post('/api/customer/logout')
+def customer_logout(request: Request, response: Response):
+    customer = require_customer(request)
+    customer_csrf(request, customer)
+    with db() as c:
+        c.execute('DELETE FROM customer_sessions WHERE token_hash=?',
+                  (digest(request.cookies.get('vju_customer', '')),))
+    response.delete_cookie('vju_customer', path=COOKIE_PATH)
+    return {'ok': True}
+
+@app.get('/api/customer/orders')
+def customer_orders(request: Request):
+    customer = require_customer(request)
+    with db() as c:
+        rows = c.execute('SELECT * FROM orders WHERE customer_id=? ORDER BY created_at DESC LIMIT 100',
+                         (customer['id'],)).fetchall()
+    return [order_view(row) for row in rows]
+
+@app.post('/api/customer/orders/claim')
+def claim_customer_order(data: ClaimOrder, request: Request):
+    customer = require_customer(request)
+    customer_csrf(request, customer)
+    with db() as c:
+        c.execute('BEGIN IMMEDIATE')
+        row = c.execute('SELECT * FROM orders WHERE code=?', (data.code,)).fetchone()
+        if not row or not hmac.compare_digest(row['lookup_hash'], digest(data.token)):
+            fail(404, 'Mã đơn hoặc mã tra cứu không đúng.')
+        if row['customer_id'] is not None and row['customer_id'] != customer['id']:
+            fail(409, 'Đơn này đã thuộc tài khoản khác.')
+        if row['customer_id'] is None:
+            c.execute('UPDATE orders SET customer_id=? WHERE code=?', (customer['id'], data.code))
+        return order_view(c.execute('SELECT * FROM orders WHERE code=?', (data.code,)).fetchone())
+
 @app.post('/api/orders', status_code=201)
 def create_order(order: NewOrder, request: Request):
     throttle(request,'order',15)
+    customer = customer_identity(request) if not TRIAL_ID.get() else None
+    if customer and order.phone != customer['phone']:
+        fail(422, 'Số điện thoại đặt hàng phải trùng số đã đăng ký.')
     payload=order.model_dump()
     fingerprint=digest(json.dumps(payload,sort_keys=True,ensure_ascii=False))
     with db() as c:
         c.execute('BEGIN IMMEDIATE')
         old=c.execute('SELECT * FROM orders WHERE idem=?',(order.key,)).fetchone()
         if old:
+            if (old['customer_id'] is not None and (not customer or old['customer_id'] != customer['id'])) or (customer and old['customer_id'] is None):
+                fail(409, 'Đơn cũ thuộc phiên khách khác. Hãy kiểm tra trước khi đặt lại.')
             if old['fingerprint']!=fingerprint: fail(409,'Khóa đặt đơn đã dùng cho nội dung khác.')
             return {**order_view(old),'token':lookup_token(c,old['code'],order.key)}
         s=settings(c)
@@ -257,7 +381,7 @@ def create_order(order: NewOrder, request: Request):
         data={'name':order.name,'phone':order.phone,'note':order.note,'pickup':order.pickup,'time':slot['label'],'items':items,'total':sum(i['price']*i['qty'] for i in items)}
         code='VJU-'+secrets.token_hex(6).upper()
         token=lookup_token(c,code,order.key)
-        c.execute('INSERT INTO orders(code,lookup_hash,idem,fingerprint,data,status,created_at) VALUES(?,?,?,?,?,?,?)',(code,digest(token),order.key,fingerprint,json.dumps(data,ensure_ascii=False),'pending',datetime.now(TZ).isoformat()))
+        c.execute('INSERT INTO orders(code,lookup_hash,idem,fingerprint,data,status,created_at,customer_id) VALUES(?,?,?,?,?,?,?,?)',(code,digest(token),order.key,fingerprint,json.dumps(data,ensure_ascii=False),'pending',datetime.now(TZ).isoformat(),customer['id'] if customer else None))
         c.execute('INSERT INTO order_events(code,actor,action,created_at) VALUES(?,?,?,?)', (code,'customer','created',datetime.now(TZ).isoformat()))
         row=c.execute('SELECT * FROM orders WHERE code=?',(code,)).fetchone()
         return {**order_view(row),'token':token}
@@ -368,7 +492,14 @@ def stats(user=Depends(admin)):
 
 @app.get('/api/session')
 def session_info(request: Request):
-    return {'trial':bool(TRIAL_ID.get()),'trial_id':TRIAL_ID.get(),'trial_enabled':TRIAL_ENABLED,'customer': 'demo' if TRIAL_ID.get() else None, 'expired': bool(getattr(request.state, 'trial_expired', False))}
+    customer = customer_identity(request) if not TRIAL_ID.get() else None
+    return {'trial':bool(TRIAL_ID.get()), 'trial_id':TRIAL_ID.get(),
+            'trial_enabled':TRIAL_ENABLED, 'customer': 'demo' if TRIAL_ID.get() else None,
+            'customer_id': customer['id'] if customer else None,
+            'customer_name': customer['name'] if customer else None,
+            'customer_phone': customer['phone'] if customer else None,
+            'customer_csrf': customer['csrf'] if customer else None,
+            'expired': bool(getattr(request.state, 'trial_expired', False))}
 
 @app.get('/api/admin/orders/{code}/events')
 def order_events(code: str, user=Depends(admin)):

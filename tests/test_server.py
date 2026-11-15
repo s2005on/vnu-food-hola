@@ -364,4 +364,102 @@ class ServerTests(unittest.TestCase):
         self.assertEqual(len(late),49)
         self.assertTrue(all(x['id'].startswith('2026-11-09') for x in late))
 
+    def test_customer_registration_login_and_order_history(self):
+        r=self.client.post('/api/customer/register',json={'name':'Nguyễn Minh Anh','phone':'0900000000','password':'SecurePass2026!'})
+        self.assertEqual(r.status_code,201,r.text)
+        self.assertNotIn('password',r.json())
+        self.assertIn('HttpOnly',r.headers['set-cookie'])
+        self.assertIn('SameSite=strict',r.headers['set-cookie'])
+        self.assertEqual(r.json()['phone'],'0900000000')
+        session=self.client.get('/api/session').json()
+        self.assertEqual(session['customer_name'],'Nguyễn Minh Anh')
+        order=self.order()
+        owned=self.client.get('/api/customer/orders')
+        self.assertEqual(owned.status_code,200)
+        self.assertEqual([x['code'] for x in owned.json()],[order['code']])
+        self.assertNotIn('token',owned.text)
+        self.assertEqual(self.client.get('/api/customer/me').json()['name'],'Nguyễn Minh Anh')
+        self.assertEqual(self.client.post('/api/customer/logout',json={}).status_code,403)
+        self.client.headers['X-CSRF-Token']=r.json()['csrf']
+        self.assertEqual(self.client.post('/api/customer/logout',json={}).status_code,200)
+        self.assertEqual(self.client.get('/api/customer/orders').status_code,401)
+        self.assertIsNone(self.client.get('/api/session').json()['customer_id'])
+        again=self.client.post('/api/customer/login',json={'phone':'0900000000','password':'SecurePass2026!'})
+        self.assertEqual(again.status_code,200,again.text)
+        self.assertEqual(self.client.get('/api/customer/orders').json()[0]['code'],order['code'])
+
+    def test_customer_registration_validation_and_duplicate_phone(self):
+        url='/api/customer/register'
+        self.assertEqual(self.client.post(url,json={'name':'A','phone':'0900000000','password':'SecurePass2026!'}).status_code,422)
+        self.assertEqual(self.client.post(url,json={'name':'Minh Anh','phone':'bad','password':'SecurePass2026!'}).status_code,422)
+        self.assertEqual(self.client.post(url,json={'name':'Minh Anh','phone':'0900000000','password':'short'}).status_code,422)
+        body={'name':'Minh Anh','phone':'0900000000','password':'SecurePass2026!'}
+        self.assertEqual(self.client.post(url,json=body).status_code,201)
+        self.assertEqual(self.client.post(url,json=body).status_code,409)
+        with mod.db() as c:
+            row=c.execute('SELECT salt,hash FROM customers WHERE phone=?',(body['phone'],)).fetchone()
+            self.assertNotEqual(row['hash'],body['password'])
+            self.assertGreaterEqual(len(row['hash']),64)
+        self.assertEqual(self.client.post('/api/customer/login',json={'phone':'0900000000','password':'incorrect'}).status_code,401)
+        self.assertEqual(self.client.post('/api/customer/login',json={'phone':'0999999999','password':'incorrect'}).status_code,401)
+
+    def test_customer_account_isolation_and_phone_binding(self):
+        first=self.client.post('/api/customer/register',json={'name':'Khách Một','phone':'0900000000','password':'FirstSecure2026!'})
+        self.assertEqual(first.status_code,201)
+        own_order=self.order()
+        self.client.headers['X-CSRF-Token']=first.json()['csrf']
+        self.assertEqual(self.client.post('/api/customer/logout',json={}).status_code,200)
+        second=self.client.post('/api/customer/register',json={'name':'Khách Hai','phone':'0911111111','password':'SecondSecure2026!'})
+        self.assertEqual(second.status_code,201)
+        self.assertEqual(self.client.get('/api/customer/orders').json(),[])
+        self.assertEqual(self.client.post('/api/orders',json=self.payload()).status_code,422)
+        self.client.headers['X-CSRF-Token']=second.json()['csrf']
+        self.assertEqual(self.client.post('/api/customer/orders/claim',json={'code':own_order['code'],'token':own_order['token']}).status_code,409)
+        data=self.payload();data['phone']='0911111111'
+        order2=self.order(data)
+        self.assertEqual([x['code'] for x in self.client.get('/api/customer/orders').json()],[order2['code']])
+        self.assertNotEqual(order2['code'],own_order['code'])
+
+    def test_guest_order_claim_requires_secret_and_csrf(self):
+        guest=self.order()
+        r=self.client.post('/api/customer/register',json={'name':'Hà My','phone':'0900000000','password':'SecurePass2026!'})
+        self.assertEqual(r.status_code,201)
+        self.assertEqual(self.client.get('/api/customer/orders').json(),[])
+        path='/api/customer/orders/claim'
+        self.assertEqual(self.client.post(path,json={'code':guest['code'],'token':'bad-token-0123456789'}).status_code,403)
+        self.client.headers['X-CSRF-Token']=r.json()['csrf']
+        self.assertEqual(self.client.post(path,json={'code':guest['code'],'token':'wrong-token-0123456789'}).status_code,404)
+        self.assertEqual(self.client.post(path,json={'code':guest['code'],'token':guest['token']}).status_code,200)
+        self.assertEqual(self.client.post(path,json={'code':guest['code'],'token':guest['token']}).status_code,200)
+        self.assertEqual([x['code'] for x in self.client.get('/api/customer/orders').json()],[guest['code']])
+
+    def test_customer_history_from_another_browser(self):
+        body={'name':'Minh Anh','phone':'0900000000','password':'SecurePass2026!'}
+        self.assertEqual(self.client.post('/api/customer/register',json=body).status_code,201)
+        code=self.order()['code']
+        with TestClient(mod.app) as other:
+            other.headers['X-VJU-Request']='1'
+            self.assertEqual(other.get('/api/customer/orders').status_code,401)
+            login=other.post('/api/customer/login',json={'phone':body['phone'],'password':body['password']})
+            self.assertEqual(login.status_code,200,login.text)
+            history=other.get('/api/customer/orders')
+            self.assertEqual(history.status_code,200)
+            self.assertEqual([x['code'] for x in history.json()],[code])
+            self.assertNotIn('lookup_hash',history.text)
+            self.assertNotIn('token',history.text)
+
+    def test_customer_demo_isolation_and_expired_sessions(self):
+        self.assertEqual(self.client.get('/api/customer/orders').status_code,401)
+        login=self.client.post('/api/trial/login',json={'username':'demo','password':mod.TRIAL_PASSWORD})
+        self.assertEqual(login.status_code,200)
+        data={'name':'Minh Anh','phone':'0900000000','password':'SecurePass2026!'}
+        self.assertEqual(self.client.post('/api/customer/register',json=data).status_code,409)
+        self.assertEqual(self.client.post('/api/customer/login',json={'phone':data['phone'],'password':data['password']}).status_code,409)
+        self.assertEqual(self.client.get('/api/customer/orders').status_code,409)
+        self.client.post('/api/trial/logout',json={})
+        self.assertEqual(self.client.post('/api/customer/register',json=data).status_code,201)
+        with mod.db() as c: c.execute('UPDATE customer_sessions SET expires=0')
+        self.assertEqual(self.client.get('/api/customer/me').status_code,401)
+        self.assertEqual(self.client.get('/api/customer/orders').status_code,401)
+
 if __name__=='__main__':unittest.main()

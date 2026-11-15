@@ -31,7 +31,8 @@ jobs:
       - run: node --check server/web/app.js
       - run: node --check server/web/admin.js
       - run: node --check server/web/account.js
-      - run: node --test tests/customer-refresh.test.cjs tests/cart-drawer.test.cjs tests/menu-cards.test.cjs
+      - run: node --check server/web/customer-auth.js
+      - run: node --test tests/customer-refresh.test.cjs tests/cart-drawer.test.cjs tests/menu-cards.test.cjs tests/customer-accounts.test.cjs
       - run: node --check server/web/cart-drawer.js
       - name: Check deployment scripts
         if: runner.os == 'Linux'
