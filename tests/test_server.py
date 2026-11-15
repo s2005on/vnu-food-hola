@@ -433,6 +433,21 @@ class ServerTests(unittest.TestCase):
         self.assertEqual(self.client.post(path,json={'code':guest['code'],'token':guest['token']}).status_code,200)
         self.assertEqual([x['code'] for x in self.client.get('/api/customer/orders').json()],[guest['code']])
 
+    def test_customer_history_from_another_browser(self):
+        body={'name':'Minh Anh','phone':'0900000000','password':'SecurePass2026!'}
+        self.assertEqual(self.client.post('/api/customer/register',json=body).status_code,201)
+        code=self.order()['code']
+        with TestClient(mod.app) as other:
+            other.headers['X-VJU-Request']='1'
+            self.assertEqual(other.get('/api/customer/orders').status_code,401)
+            login=other.post('/api/customer/login',json={'phone':body['phone'],'password':body['password']})
+            self.assertEqual(login.status_code,200,login.text)
+            history=other.get('/api/customer/orders')
+            self.assertEqual(history.status_code,200)
+            self.assertEqual([x['code'] for x in history.json()],[code])
+            self.assertNotIn('lookup_hash',history.text)
+            self.assertNotIn('token',history.text)
+
     def test_customer_demo_isolation_and_expired_sessions(self):
         self.assertEqual(self.client.get('/api/customer/orders').status_code,401)
         login=self.client.post('/api/trial/login',json={'username':'demo','password':mod.TRIAL_PASSWORD})
