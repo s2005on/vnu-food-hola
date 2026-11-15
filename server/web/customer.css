@@ -1,0 +1,21 @@
+/* Customer authentication — isolated from the legacy demo and admin UI. */
+.account-auth {margin:22px 0 28px;padding:20px;border:1px solid #e4e7de;border-radius:18px;background:#fff}
+.account-auth h3{margin:8px 0}
+.account-switch{display:flex;gap:8px;padding:5px;background:#f3f5f1;border-radius:12px;margin-bottom:16px}
+.account-switch button{flex:1;border:0;background:transparent;color:#315744;padding:11px 12px;border-radius:9px;font-weight:700;cursor:pointer}
+.account-switch button.selected{background:#315744;color:white}
+.account-switch button:focus-visible{outline:3px solid #ef642b;outline-offset:2px}
+.account-auth form{display:grid;gap:10px}
+.account-auth form[hidden],.account-auth [hidden],#customer-profile[hidden],#guest-choice[hidden],#customer-trial-note[hidden]{display:none!important}
+.account-auth label{font-weight:700;font-size:13px;margin-top:6px}
+.account-auth input{width:100%;border:1px solid #cdd5cd;padding:12px 14px;border-radius:10px;background:white}
+.account-auth button.primary{margin-top:12px;width:100%;padding:14px 18px}
+.account-auth .account-error{min-height:1.3em;color:#a22920;font-weight:600;margin:12px 0 0}
+.account-profile{padding:22px;border:1px solid #d6e5d9;border-radius:16px;background:#f4faf4;margin:20px 0}
+.account-profile h3{margin:5px 0}
+.account-profile .profile-phone{font-weight:600;color:#315744;margin-bottom:18px}
+.account-profile .secondary{margin-top:10px}
+.account-benefits{color:#59655c;font-size:13px;line-height:1.65;margin:10px 0}
+.account-demo-section{border-top:1px solid #e4e7de;padding-top:20px}
+.account-warning{color:#ad3a29;background:#fff5ec;padding:12px;border-radius:10px;margin-top:12px}
+@media(max-width:720px){.account-auth{padding:16px;margin:16px 0}}
