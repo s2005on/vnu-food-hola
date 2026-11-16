@@ -8,8 +8,8 @@
 
 Phạm vi: backend/API, quản lý dữ liệu và backup, giao diện khách/quản trị, kiểm thử, cấu hình triển khai và tài liệu phiên bản.
 
-- 46 kiểm thử Python và 15 kiểm thử JavaScript đạt.
-- Bản sửa thanh điều hướng giữ nguyên API và schema; kiểm tra cú pháp JavaScript và Bash đạt.
+- Đã bổ sung 2 kiểm thử Python về phiên checkout và 1 kiểm thử JavaScript về header gửi đơn; xem kết quả CI của PR #17 để xác nhận lượt kiểm thử mới.
+- Bản sửa thanh điều hướng và kiểm tra phiên checkout không thay đổi schema SQLite hay dependencies.
 - `v0.2.0` đã phát hành tại `f0359f6`; các tài liệu còn ghi “chưa tạo tag” được cập nhật.
 - Kiểm tra trực quan bản sửa header chưa hoàn tất do Chromium không khởi động được trong môi trường kiểm thử.
 
