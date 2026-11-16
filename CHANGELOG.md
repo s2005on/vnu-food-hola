@@ -4,8 +4,9 @@
 
 - Giữ thanh điều hướng khách hàng khi cuộn; tự điều chỉnh khoảng cuộn theo chiều cao header.
 - Rút gọn tài liệu và cập nhật thông tin v0.2.0 đã phát hành.
-- Tổng hợp kiểm thử và vấn đề còn mở tại [VERIFICATION.md](VERIFICATION.md).
-- Không thay đổi backend, database hoặc dependencies.
+- Bổ sung kiểm tra phiên khi đặt món, ngăn đơn bị tạo sai tài khoản sau khi đăng xuất/đổi phiên ở tab khác (HTTP 409).
+- Thêm kiểm thử hồi quy checkout, tổng hợp giới hạn tại [VERIFICATION.md](VERIFICATION.md).
+- Không thay đổi schema SQLite hoặc dependencies.
 
 [Ghi chú phiên bản](docs/RELEASE-v0.2.1.md).
 
