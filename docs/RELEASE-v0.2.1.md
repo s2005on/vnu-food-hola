@@ -12,12 +12,12 @@ Bản cập nhật giao diện và tài liệu cho Academic MVP v0.2.0.
 
 ## Kiểm thử và nâng cấp
 
-46 kiểm thử Python và 15 kiểm thử JavaScript đạt trong lượt rà soát ngày 16/11/2026. JavaScript vượt kiểm tra cú pháp; script triển khai vượt kiểm tra cú pháp Bash. Kiểm thử trực quan trên điện thoại chưa hoàn tất.
+Đã bổ sung kiểm thử hồi quy Python và JavaScript cho checkout. Xem GitHub Actions trên PR #17 để biết kết quả lượt kiểm tra cuối. Kiểm thử trực quan trên điện thoại chưa hoàn tất.
 
-Không thay đổi API, schema SQLite hay dependencies. Các file giao diện thay đổi: `server/web/index.html`, `server/web/customer.css`, `server/web/customer-header.js`. Cập nhật đủ ba file và tải lại trình duyệt để nhận giao diện mới.
+Không thay đổi schema SQLite hay dependencies. Thay đổi API tương thích ngược: client mới gửi `X-VJU-Checkout-Session` để server từ chối gửi đơn khi phiên thay đổi (HTTP 409); client cũ không gửi header vẫn hoạt động. Các file thay đổi gồm `server/app.py`, `server/web/app.js`, `server/web/index.html`, `server/web/customer.css`, `server/web/customer-header.js` và các bài kiểm thử.
 
-## Vấn đề còn mở
+## Giới hạn còn lại
 
-Nếu đăng xuất ở tab khác, tab đặt món cũ có thể gửi đơn dưới dạng khách vãng lai. Đơn đó không tự xuất hiện trong lịch sử tài khoản. Chi tiết tái hiện và các giới hạn vận hành nằm tại [VERIFICATION.md](../VERIFICATION.md).
+Chưa xác nhận giao diện mobile, đa tab trong trình duyệt thực, backup restore hoặc VPS đã triển khai bản này. Xem [VERIFICATION.md](../VERIFICATION.md).
 
 Trạng thái tag và công bố được thể hiện tại [GitHub Releases](https://github.com/s2005on/vnu-food-hola/releases); tài liệu này không xác nhận phiên bản đang chạy trên VPS.
