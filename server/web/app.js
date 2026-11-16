@@ -14,6 +14,7 @@ const session=await sessionResponse.json();
 const $=id=>document.getElementById(id),money=n=>new Intl.NumberFormat('vi-VN',{style:'currency',currency:'VND',maximumFractionDigits:0}).format(n);
 const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const accountMode=Boolean(session.customer_id&&!session.trial);
+const checkoutSession=session.trial?'trial:'+session.trial_id:accountMode?'customer:'+session.customer_csrf:'guest';
 const key=session.trial?'vju-food-hola-trial-'+session.trial_id:accountMode?'vju-food-hola-account-'+session.customer_id+'-v1':'vju-food-hola-live-v1';
 if(accountMode){$('name').value=session.customer_name||'';$('phone').value=session.customer_phone||'';$('phone').readOnly=true;}
 let storageAvailable=true;
