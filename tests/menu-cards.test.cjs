@@ -13,7 +13,7 @@ test('menu renders tagged prices and add buttons without changing API availabili
 });
 test('Versioned menu CSS loads after v7 styles and before customer script',()=>{
  assert.ok(page.indexOf('href=\"v7.css?v=7.3\"') < page.indexOf('menu-cards.css?v=7.3'));
- assert.ok(page.indexOf('menu-cards.css?v=7.3') < page.indexOf('app.js?v=7.3'));
+ assert.ok(page.indexOf('menu-cards.css?v=7.3') < page.indexOf('app.js?v=checkout-2'));
  assert.match(style,/#menu-section \.dish/);
  assert.match(style,/#menu-section \.price-tag/);
 });

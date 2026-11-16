@@ -448,6 +448,48 @@ class ServerTests(unittest.TestCase):
             self.assertNotIn('lookup_hash',history.text)
             self.assertNotIn('token',history.text)
 
+    def test_checkout_session_guard_rejects_stale_tabs(self):
+        # A page loaded while signed out must not silently order under a new account.
+        p = self.payload()
+        signed_in = self.client.post('/api/customer/register', json={
+            'name': 'Minh Anh', 'phone': '0900000000', 'password': 'SecurePass2026!'
+        })
+        self.assertEqual(signed_in.status_code, 201)
+        csrf = signed_in.json()['csrf']
+        self.assertEqual(self.client.post('/api/orders', json=p,
+                         headers={'X-VJU-Checkout-Session': 'guest'}).status_code, 409)
+        self.assertEqual(self.client.post('/api/orders', json=p,
+                         headers={'X-VJU-Checkout-Session': 'customer:' + csrf}).status_code, 201)
+        self.client.headers['X-CSRF-Token'] = csrf
+        self.assertEqual(self.client.post('/api/customer/logout', json={}).status_code, 200)
+        stale = self.payload()
+        r = self.client.post('/api/orders', json=stale,
+                             headers={'X-VJU-Checkout-Session': 'customer:' + csrf})
+        self.assertEqual(r.status_code, 409)
+        self.assertIn('Phiên đăng nhập', r.json()['detail'])
+        with mod.db() as c:
+            self.assertEqual(c.execute('SELECT COUNT(*) FROM orders').fetchone()[0], 1)
+        self.assertEqual(self.client.post('/api/orders', json=stale,
+                         headers={'X-VJU-Checkout-Session': 'guest'}).status_code, 201)
+
+    def test_checkout_guard_detects_account_switch_and_login_refresh(self):
+        first = self.client.post('/api/customer/register', json={
+            'name': 'Khách Một', 'phone': '0900000000', 'password': 'FirstSecure2026!'
+        }).json()
+        self.client.headers['X-CSRF-Token'] = first['csrf']
+        self.assertEqual(self.client.post('/api/customer/logout', json={}).status_code, 200)
+        second = self.client.post('/api/customer/register', json={
+            'name': 'Khách Hai', 'phone': '0911111111', 'password': 'SecondSecure2026!'
+        }).json()
+        p = self.payload()
+        p['phone'] = '0911111111'
+        self.assertEqual(self.client.post('/api/orders', json=p, headers={
+            'X-VJU-Checkout-Session': 'customer:' + first['csrf']
+        }).status_code, 409)
+        self.assertEqual(self.client.post('/api/orders', json=p, headers={
+            'X-VJU-Checkout-Session': 'customer:' + second['csrf']
+        }).status_code, 201)
+
     def test_customer_demo_isolation_and_expired_sessions(self):
         self.assertEqual(self.client.get('/api/customer/orders').status_code,401)
         login=self.client.post('/api/trial/login',json={'username':'demo','password':mod.TRIAL_PASSWORD})

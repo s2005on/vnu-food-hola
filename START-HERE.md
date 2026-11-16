@@ -1,6 +1,6 @@
-# Chạy và demo MVP (mốc nội bộ V7.3)
+# Chạy ứng dụng và demo
 
-Tên V7.3 là nhãn của quá trình phát triển, không phải Git tag phát hành. Xem [quy ước phiên bản](docs/VERSIONING.md) và [báo cáo tổng kết, bàn giao](docs/FINAL-HANDOVER.md).
+Hướng dẫn chạy Academic MVP trên máy cá nhân.
 
 ## Windows
 1. Giải nén toàn bộ ZIP, dừng bản cũ bằng Ctrl+C. Không mở HTML trực tiếp bằng file://.
@@ -19,7 +19,7 @@ Tên V7.3 là nhãn của quá trình phát triển, không phải Git tag phát
 7. Thử món hết hàng, thông tin thiếu, giờ hết hạn và gửi lại yêu cầu; đối chiếu [bảng kiểm giữa kỳ](docs/MIDTERM.md).
 
 ## Chế độ demo riêng
-Chế độ demo dùng tài khoản thử và database tách biệt với dữ liệu quán chính. Thông tin đăng nhập demo không được ghi trong tài liệu công khai; không sử dụng tài khoản demo làm tài khoản quản trị thật.
+Chế độ demo dùng tài khoản thử và database tách biệt với dữ liệu quán chính. Thông tin đăng nhập demo được hiển thị công khai trên trang đăng nhập; tài khoản quản trị thật được tạo riêng.
 
 ## Nếu không hoạt động
 - Cổng 8016 bận: kiểm tra tiến trình cũ; không tắt tiến trình của người khác.

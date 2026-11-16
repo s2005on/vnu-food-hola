@@ -77,6 +77,14 @@ test('logged-in customer uses CSRF-protected claim for a guest order',async()=>{
  assert.equal(h.element('lookup-token').value,'');
 });
 
+test('checkout sends session guard from the loaded customer session',async()=>{
+ const h=harness();await tick();await tick();
+ // No menu items in the harness; assert the code binds the session for order POST.
+ assert.match(customerApp,/const checkoutSession=session\.trial/);
+ assert.match(customerApp,/X-VJU-Checkout-Session':checkoutSession/);
+ assert.match(indexHTML,/app\.js\?v=checkout-2/);
+});
+
 test('registration form submits name, phone, password and redirects on success',async()=>{
  const script=fs.readFileSync('server/web/customer-auth.js','utf8');
  const handlers={};const calls=[];const redirects=[];

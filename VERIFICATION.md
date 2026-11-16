@@ -4,7 +4,22 @@
 **Môi trường:** VPS học phần SV27 · Ubuntu 24.04  
 **Repository:** `s2005on/vnu-food-hola`
 
-## Bản triển khai
+## Rà soát mã nguồn — 16/11/2026
+
+Phạm vi: backend/API, quản lý dữ liệu và backup, giao diện khách/quản trị, kiểm thử, cấu hình triển khai và tài liệu phiên bản.
+
+- Đã bổ sung 2 kiểm thử Python về phiên checkout và 1 kiểm thử JavaScript về header gửi đơn; xem kết quả CI của PR #17 để xác nhận lượt kiểm thử mới.
+- Bản sửa thanh điều hướng và kiểm tra phiên checkout không thay đổi schema SQLite hay dependencies.
+- `v0.2.0` đã phát hành tại `f0359f6`; các tài liệu còn ghi “chưa tạo tag” được cập nhật.
+- Kiểm tra trực quan bản sửa header chưa hoàn tất do Chromium không khởi động được trong môi trường kiểm thử.
+
+### Đã bổ sung bảo vệ checkout giữa các tab
+
+Frontend gửi dấu hiệu phiên của trang checkout khi tạo hoặc gửi lại đơn. Backend đối chiếu với cookie hiện tại; nếu khách đã đăng nhập, đăng xuất hoặc chuyển tài khoản ở tab khác, API trả HTTP 409 thay vì âm thầm tạo đơn dưới phiên khác. Yêu cầu từ client cũ không gửi header vẫn tương thích, vì vậy đây không phải cơ chế bảo vệ bắt buộc với tất cả client. Sau khi nhận HTTP 409, khách cần tải lại trang.
+
+Đã thêm kiểm thử hồi quy cho phiên khách cũ, phiên đã đăng xuất và chuyển tài khoản. Chưa kiểm thử thủ công trên nhiều tab trình duyệt và VPS.
+
+## Bản triển khai đã ghi nhận — 15/11/2026
 
 - **URL:** [https://sv27.bcse-vju.com/](https://sv27.bcse-vju.com/)
 - **Commit ứng dụng:** `0eba90e451312ddfc5b57dff268322e4ddb8cf7e` (PR #14).

@@ -14,6 +14,7 @@ const session=await sessionResponse.json();
 const $=id=>document.getElementById(id),money=n=>new Intl.NumberFormat('vi-VN',{style:'currency',currency:'VND',maximumFractionDigits:0}).format(n);
 const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const accountMode=Boolean(session.customer_id&&!session.trial);
+const checkoutSession=session.trial?'trial:'+session.trial_id:accountMode?'customer:'+session.customer_csrf:'guest';
 const key=session.trial?'vju-food-hola-trial-'+session.trial_id:accountMode?'vju-food-hola-account-'+session.customer_id+'-v1':'vju-food-hola-live-v1';
 if(accountMode){$('name').value=session.customer_name||'';$('phone').value=session.customer_phone||'';$('phone').readOnly=true;}
 let storageAvailable=true;
@@ -118,7 +119,7 @@ $('order-form').addEventListener('submit',async e=>{
 async function sendPending(){
  if(!pending||busy)return;
  busy=true;renderCart();$('checkout-error').hidden=true;
- try{const result=await api('orders',{method:'POST',body:JSON.stringify({...pending.payload,key:pending.key})});remember(result.code,result.token);pending=null;cart={};save();renderCart();$('note').value='';window.VJUCartDrawer?.close();$('history-dialog').showModal();await refreshOrders();toast('Đã lưu đơn trên máy chủ.');}
+ try{const result=await api('orders',{method:'POST',headers:{'X-VJU-Checkout-Session':checkoutSession},body:JSON.stringify({...pending.payload,key:pending.key})});remember(result.code,result.token);pending=null;cart={};save();renderCart();$('note').value='';window.VJUCartDrawer?.close();$('history-dialog').showModal();await refreshOrders();toast('Đã lưu đơn trên máy chủ.');}
  catch(e){if([409,422].includes(e.status)){pending=null;save();await loadMenu();}$('checkout-error').hidden=false;$('checkout-error').textContent=e.message+' Nếu mất kết nối, dùng nút kiểm tra lần đặt trước để tránh đặt trùng.';}
  finally{busy=false;renderCart();$('retry-order').hidden=!pending;$('reset-pending').hidden=!pending;}
 }
