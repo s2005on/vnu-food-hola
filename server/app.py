@@ -355,6 +355,12 @@ def claim_customer_order(data: ClaimOrder, request: Request):
 def create_order(order: NewOrder, request: Request):
     throttle(request,'order',15)
     customer = customer_identity(request) if not TRIAL_ID.get() else None
+    # Bind a checkout to the session that loaded its page. Older clients without
+    # this header remain compatible; the current web client always supplies it.
+    expected = request.headers.get('x-vju-checkout-session')
+    actual = ('trial:' + TRIAL_ID.get()) if TRIAL_ID.get() else ('customer:' + customer['csrf'] if customer else 'guest')
+    if expected is not None and not hmac.compare_digest(expected, actual):
+        fail(409, 'Phiên đăng nhập đã thay đổi. Hãy tải lại trang trước khi đặt món.')
     if customer and order.phone != customer['phone']:
         fail(422, 'Số điện thoại đặt hàng phải trùng số đã đăng ký.')
     payload=order.model_dump()
