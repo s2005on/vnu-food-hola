@@ -6,6 +6,7 @@ Bản cập nhật giao diện và tài liệu cho Academic MVP v0.2.0.
 
 - Giữ thanh Thực đơn, Đơn của tôi và Giỏ hàng ở đầu màn hình khi cuộn.
 - Điều chỉnh khoảng cuộn theo chiều cao thanh điều hướng, kể cả khi tên tài khoản hoặc kích thước màn hình thay đổi.
+- Ngăn giao diện mới tạo đơn sai tài khoản khi phiên đăng nhập thay đổi ở tab khác (API trả HTTP 409).
 - Rút gọn README, quy ước Git và tài liệu phiên bản; sửa thông tin lỗi thời về v0.2.0.
 - Tập trung kết quả kiểm thử và các vấn đề còn mở tại [VERIFICATION.md](../VERIFICATION.md).
 
