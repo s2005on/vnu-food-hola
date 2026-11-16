@@ -13,11 +13,11 @@ Phạm vi: backend/API, quản lý dữ liệu và backup, giao diện khách/qu
 - `v0.2.0` đã phát hành tại `f0359f6`; các tài liệu còn ghi “chưa tạo tag” được cập nhật.
 - Kiểm tra trực quan bản sửa header chưa hoàn tất do Chromium không khởi động được trong môi trường kiểm thử.
 
-### Lỗi còn mở: trạng thái tài khoản giữa các tab
+### Đã bổ sung bảo vệ checkout giữa các tab
 
-Tái hiện bằng TestClient: đăng ký tài khoản → đăng xuất → gửi yêu cầu đặt món với dữ liệu còn giữ ở tab cũ → API trả 201 → đăng nhập lại → lịch sử tài khoản không có đơn đó. Đơn được tạo dưới dạng khách vãng lai vì backend dựa vào cookie hiện tại; frontend chưa ràng buộc danh tính đã dùng khi mở checkout.
+Frontend gửi dấu hiệu phiên của trang checkout khi tạo hoặc gửi lại đơn. Backend đối chiếu với cookie hiện tại; nếu khách đã đăng nhập, đăng xuất hoặc chuyển tài khoản ở tab khác, API trả HTTP 409 thay vì âm thầm tạo đơn dưới phiên khác. Yêu cầu từ client cũ không gửi header vẫn tương thích, vì vậy đây không phải cơ chế bảo vệ bắt buộc với tất cả client. Sau khi nhận HTTP 409, khách cần tải lại trang.
 
-Hướng xử lý: xác thực lại danh tính phiên khi gửi đơn và từ chối khi phiên thay đổi. Lỗi này chưa được sửa trong bản cập nhật giao diện. Trong lúc chờ sửa, tải lại trang đặt món sau khi đăng nhập/đăng xuất ở tab khác.
+Đã thêm kiểm thử hồi quy cho phiên khách cũ, phiên đã đăng xuất và chuyển tài khoản. Chưa kiểm thử thủ công trên nhiều tab trình duyệt và VPS.
 
 ## Bản triển khai đã ghi nhận — 15/11/2026
 
